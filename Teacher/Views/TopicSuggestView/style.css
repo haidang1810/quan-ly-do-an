@@ -1,0 +1,70 @@
+.main {
+    position: relative;
+    width: 100%;
+    height: auto;
+}
+.content {
+    margin-left: 250px;
+    padding-top: 45px;
+    padding-left: 45px;
+    min-height: 600px;
+    padding-bottom: 45px;
+}
+.topic_select {
+    height: 35px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.select_class {
+    width: 25%;
+}
+.topic_button_search {
+    background-color: #00A65A;
+    color: white;
+    width: 10%;
+    height: 35px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.table{
+    width: 95%;
+}
+
+table {
+    width: 100%;
+    margin: 20px 50px 20px 0px;
+    border: 1px solid #F0F4F8;
+}
+table th,
+table td {
+    padding: 15px 30px;
+    text-align: left;
+}
+table th {
+    color: #243D58;
+    font-weight: 600;
+    background-color: #f1f7fd;
+}
+table tbody tr td {
+    border-top: 1px solid #F0F4F8;
+}
+table a {
+    cursor: pointer;
+    color: red;
+}
+.btn_topic {
+    width: 50px;
+    height: 35px;
+    color: white;
+    border: 0;
+    cursor: pointer;
+    border-radius: 5px;
+    
+}
+.btn_suggest{
+    background-color: #007BFF;
+}
+.btn_refuse{
+    background-color: #DC3545;
+}

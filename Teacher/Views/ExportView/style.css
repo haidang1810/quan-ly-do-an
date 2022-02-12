@@ -1,0 +1,59 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+.block{
+    width: 90%;
+    align-items: center;
+    margin-left: 5%;
+    padding: 0;
+}
+.block-top{
+    border: solid 1px #000;
+}
+.block-logo{
+    width: 15%;
+    float:left;
+    padding: 5px;
+}
+
+.block-title{
+    text-align: center;
+    float:left;
+    width: 60%;
+    border-left: solid 1px #000;
+    border-right: solid 1px #000;
+}
+.block-title h3{
+    line-height: 70px;
+}
+.block-right{
+    float:left;
+    width: 25%;
+}
+.text{
+    font-size: 14px;
+}
+.block-info{    
+    margin-top: 15px;
+}
+.text-code{
+    display: inline;
+}
+.text-name {
+    display: inline;
+}
+table{
+    border-collapse: collapse;
+    padding: 0;
+    width: 100%;
+    height: auto;
+    border: solid 1px #000;
+}
+table th,
+table td{
+    border: solid 1px #000;
+}
+.date{
+    text-align: right;
+}

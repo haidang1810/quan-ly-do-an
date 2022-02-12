@@ -1,0 +1,100 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-image: url("../img/login.jpg");
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.container {
+    width: 40%;
+    height: auto;
+}
+.container_top {
+    color: white;
+    text-align: center;
+}
+
+.container_bottom {
+    width: 100%;
+    height: 460px;
+}
+.form_top {
+    width: 100%;
+    height: 35%;
+    border-radius: 5px 5px 0 0;
+    background-color: White;
+    color: #a1a1a1;
+}
+.form_top_left {
+    float: left;
+    width: calc(75% - 15px);
+    margin-left: 15px;
+}
+.form_top_right {
+    float: right;
+    text-align: right;
+    width: calc(25% - 20px);
+    margin-right: 20px;
+    margin-top: 20px;
+}
+
+.form_bottom {
+    background-color: #eeeeee;
+    width: calc(100% - 40px);
+    border-radius: 0 0 5px 5px;
+    padding: 25px 20px 25px 20px;
+}
+.login_lable {
+    color: #a1a1a1;
+    font-size: 18px;
+    display: inline-block;
+    cursor: pointer;
+}
+.login_input {
+    width: 100%;
+    height: 48px;
+    padding: 16px 22px 16px 22px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+}
+.login_text {
+    border: solid 3px #dddddd;
+    background-color: #e8f0fe;
+}
+
+.login_button {
+    background-color: #4aaf51;
+    border: solid 1px #4aaf51;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    color: white;
+    font-size: 17px;
+    transition: all 0.3s;
+}
+.login_button:hover {
+    background-color: #8bc88f;
+    border: solid 1px #8bc88f;
+}
+.form_bottom p {
+    padding: 0;
+    margin: 0;
+}
+.form_bottom a {
+    color: #4aaf51;
+    font-size: 18px;
+    text-decoration: none;
+}
+.forgot_pass {
+    margin-top: -15px;
+}
+.text_error {
+    color: #a94442;
+    margin-bottom: 20px;
+}
+.text_success {
+    color: #216dcb;
+    margin-bottom: 20px;
+}

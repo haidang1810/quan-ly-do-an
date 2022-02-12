@@ -1,0 +1,47 @@
+.main {
+    position: relative;
+    width: 100%;
+    height: auto;
+}
+.content {
+    margin-left: 250px;
+    padding-top: 45px;
+    padding-left: 45px;
+    min-height: 600px;
+    padding-bottom: 45px;
+}
+
+.boxed {
+    text-align: right;
+    width: calc(25% - 40px);
+    height: 18%;
+    padding-right: 20px;
+    margin-right: 20px;
+    margin-bottom: 40px;
+    float: left;    
+    background: var(--white);
+    border-radius: 5px;
+    box-shadow: 0 7px 25px rgba(0,0,0,0.08);
+}
+.box_blue {
+    background-color: #5B8FBD;
+}
+.box_red {
+    background-color: #E15B5E;
+}
+.box_green {
+    background-color: #4BB6AE;
+}
+.box_purple {
+    background-color: #8675A6;
+}
+.box-number{
+    margin: 10% 0px 0px 0px;
+    padding: 0;
+    color: #256EE4;
+}
+.box-title{
+    margin: 0;
+    padding: 0;
+    color: #949494;
+}

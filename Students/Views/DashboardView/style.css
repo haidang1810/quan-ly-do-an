@@ -1,0 +1,15 @@
+.main {
+    position: relative;
+    width: 100%;
+    height: auto;
+}
+.content {
+    margin-left: 250px;
+    padding-top: 45px;
+    padding-left: 45px;
+    min-height: 600px;
+    padding-bottom: 45px;
+}
+#calendar{
+    width: 90%;
+}

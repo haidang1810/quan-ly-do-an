@@ -1,0 +1,160 @@
+.main {
+    position: relative;
+    width: 100%;
+    height: auto;
+}
+.content {
+    margin-left: 250px;
+    padding-top: 45px;
+    padding-left: 45px;
+    min-height: 600px;
+    padding-bottom: 45px;
+}
+
+.table{
+    width: 90%;
+}
+table {
+    width: 100%;
+    margin: 20px 50px 20px 0px;
+    border: 1px solid #F0F4F8;
+}
+table th,
+table td {
+    padding: 15px 30px;
+    text-align: left;
+}
+table th {
+    color: #243D58;
+    font-weight: 600;
+    background-color: #f1f7fd;
+}
+table tbody tr td {
+    border-top: 1px solid #F0F4F8;
+}
+.btn_class{
+    width: 50px;
+    height: 35px;
+    color: white;
+    border: 0;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.btn_setting {
+    background-color: #31A59C;
+}
+.btn_detail {
+    background-color: #00A65A;
+}
+.modal {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.5s linear 0s ;
+}
+.modal_overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+.modal_body {
+    width: 40%;
+    height: 60%;
+    background-color: white;
+    border-radius: 5px;
+    margin-top: 2%;
+    margin-bottom: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    padding: 20px;
+}
+.modal_inner {
+    width: 100%;
+    height: 100%;
+}
+.modal_title {
+	border-bottom: 1px solid black;
+	padding-bottom: 10px;
+}
+.close {
+	position: absolute;
+	top: 0;
+	right: 14px;
+	font-size: 42px;
+	transform: rotate(45deg);
+	cursor: pointer;
+}
+.modal_inner {
+    text-align: center;    
+}
+.modal_inner input[type=text],
+.modal_inner input[type=number],
+.modal_inner input[type=date]{
+	width: 60%;
+	display: block;
+	margin: 20px auto;
+	font-size: 16px;
+	padding: 10px 20px 10px 20px;
+	border: 2px solid #aaa;	
+	border-radius: 15px;
+	box-sizing: border-box;
+	outline: none;
+	transform: 0.3s;
+}
+.modal_inner input[type=number]:focus,
+.modal_inner input[type=date]:focus {
+	border-color: dodgerblue;
+	box-shadow: 0 0 8px 0 dodgerblue;
+}
+.modal_inner input[type=submit] {
+    font-size: 18px;
+	padding: 7px 35px 7px 35px;
+	background-color: #2388D8;
+	color: white;
+	border-radius: 20px;
+	border: 2px solid #2388D8;
+}
+
+.modal_inner input[type=submit]:hover {
+	background-color: #fff;
+	color: #2388D8;
+}
+.form_field{
+    position: relative;
+}
+.form_lable{
+    position: absolute;
+    font-size: 17px;
+    color: #7D7D7D;
+    padding-left: 4px;
+    padding-right: 4px;
+    user-select: none;
+    left: 23%;
+    top: 0;
+    transform: translateY(-50%);
+    pointer-events: none;
+    background-color: white;
+}
+.modal_inner input[type=date]:focus + .form_lable{
+    color: #2388D8;
+}
+.select_hknh{
+    height: 35px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 20%;
+}
+.button_search {
+    background-color: #00A65A;
+    color: white;
+    width: 10%;
+    height: 35px;
+    border-radius: 4px;
+    cursor: pointer;
+}
