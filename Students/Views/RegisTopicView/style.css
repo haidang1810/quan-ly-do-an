@@ -1,3 +1,6 @@
+:root {
+	--pink-color: #e26e70;
+}
 .main {
     position: relative;
     width: 100%;
@@ -31,4 +34,117 @@ table th {
 }
 table tbody tr td {
     border-top: 1px solid #F0F4F8;
+}
+.btn_register {
+    width: 50px;
+    height: 35px;
+    color: white;
+    border: 0;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.btn_primary{
+    background-color: #007BFF;
+}
+.btn_danger {
+    background-color: #DC3545;
+}
+.open-modal-btn {
+	transition: 0.25s;
+}
+.modal {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.6);
+}
+
+.hide {
+	display: none;
+}
+
+.modal__inner {
+	width: 450px;
+	background-color: #fff;
+	border-radius: 5px;
+	overflow: hidden;
+	animation: showModal linear 0.2s;
+	position: relative;
+	margin: 130px auto;
+}
+
+@keyframes showModal {
+	from {
+		top: -200px;
+		opacity: 0;
+	}
+	to {
+		top: 0;
+		opacity: 1;
+	}
+}
+
+.modal__header {
+	background-color: var(--pink-color);
+	color: white;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 10px 15px 10px 15px;
+	font-size: 18px;
+}
+.modal__header p{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.modal__body	{
+	padding: 15px;
+}
+
+.modal__body h2 {
+	color: var(--pink-color);
+    margin: 0;
+}
+
+.modal__footer {
+	padding: 0 15px 15px 15px;
+	text-align: right;
+}
+
+.modal__footer button {
+	outline: none;
+	border: none;
+	padding: 10px 20px;
+	background-color: #007BFF;
+	color: white;
+	border-radius: 6px;
+	cursor: pointer;
+}
+
+i {
+	cursor: pointer;
+	font-size: 18px;
+}
+.modal__form{
+	overflow-y: scroll;
+	border: 1px solid #ccc;
+	padding: 10px 5px 10px 5px;
+	margin-top: 5px;
+	height: 200px;
+}
+.modal__form label,
+.modal__form input{
+	font-size: 17px;
+	cursor: pointer;
+}
+.modal__form::-webkit-scrollbar{
+	width: 10px;
+    background: lightgrey;
+    
+}
+.modal__form::-webkit-scrollbar-thumb{
+    background-color: gray;
+    border-radius: 2px;
 }

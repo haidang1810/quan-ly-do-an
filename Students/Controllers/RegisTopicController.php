@@ -18,12 +18,34 @@
         echo "</tr>";
         echo "</thead>";
         echo "<tbody>";
-        
         loadTopic($conn,$_SESSION['DetailClass']);
-
         echo "</tbody>";
         echo "</table>";
         echo "</div>";
+
+        //modal
+        echo "
+        <div class='modal hide'>
+                <div class='modal__inner'>
+                    <div class='modal__header'>
+                        <p>Đăng ký đề tài</p>
+                        <i class='fas fa-times'></i>
+                    </div>
+                    <div class='modal__body'>
+                        <h2>Chọn thành viên</h2>
+                        <form method='POST' class='modal__form'>
+                            <input type='hidden' name='MaDT' id='Id_DT'>
+                            ";
+                            LoadStudent($conn,$_SESSION['DetailClass']);
+                            
+                        echo "</form>
+                    </div>
+                    <div class='modal__footer'>
+                        <button>Đăng ký</button>
+                    </div>
+                </div>
+            </div>
+        ";
     }else{
         header("location: ../../Views/ClassListView/ClassListView.php");
     }

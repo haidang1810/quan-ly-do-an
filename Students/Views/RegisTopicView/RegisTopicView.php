@@ -17,7 +17,6 @@
             ?>
             <div class="content">
                 <?php include("../../Controllers/RegisTopicController.php"); ?>
-                
             </div>
             <?php
                 include("../shared/footer.php");
