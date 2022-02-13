@@ -1,4 +1,6 @@
 <?php
+    if (session_id() === '')
+        session_start();
     date_default_timezone_set('Asia/Ho_Chi_Minh');
     function loadData($conn,$maLop){
         if(isset($_SESSION['login'])){
@@ -41,7 +43,7 @@
                 if ($resultTD->num_rows > 0){
                     $process .= "<ul class='list-process'>";
                     while($rowTD = $resultTD->fetch_assoc()){
-                        $process .= "<li><a href='#' class='link-process'>
+                        $process .= "<li><a href='#' id='".$rowTD['Id']."' class='list-process link-title-process'>
                         ".$rowTD['TieuDe']."</a></li><ul class='list-process'><li>".$rowTD['GhiChu']."</li></ul>";
                     }
                     $process .= "</ul>";
@@ -147,5 +149,9 @@
                 }
             }
         }
+    }
+    if(isset($_POST['id-title'])){
+        $_SESSION['id-process'] = $_POST['id-title'];
+        echo 1;
     }
 ?>
