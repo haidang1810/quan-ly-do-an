@@ -1,4 +1,5 @@
 <?php
+    date_default_timezone_set('Asia/Ho_Chi_Minh');
     function loadData($conn,$maLop){
         if(isset($_SESSION['login'])){
             $data = $_SESSION['login'];
@@ -115,8 +116,8 @@
         $resultSV = $conn->query($checkSV);
         if ($resultSV->num_rows > 0){
             $rowSV = $resultSV->fetch_assoc();
-            date_default_timezone_set('Asia/Ho_Chi_Minh');
-            $today = (date("Y-m-d H:i:s"));
+            
+            $today = date("Y-m-d H:i:s");
             //đã từng vào lớp đó chưa nếu có cập nhật time mới
             $check = "SELECT Id FROM lichsu_hocphan WHERE Mssv='".$rowSV['Mssv']."' and MaLopHP='$maLop'";
             $resultCheck = $conn->query($check);

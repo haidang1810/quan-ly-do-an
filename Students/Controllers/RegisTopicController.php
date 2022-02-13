@@ -18,7 +18,14 @@
         echo "</tr>";
         echo "</thead>";
         echo "<tbody>";
-        loadTopic($conn,$_SESSION['DetailClass']);
+        
+        if(!isset($_POST['Id-cancel']))
+            loadTopic($conn,$_SESSION['DetailClass']);
+        if(isset($_POST['Id-cancel'])){
+            $maDT = $_POST['Id-cancel'];
+            cancelTopic($conn,$maDT);
+            loadTopic($conn,$_SESSION['DetailClass']);
+        }
         echo "</tbody>";
         echo "</table>";
         echo "</div>";
@@ -34,14 +41,14 @@
                     <div class='modal__body'>
                         <h2>Chọn thành viên</h2>
                         <form method='POST' class='modal__form'>
-                            <input type='hidden' name='MaDT' id='Id_DT'>
+                            <input type='hidden' name='MaDT' value='' id='Id_DT'>
                             ";
                             LoadStudent($conn,$_SESSION['DetailClass']);
                             
                         echo "</form>
                     </div>
                     <div class='modal__footer'>
-                        <button>Đăng ký</button>
+                        <button class='modal__button__submit'>Đăng ký</button>
                     </div>
                 </div>
             </div>

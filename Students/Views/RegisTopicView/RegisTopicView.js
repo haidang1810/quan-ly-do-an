@@ -1,27 +1,22 @@
 var remining = 0;
 var listSV = new Array();
+var Mssv = document.getElementById('currentUser').value;
 $(window).on('load', function(){
 	const modal = document.querySelector('.modal')
 	const iconCloseModal = document.querySelector('.modal__header i')
-	const buttonCloseModal = document.querySelector('.modal__footer button')
 	
 	function toggleModal() {
 		modal.classList.toggle('hide')
+		allChecked();
 	}
 	
 	iconCloseModal.addEventListener('click', function(){
 		toggleModal();
-		allChecked();
-	})
-	buttonCloseModal.addEventListener('click', function(){
-		toggleModal();
-		allChecked();
 	})
 	
 	modal.addEventListener('click', (e) => {
 		if (e.target == e.currentTarget){
 			toggleModal();
-			allChecked();
 		}
 	})
 })
@@ -30,6 +25,9 @@ function openModal(value){
 	var modal = document.querySelector('.modal')
 	modal.classList.toggle('hide')
 	let data =value.split(",");
+	listSV.push(Mssv)
+	var id = document.getElementById("Id_DT");
+	id.value = data[0]
 	remining = Number(data[1]);
 	remining--;
 	if(remining<=0){
@@ -89,3 +87,35 @@ for(i=0;i<form.length;i++){
         })
     })
 }
+$(window).on('load',function () {
+	$(".modal__button__submit").click(function(){
+		var maDT = document.getElementById("Id_DT").value;
+		$.post("../../Models/RegisTopicModel.php",{
+			'listSV': listSV.toString(),
+			'MaDT': maDT
+		},function(data){
+			if(data!=1){
+				Swal.fire({
+					icon: 'error',
+					title: 'Lỗi...',
+					text: data
+				}).then((result) => {
+					if (result.isConfirmed) {
+						window.location.reload()        
+					}
+				})
+				
+			}else{
+				Swal.fire(
+					'Đã đăng ký!',
+					'Bạn đã đăng ký đề tài thành công.',
+					'success'
+				).then((result) => {
+					if (result.isConfirmed) {
+						window.location.reload()        
+					}
+				})
+			}
+		})
+	})
+})

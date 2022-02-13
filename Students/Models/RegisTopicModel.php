@@ -1,4 +1,5 @@
 <?php
+    date_default_timezone_set('Asia/Ho_Chi_Minh');
     if (session_id() === '')
         session_start();
     function loadTopic($conn,$maLop){
@@ -29,7 +30,7 @@
                     echo "<td>";
                     if($rowTopic['MaDeTai']==$rowDK['MaDeTai']){
                         echo "<form method='POST' class='form-cancel'>";
-                        echo "<input type='hidden' value='".$rowTopic['MaDeTai']."'>";
+                        echo "<input type='hidden' name='Id-cancel' value='".$rowTopic['MaDeTai']."'>";
                         echo "<button class='btn_register btn_danger'  type='submit'>
                         <i class='fas fa-trash-alt'></i>
                         </button>";
@@ -65,6 +66,12 @@
     }
 
     function LoadStudent($conn,$maLop){
+        if(isset($_SESSION['login'])){
+            $data = $_SESSION['login'];
+        }
+        $findSV = "SELECT Mssv FROM sinhvien WHERE TaiKhoan='$data'";
+        $resultSV = $conn->query($findSV);
+        $rowSV = $resultSV->fetch_assoc();
         $listSV = "SELECT sinhvien.HoTen, sinhvien_hocphan.Mssv 
         FROM sinhvien_hocphan, sinhvien
         WHERE sinhvien_hocphan.Mssv=sinhvien.Mssv And MaLopHP='$maLop'";
@@ -73,7 +80,7 @@
             while($row = $result->fetch_assoc()){
                 $findTopic = "SELECT Mssv FROM dangkydetai WHERE Mssv='".$row['Mssv']."'";
                 $resultTopic = $conn->query($findTopic);
-                if($resultTopic->num_rows <=0){
+                if($resultTopic->num_rows <=0 && $row['Mssv']!=$rowSV['Mssv']){
                     echo "
                     <label for='".$row['Mssv']."'>".$row['Mssv']." - ".$row['HoTen']."</label>
                     <input type='checkbox' class='enable' id='".$row['Mssv']."' onclick='onChecked(this.id)'><br>
@@ -82,5 +89,45 @@
             }
             
         }
+    }
+
+    function cancelTopic($conn,$id){
+        if(isset($_SESSION['login'])){
+            $data = $_SESSION['login'];
+        }
+        $findSV = "SELECT Mssv FROM sinhvien WHERE TaiKhoan='$data'";
+        $resultSV = $conn->query($findSV);
+        $rowSV = $resultSV->fetch_assoc();
+
+        $sql = "DELETE FROM dangkydetai WHERE MaDeTai='$id' AND Mssv='".$rowSV['Mssv']."'";
+        if(mysqli_query($conn,$sql)){
+            echo"
+                <script>
+                    Swal.fire(
+                        'Đã huỷ!',
+                        'Bạn đã huỷ đăng ký đề tài thành công.',
+                        'success'
+                    )
+                </script>
+                ";
+        }
+    }
+    if(isset($_POST['listSV']) && isset($_POST['MaDT'])){
+        include("../../public/config.php");
+        global $conn;
+        $listSV = explode(",",$_POST['listSV']);
+        $today = date("Y-m-d H:i:s");
+        $id_topic = $_POST['MaDT'];
+        $error = [];
+        foreach($listSV as $mssv){
+            $sql = "INSERT INTO dangkydetai
+            VALUES($id_topic,'$mssv','$today')";
+            if(!mysqli_query($conn,$sql))
+                array_push($error,mysqli_error($conn));
+        }
+        if(count($error)>0){
+            echo "Không thể đăng ký cho các sinh viên: ".implode($error);
+        }else echo 1;
+        
     }
 ?>
