@@ -9,6 +9,11 @@
         $findSV = "SELECT Mssv FROM sinhvien WHERE TaiKhoan='$data'";
         $resultSV = $conn->query($findSV);
         $rowSV = $resultSV->fetch_assoc();
+        $checkHK = "SELECT hocky_namhoc.TrangThai FROM lophocphan, hocky_namhoc
+        WHERE lophocphan.Id_hknh=hocky_namhoc.Id AND lophocphan.MaLopHP='$maLop'";
+        $resultHK = $conn->query($checkHK);
+        $rowHK = $resultHK->fetch_assoc();
+        
         $findDK = "SELECT Mssv, dangkydetai.MaDeTai 
         FROM detai, dangkydetai 
         WHERE detai.MaDeTai=dangkydetai.MaDeTai 
@@ -17,7 +22,7 @@
         $findOffer = "SELECT * FROM detaidexuat WHERE Mssv='".$rowSV['Mssv']."'
         AND MaLopHP='$maLop'";
         $resultOffer = $conn->query($findOffer);
-        if($resultOffer->num_rows <= 0){
+        if($resultOffer->num_rows <= 0 && $rowHK['TrangThai']!=0){
             if($resultDK->num_rows > 0){
                 $rowDK = $resultDK->fetch_assoc();
                 $topic = "SELECT * FROM detai WHERE MaLopHP='$maLop'";
