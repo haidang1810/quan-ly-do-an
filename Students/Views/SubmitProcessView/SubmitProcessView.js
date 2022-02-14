@@ -20,4 +20,23 @@ function dongho(){
     }, 1000);
 }
 dongho();
-
+var form = document.getElementsByClassName("form-delete-file");
+for(i=0;i<form.length;i++){
+    form[i].addEventListener('submit', function(e){
+        e.preventDefault();    
+        Swal.fire({
+            title: 'Bạn có chắc muốn xoá file?',
+            text: "Bạn sẽ không thể khôi phục dữ liệu đã xoá!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Vâng, hãy xoá!',
+            cancelButtonText: 'Huỷ.'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                this.submit();            
+            }
+        })
+    })
+}

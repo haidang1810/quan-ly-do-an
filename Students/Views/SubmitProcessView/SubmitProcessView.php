@@ -34,7 +34,10 @@
                 Dropzone.autoDiscover = false;
                 var myDropzone = new Dropzone(".dropzone", { 
                     autoProcessQueue: false,
-                    parallelUploads: 20 // Number of files process at a time (default 2)
+                    parallelUploads: 20,
+                    success : function(file, response){
+                    $(".dropzone").html(response)
+                }
                 });
                 var elementUpload= document.getElementById('uploadfiles');
                 if(elementUpload!=null){

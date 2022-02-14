@@ -17,7 +17,7 @@
         $resultPro = $conn->query($findPro);
         if($resultPro->num_rows > 0){
             $rowPro = $resultPro->fetch_assoc();
-            $findFile = "SELECT File, ThoiGianNop FROM nopbaichitiet 
+            $findFile = "SELECT Id, File, ThoiGianNop FROM nopbaichitiet 
             WHERE Mssv='".$rowSV['Mssv']."' AND Ma='$id_process'";
             $resultDetail = $conn->query($findFile);
             $timeStart = date("d-m-Y, H:i:s", strtotime($rowPro['ThoiGianBatDau']));
@@ -52,6 +52,12 @@
                     echo "</td>";
                     $timeSubmit = date("d-m-Y, H:i:s", strtotime($rowDetail['ThoiGianNop']));
                     echo "<td>".$timeSubmit."</td>";
+                    echo "<td>";
+                    echo "<form method='POST' class='form-delete-file'>";
+                    echo "<input type='hidden' name='Id_delete' value='".$rowDetail['Id']."'>";
+                    echo "<button type='submit' class='btn-delete-file'><i class='fas fa-trash-alt'></button>";
+                    echo "</form>";
+                    echo "</td>";
                     echo "</tr>";
                 }
                 echo "</table>";
@@ -78,5 +84,39 @@
             echo"<button type='button' id='uploadfiles' >Nộp bài</button>";
             echo "</div>";
         }
+    }
+
+    function deleteFile($conn,$id){
+        $findFile = "SELECT * FROM nopbaichitiet WHERE Id=$id";
+        $resultFile = $conn->query($findFile);
+        if($resultFile->num_rows>0){
+            $rowFile = $resultFile->fetch_assoc();
+            $fileName = explode("/",$rowFile['File']);
+            $sql = "DELETE FROM nopbaichitiet WHERE Id=$id";
+            if(mysqli_query($conn,$sql)){
+                $path = "../../../public/item/".$rowFile['File'];
+                unlink($path);
+                echo "<script>
+                        Swal.fire({
+                            'Đã xoá!',
+                            'Bạn đã xoá file ".$fileName[3]." thành công.',
+                            'success'
+                        })
+                    </script>";
+            }else echo "<script>
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Lỗi...',
+                                text: 'Lỗi sql!'
+                            })
+                        </script>";
+        }else echo "<script>
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi...',
+                            text: 'Không tìm thấy file!'
+                        })
+                    </script>";
+        
     }
 ?>

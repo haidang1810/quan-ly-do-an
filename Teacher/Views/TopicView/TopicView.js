@@ -72,7 +72,8 @@ for(i=0;i<form.length;i++){
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Vâng, hãy xoá!'
+            confirmButtonText: 'Vâng, hãy xoá!',
+            cancelButtonText: 'Huỷ.'
         }).then((result) => {
             if (result.isConfirmed) {
                 this.submit();            
