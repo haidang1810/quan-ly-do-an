@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>Danh sách lớp học phần</title>
+        <title>Chi tiết lớp học phần</title>
         <link rel="stylesheet" href="style.css">
         <script src="../../../public/jquery-ui/jquery-3.3.1.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
