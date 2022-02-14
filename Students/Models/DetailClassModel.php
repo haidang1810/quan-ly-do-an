@@ -38,7 +38,7 @@
                     }
                 }
                 //Tìm tiến độ hiện tại
-                $findTD = "SELECT * FROM nopbai WHERE MaLopHP='".$row['MaLopHP']."'";
+                $findTD = "SELECT * FROM nopbai WHERE MaLopHP='".$row['MaLopHP']."' and Loai=0";
                 $resultTD = $conn->query($findTD);
                 if ($resultTD->num_rows > 0){
                     $process .= "<ul class='list-process'>";
@@ -93,9 +93,12 @@
                     <div class='dec-line'></div>
                     <a href='#' class='title-box link-proces'>2. Tiến độ thực hiện</a>
                     $process
-                    <div class='dec-line'></div>
-                    <a href='#' class='title-box link-final'>3. Nộp sản phẩm</a>
-                    <ul><li>Tình trạng: $final</li></ul>
+                    <div class='dec-line'></div>";
+                    if($final!='Giảng viên chưa tạo thư mục nộp'){
+                        echo "<a href='#' id='".$rowSP['Id']."' class='title-box link-final link-title-process'>3. Nộp sản phẩm</a>";
+                    }else
+                        echo "<a href='#' class='title-box link-final'>3. Nộp sản phẩm</a>";
+                    echo "<ul><li>Tình trạng: $final</li></ul>
                     <div class='dec-line'></div>
                     <a href='#' class='title-box link-calen'>4. Lịch báo cáo</a>
                     <ul><li>Lịch đã đăng ký: $calen</li></ul>

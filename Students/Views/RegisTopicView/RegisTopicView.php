@@ -17,6 +17,37 @@
             ?>
             <div class="content">
                 <?php include("../../Controllers/RegisTopicController.php"); ?>
+                <div class='modal hide modal-offers'>
+                    <div class='modal__inner modal-offers-inner'>
+                        <div class='modal__header modal-offers-header'>
+                            <p>Đề xuất đề tài</p>
+                            <i class='fas fa-times'></i>
+                        </div>
+                        <form method='POST' class='modal-offers-form'>
+                        <div class='modal__body'>
+                            <h2>Nhập thông tin đề tài</h2>
+                            
+                                <div class="form_field">
+                                    <input type="text" name="tenDT" class="form_input">
+                                    <label for="ten" class="form_label">Tên đề tài</label>
+                                </div>
+                                <div class="form_field">
+                                    <textarea name="GhiChu" rows="7" cols="70" class="form_input"></textarea>
+                                    <label for="ten" class="form_label">Ghi chú</label>
+                                </div>
+                                
+                                <div class="form_field">
+                                    <input type="number" name="STV" class="form_input" min='1'>
+                                    <label for="sl" class="form_label">Số thành viên</label>
+                                </div>
+                            
+                        </div>
+                        <div class='modal__footer modal-offers-footer'>
+                            <input type="submit" name='offers-topic' value="Đề xuất">
+                        </div>
+                        </form>
+                    </div>
+                </div>
             </div>
             <?php
                 include("../shared/footer.php");

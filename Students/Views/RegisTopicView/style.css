@@ -74,7 +74,9 @@ table tbody tr td {
 	position: relative;
 	margin: 130px auto;
 }
-
+.modal-offers-inner{
+	margin: 50px auto;
+}
 @keyframes showModal {
 	from {
 		top: -200px;
@@ -86,7 +88,7 @@ table tbody tr td {
 	}
 }
 
-.modal__header {
+.modal__header{
 	background-color: var(--green-color);
 	color: white;
 	display: flex;
@@ -112,8 +114,11 @@ table tbody tr td {
 	padding: 0 15px 15px 15px;
 	text-align: right;
 }
-
-.modal__footer button {
+.modal-offers-footer{
+	padding-bottom: 0px;
+}
+.modal__footer button,
+.modal__footer input[type=submit] {
 	outline: none;
 	border: none;
 	padding: 10px 20px;
@@ -121,8 +126,15 @@ table tbody tr td {
 	color: white;
 	border-radius: 6px;
 	cursor: pointer;
+	font-size: 16px;
+	border: 2px solid #2388D8;
 }
-
+.modal__footer button:hover,
+.modal__footer input[type=submit]:hover {
+	background-color: #fff;
+	color: #2388D8;
+	border: 2px solid #2388D8;
+}
 i {
 	cursor: pointer;
 	font-size: 18px;
@@ -147,4 +159,57 @@ i {
 .modal__form::-webkit-scrollbar-thumb{
     background-color: gray;
     border-radius: 2px;
+}
+#btn-offer{
+	width: 100px;
+    height: 35px;
+    float: right;
+    cursor: pointer;
+	margin: 5% 10% 20px 0px;
+	font-size: 15px;
+	font-family: Arial;
+}
+.icon-add{
+	font-size: 14px;
+}
+.modal-offers-form input[type=text],
+.modal-offers-form input[type=number],
+.modal-offers-form textarea{
+	width: 70%;
+	display: block;
+	margin: 20px auto;
+	font-size: 16px;
+	padding: 10px 20px 10px 20px;
+	border: 2px solid #aaa;	
+	border-radius: 15px;
+	box-sizing: border-box;
+	outline: none;
+	transform: 0.3s;
+    resize: none;
+}
+.modal-offers-form textarea{
+    margin-bottom: 0px;
+}
+.modal-offers-form input[type=text]:focus,
+.modal-offers-form input[type=number]:focus,
+.modal-offers-form textarea:focus {
+	border-color: dodgerblue;
+	box-shadow: 0 0 8px 0 dodgerblue;
+}
+
+.form_field{
+    position: relative;
+}
+.form_label{
+    position: absolute;
+    top: -9px;
+    margin: 0;
+    padding: 0 5px;
+    left: 20%;
+    background-color: #fff;
+    pointer-events: none;
+    color: #aaa;
+}
+.form_input:focus + .form_label{
+    color: dodgerblue;
 }

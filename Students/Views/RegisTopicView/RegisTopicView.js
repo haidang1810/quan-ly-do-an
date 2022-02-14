@@ -2,6 +2,25 @@ var remining = 0;
 var listSV = new Array();
 var Mssv = document.getElementById('currentUser').value;
 $(window).on('load', function(){
+	const modal = document.querySelector('.modal-offers')
+	const iconCloseModal = document.querySelector('.modal-offers-header i')
+	
+	function toggleModal() {
+		modal.classList.toggle('hide')
+		allChecked();
+	}
+	
+	iconCloseModal.addEventListener('click', function(){
+		toggleModal();
+	})
+	
+	modal.addEventListener('click', (e) => {
+		if (e.target == e.currentTarget){
+			toggleModal();
+		}
+	})
+})
+$(window).on('load', function(){
 	const modal = document.querySelector('.modal')
 	const iconCloseModal = document.querySelector('.modal__header i')
 	
@@ -35,6 +54,14 @@ function openModal(value){
 	}else
 		changeCheckbox(false);
 }
+
+
+$(window).on('load', function(){
+	$("#btn-offer").click(function(){
+		var modal = document.querySelector('.modal-offers')
+		modal.classList.toggle('hide')
+	})
+})
 function allChecked(){
 	var checkbox = document.getElementsByClassName("enable");
 	for(i=0;i<checkbox.length;i++){
@@ -87,6 +114,7 @@ for(i=0;i<form.length;i++){
         })
     })
 }
+
 $(window).on('load',function () {
 	$(".modal__button__submit").click(function(){
 		var maDT = document.getElementById("Id_DT").value;
