@@ -5,7 +5,7 @@
     if (session_id() === '')
         session_start();
     echo "<div>
-    <form method='POST'>";
+    <for method='POST'>";
     echo "<select name='HKNH' class='select_process dsHKNH'>";
     echo "<option value='-1'>Chọn lớp học kỳ năm học</option>";
     loadHKNH($conn);        
@@ -13,7 +13,7 @@
     echo "<select name='lopHP' class=' select_process dsLop'>";
     echo "<option value='-1'>Chọn lớp HP</option>";
     echo "</select>";
-    echo "<input type='submit' name='search' value='Tìm kiếm' class='button_search'>";
+    echo "<button name='search' type='button' class='button_search'>Tìm kiếm</button>";
     echo "<button class='btn_download_class' name='downloadClass'>";
     echo "<i class='fas fa-download'></i> Tải về";
     echo "</button>";
@@ -21,26 +21,8 @@
     </div>";
 
     echo "<div class='table'>";
-    echo "<table id='tablePro'>";
-    echo "<thead>";
-    echo "<tr>";
-    echo "<th>Tiêu đề</th>";
-    echo "<th>Ghi chú</th>";
-    echo "<th>Thời gian bắt đầu</th>";
-    echo "<th>Thời gian kết thúc</th>";
-    echo "<th>Số nhóm đã nộp</th>";
-    echo "<th>Thao tác</th>";
-    echo "</tr>";
-    echo "</thead>";
-    echo "<tbody>";
+    
 
-    if(isset($_POST['search'])){
-        if(isset($_POST['lopHP'])){
-            $MaLop = $_POST['lopHP'];
-            loadProcess($conn,$MaLop);
-        }
-        
-    }
 
     if(isset($_SESSION['LHP'])&&!isset($_POST['search'])
     &&!isset($_POST['addProcess'])&&!isset($_POST['id-delete'])&&!isset($_POST['editProcess']))
@@ -63,7 +45,6 @@
                                         addProcess($conn,$title,$note,$timeStart,$timeEnd,$class,1);
                                     else
                                         addProcess($conn,$title,$note,$timeStart,$timeEnd,$class,0);
-                                    loadProcess($conn,$class);
                                 }else echo "
                                 <script>
                                     Swal.fire({
@@ -106,7 +87,6 @@
     if(isset($_POST['id-delete'])){
         $id = $_POST['id-delete'];
         deleProcess($conn,$id);
-        loadProcess($conn,$_SESSION['LHP']);
     }
 
     if(isset($_POST['editProcess'])){
@@ -120,7 +100,6 @@
                         $timeStart=$_POST['ThoiGianBD'];
                         $timeEnd=$_POST['ThoiGianKT'];
                         editProcess($conn,$id,$title,$note,$timeStart,$timeEnd);
-                        loadProcess($conn,$_SESSION['LHP']);
                     }else echo "
                     <script>
                         Swal.fire({
@@ -159,8 +138,7 @@
         ";
     }
 
-    echo "</tbody>";
-    echo "</table>";
+    
     echo "</div>";
 
     

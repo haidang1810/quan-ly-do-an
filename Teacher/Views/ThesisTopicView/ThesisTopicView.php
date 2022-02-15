@@ -32,33 +32,11 @@
                             <div class="close">+</div>
                             <div class="tab_content">                                
                                 <form method="POST">
-                                    <input type="text" name="TenDeTai" placeholder="Tên đề tài">
-                                    <textarea name="GhiChu" rows="7" cols="70" placeholder="Ghi Chú"></textarea>
-                                    <div class="block_select_Lop">
-                                        <select name="LopLV" class='select_AddTopic selectAdd_Lop'>
-                                            <?php
-                                                if (session_id() === '')
-                                                    session_start();
-                                                if(isset($_SESSION['login'])){
-                                                    $data = $_SESSION['login'];
-                                                }
-                                                $findND = "SELECT MaGV FROM giangvien WHERE TaiKhoan='".$data."'";
-                                                $resultND = $conn->query($findND);
-                                                if ($resultND->num_rows > 0) {
-                                                    $rowND = $resultND->fetch_assoc();
-                                                    $findLop = "SELECT * FROM lopluanvan WHERE MaGV='".$rowND['MaGV']."'";
-                                                    $resultLop = $conn->query($findLop);
-                                                    if($resultLop->num_rows > 0){
-                                                        while($rowLop = $resultLop->fetch_assoc()){
-                                                            echo "<option value='".$rowLop['MaLopLV']."'>".$rowLop['MaLopLV']." ".$rowLop['TenLop']."</option>";                                            
-                                                        }
-                                                    }
-                                                }
-                                            ?>
-                                        </select>
-                                    </div>
+                                    <input type="text" class="TenDeTai" placeholder="Tên đề tài">
+                                    <textarea class="GhiChu" rows="7" cols="70" placeholder="Ghi Chú"></textarea>
                                     <div class="block_select_SV">
                                     <select name="Mssv" class='select_AddTopic selectAdd_Mssv'>
+                                        <option value='-1'>Chọn sinh viên</option>
                                         <?php
                                             $findSV = "SELECT * FROM sinhvien";
                                             $resultSV = $conn->query($findSV);
@@ -70,7 +48,7 @@
                                         ?>
                                     </select>
                                     </div>
-                                    <input type="submit" value="Thêm đề tài" name="addTopic">
+                                    <button type='button' class="btn-add-topic">Thêm đề tài</button>
                                 </form>
                             </div>
                             <div class="tab_content">
@@ -116,20 +94,7 @@
                                 <input type="hidden" id="editMaDT" name="MaDT">
                                 <input type="text" id="editTen" name="TenDeTai" placeholder="Tên đề tài">
                                 <textarea name="GhiChu" id="editGhiChu" rows="7" cols="70" placeholder="Ghi Chú"></textarea>
-                                <div class="block_select_SV">
-                                    <select name="Mssv" id="editMssv" class='select_AddTopic selectAdd_Mssv'>
-                                        <?php
-                                            $findSVa = "SELECT * FROM sinhvien";
-                                            $resultSVa = $conn->query($findSVa);
-                                            if($resultSVa->num_rows > 0){
-                                                while($rowSVa = $resultSVa->fetch_assoc()){
-                                                    echo "<option value='".$rowSVa['Mssv']."'>".$rowSVa['Mssv']." ".$rowSVa['HoTen']."</option>";                                            
-                                                }
-                                            }
-                                        ?>
-                                    </select>
-                                </div>
-                                <input type="submit" value="cập nhật đề tài" name="editTopic">
+                                <button type='button' class="btn-edit-topic">Cập nhật</button>
                             </form>
                         </div>
                     </div>
@@ -163,11 +128,6 @@
         <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
         <script src="../../../public/chosen/chosen.jquery.js"></script>
         <script src="../../../public/chosen/chosen.jquery.min.js"></script>
-        <script>
-            $('#tableTopic').DataTable({
-                "lengthMenu": [ 5, 10, 15, 20, 25, 30, 40, 50 ]            
-            });
-        </script>
         <script>
             $(".dsHKNH").chosen({
                 allow_single_deselect: true,

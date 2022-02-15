@@ -10,11 +10,23 @@
             }
         }
     }
-    function loadTopic($conn,$MaLop){
-        $_SESSION['LLV'] = $MaLop;
+    if(isset($_POST['search'])){
+        include("../../public/config.php");
+        global $conn;
+        $MaLop = $_POST['search'];
         $findDT = "SELECT * FROM detailuanvan WHERE MaLopLV='".$MaLop."'";
         $resultDT = $conn->query($findDT);
         if ($resultDT->num_rows > 0){
+            echo "<table id='tableTopic'>";
+            echo "<thead>";
+            echo "<tr>";
+            echo "<th style='min-width:100px'>Tên đề tài</th>";
+            echo "<th>Ghi chú</th>";
+            echo "<th>Sinh viên thực hiện</th>";
+            echo "<th>Thao tác</th>";
+            echo "</tr>";
+            echo "</thead>";
+            echo "<tbody>";
             while($rowDT = $resultDT->fetch_assoc()){
                 echo "<tr>";
                 echo "<td>".$rowDT['Ten']."</td>";
@@ -43,19 +55,28 @@
                         echo"<td></td>";
                     }else{
                         echo "<td>";
-                        echo "<form method='POST' class='form-delete'>";
+                        echo "<form method='POST' >";
                         echo "<input type='hidden' value='".$rowDT['MaDT']."' name='input-delete'>";
                         echo "<button class='btn_topic btn_primary' id='".$rowDT['MaDT'].",".$rowDT['Ten'].",".$rowDT['GhiChu'].",".$rowDT['Mssv']."' type='button' onclick='showEditTopic(this.id)'><i class='fas fa-edit'></i></button>";  
-                        echo "<button class='btn_topic btn_danger' name='deleteTopic' type='submit'><i class='fas fa-trash-alt'></i></button>";
+                        echo "<button class='btn_topic btn_danger' id='".$rowDT['MaDT']."' type='button'><i class='fas fa-trash-alt'></i></button>";
                         echo "</form>";
                         echo "</td>";
                     }
                 }
                 echo "</tr>";
             }
+            echo "</tbody>";
+            echo "</table>";
         }
     }
-    function addToppic($conn,$maLop,$ten,$ghiChu,$mssv){
+    
+    if(isset($_POST['add'])){
+        include("../../public/config.php");
+        global $conn;
+        $maLop = $_POST['maLop'];
+        $ten = $_POST['tenDT'];
+        $ghiChu =$_POST['ghiChu'];
+        $mssv = $_POST['mssv'];
         $findClass = "SELECT Id_hknh FROM lopluanvan WHERE MaLopLV='".$maLop."'";
         $resultClass = $conn->query($findClass);
         if($resultClass->num_rows > 0){
@@ -64,15 +85,7 @@
             $resultHK = $conn->query($checkHK);
             $rowHK = $resultHK->fetch_assoc();
             if($rowHK['TrangThai']!=1){
-                echo "
-                <script>
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Lỗi...',
-                        text: 'Học kỳ đã kết thúc!'
-                    })
-                </script>
-                ";
+                echo 2;
             }else{
                 $findSVL = "SELECT * FROM sinhvien_luanvan WHERE Mssv='".$mssv."' AND MaLopLV='".$maLop."'";
                 $resultSVL = $conn->query($findSVL);
@@ -83,37 +96,12 @@
                         $sql = "INSERT INTO detailuanvan(MaLopLV,Ten,GhiChu,Mssv) VALUE('".
                         $maLop."','".$ten."','".$ghiChu."','".$mssv."')";
                         if(mysqli_query($conn, $sql)){ 
-                            echo"
-                            <script>
-                                Swal.fire(
-                                    'Đã thêm!',
-                                    'Bạn đã thêm đề tài thành công.',
-                                    'success'
-                                )
-                            </script>
-                            ";
+                            echo 1;
                         } else{
                             echo"<script type='text/javascript'> alert('Lỗi: ".mysqli_error($conn)."')</script>";
                         }
-                    }else echo "
-                    <script>
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Lỗi...',
-                            text: 'Sinh viên đã có đề tài!'
-                        })
-                    </script>
-                    ";
-                }else 
-                    echo "
-                        <script>
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Lỗi...',
-                                text: 'Sinh viên Không học lớp ".$maLop."!'
-                            })
-                        </script>
-                        ";
+                    }else echo 3;
+                }
             }
         }
     }
@@ -187,6 +175,9 @@
                             'Bạn đã thêm thành công ".$success." đề tài.',
                             'success'
                         )
+                        setTimeout(() => {
+                            window.location.href = window.location.href; 
+                        }, 1500);
                     </script>
                 ";
                 else
@@ -198,59 +189,46 @@
                             text: 'Bạn đã thêm thành công ".$success." đề tài.',
                             footer: 'Các hàng bị lỗi: ".$error."'
                         })
+                        setTimeout(() => {
+                            window.location.href = window.location.href; 
+                        }, 1500);
                     </script>
                 ";
             }
         }
     }
-    function deleTopic($MaDT,$conn){
+    //function deleTopic($MaDT,$conn)
+    if(isset($_POST['delete'])){
+        include("../../public/config.php");
+        global $conn;
+        $MaDT = $_POST['maDT'];
         $findDK = "SELECT * FROM detailuanvan WHERE MaDT='".$MaDT."'";
         $resultDK = $conn->query($findDK);
         if ($resultDK->num_rows > 0){
             $deleTopic = "DELETE FROM detailuanvan WHERE MaDT='".$MaDT."'";
             if(mysqli_query($conn, $deleTopic)){  
-                echo"
-                    <script>
-                        Swal.fire(
-                            'Đã xoá!',
-                            'Bạn đã xoá đề tài thành công.',
-                            'success'
-                        )
-                    </script>
-                    ";     
+                echo 1;     
             } else{
-                echo"<script type='text/javascript'> alert('".mysqli_error($conn)."')</script>";
+                echo mysqli_error($conn);
             }
         }
-        else
-        echo "
-        <script>
-            Swal.fire({
-                icon: 'error',
-                title: 'Lỗi...',
-                text: 'Đề tài không tồn tại!'
-            })
-        </script>
-        ";
     }
 
-    function editTopic($maDT,$ten, $ghiChu, $mssv,$conn){
+    
+    if(isset($_POST['edit'])){
+        include("../../public/config.php");
+        global $conn;
+        $maDT = $_POST['maDT'];
+        $ten = $_POST['tenDT'];
+        $ghiChu = $_POST['ghiChu'];
         $findTopic = "SELECT * FROM detailuanvan WHERE MaDT='".$maDT."'";
         $resultTopic = $conn->query($findTopic);
         if($resultTopic->num_rows > 0){
-            $sqlEdit = "UPDATE detailuanvan SET Ten='".$ten."', GhiChu='".$ghiChu."', Mssv='".$mssv."' WHERE MaDT='".$maDT."'";
+            $sqlEdit = "UPDATE detailuanvan SET Ten='".$ten."', GhiChu='".$ghiChu."' WHERE MaDT='".$maDT."'";
             if(mysqli_query($conn, $sqlEdit))
-                echo"
-                <script>
-                    Swal.fire(
-                        'Đã cập nhật!',
-                        'Bạn đã cập nhật đề tài thành công.',
-                        'success'
-                    )
-                </script>
-                ";
+                echo 1;
             else
-                echo"<script type='text/javascript'> alert('".mysqli_error($conn)."')</script>";
+                echo mysqli_error($conn);
         }    
     }
 

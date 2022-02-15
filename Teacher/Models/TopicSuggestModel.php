@@ -10,10 +10,25 @@
             }
         }
     }
-    function loadTopicSuggest($conn,$MaLop){
+    if(isset($_POST['search'])){
+        include("../../public/config.php");
+        global $conn;
+        $MaLop = $_POST['search'];
         $findMa = "SELECT * FROM detaidexuat WHERE MaLopHP='".$MaLop."' AND TrangThai=0 GROUP BY Ma";
         $resultMa = $conn->query($findMa);
         if ($resultMa->num_rows > 0){
+            echo "<table id='tableTopic'>";
+            echo "<thead>";
+            echo "<tr>";
+            echo "<th>id</th>";
+            echo "<th style='min-width:100px'>Tên đề tài</th>";
+            echo "<th>Ghi chú</th>";
+            echo "<th>Sinh viên đề xuất</th>";
+            echo "<th>Số thành viên</th>";
+            echo "<th>Duyệt</th>";
+            echo "</tr>";
+            echo "</thead>";
+            echo "<tbody>";
             while($rowMa = $resultMa->fetch_assoc()){
                 echo "<tr>";
                 echo "<td>".$rowMa['Ma']."</td>";
@@ -24,22 +39,29 @@
                 
                 echo "<td>";
                 echo "<form method='POST' class='form-suggest'>";
-                echo "<input type='hidden' value='".$rowMa['Ma']."' name='MaDX-suggest'>";
-                echo "<input type='hidden' value='".$rowMa['Ten']."' name='TenDT'>";
-                echo "<input type='hidden' value='".$rowMa['GhiChu']."' name='GhiChu'>";
-                echo "<input type='hidden' value='".$MaLop."' name='MaLop'>";
-                echo "<button class='btn_topic btn_suggest' name='suggest' type='submit'><i class='far fa-check-square'></i></button>";
+                echo "<input type='hidden' value='".$rowMa['Ma']."' class='MaDX-suggest'>";
+                echo "<input type='hidden' value='".$rowMa['Ten']."' class='TenDT'>";
+                echo "<input type='hidden' value='".$rowMa['GhiChu']."' class='GhiChu'>";
+                echo "<input type='hidden' value='".$MaLop."' class='MaLop'>";
+                echo "<button class='btn_topic btn_suggest' type='button'><i class='far fa-check-square'></i></button>";
                 echo "</form>";
                 echo "<form method='POST' class='form-refuse'>";
-                echo "<input type='hidden' value='".$rowMa['Ma']."' name='MaDX-refuse'>";
-                echo "<button class='btn_topic btn_refuse' name='refuse' type='submit'><i class='fas fa-times'></i></button>";
+                echo "<button class='btn_topic btn_refuse' id='".$rowMa['Ma']."' type='button'><i class='fas fa-times'></i></button>";
                 echo "</form>";
                 echo "</td>";
                 echo "</tr>";
             }
+            echo "</tbody>";
+            echo "</table>";
         }
     }
-    function suggestTopic($conn,$Ma,$Ten,$GhiChu,$MaLop){
+    if(isset($_POST['suggest'])){
+        include("../../public/config.php");
+        global $conn;
+        $Ma = $_POST['maDT'];
+        $Ten = $_POST['tenDT'];
+        $GhiChu = $_POST['ghiChu'];
+        $MaLop = $_POST['maLop'];
         $date = new DateTime();
         $date->setTimeZone(new DateTimeZone("Asia/Ho_Chi_Minh"));
         $get_datetime = $date->format('Y.m.d H:i:s');    
@@ -61,48 +83,27 @@
                         if(mysqli_query($conn, $status)){
                             $register = "INSERT INTO dangkydetai Value('".$rowTopic['MaDeTai']."','".$rowSug['Mssv']."','".$get_datetime."')";
                             if(mysqli_query($conn, $register))
-                                echo"
-                                <script>
-                                    Swal.fire(
-                                        'Đã lưu!',
-                                        'Bạn đã duyệt đề tài thành công.',
-                                        'success'
-                                    )
-                                </script>
-                                ";
-                        }else echo"<script type='text/javascript'> alert('".mysqli_error($conn)."')</script>";
+                                echo 1;
+                        }else echo mysqli_error($conn);
                     }
-                }else echo"<script type='text/javascript'> alert('".mysqli_error($conn)."')</script>";
+                }else echo mysqli_error($conn);
             }
         }
     }
 
-    function refuse($conn,$ma){
+    if(isset($_POST['refuse'])){
+        include("../../public/config.php");
+        global $conn;
+        $ma = $_POST['id_refuse'];
         $findSug = "SELECT * FROM detaidexuat WHERE Ma=".$ma;
         $resultSug = $conn->query($findSug);
         if($resultSug->num_rows > 0){
             $status = "UPDATE detaidexuat SET TrangThai=2 WHERE Ma='".$ma."'";
             if(mysqli_query($conn, $status))
-            echo"
-            <script>
-                Swal.fire(
-                    'Đã lưu!',
-                    'Bạn đã từ chối đề tài.',
-                    'success'
-                )
-            </script>
-            ";
+                echo 1;
             else
-                echo"<script type='text/javascript'> alert('Lỗi ".mysqli_error($conn)."')</script>";
-        }else echo"
-        <script>
-            Swal.fire(
-                'Lỗi!',
-                'Đề tài không tồn tại.',
-                'error'
-            )
-        </script>
-        ";
+                mysqli_error($conn);
+        }
     }
     if(isset($_POST['id'])){
         include("../../public/config.php");

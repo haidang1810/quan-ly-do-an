@@ -26,6 +26,9 @@
     font-size: 22px;
     text-decoration: none;
 }
+a, a:visited, a:hover, a:active {
+    color: inherit;
+}
 .title-box:hover,
 .link-process:hover{
     text-decoration: underline;

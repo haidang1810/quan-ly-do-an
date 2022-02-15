@@ -71,6 +71,173 @@ $(document).ready(function(){
     })
 })
 
+$(window).on('load',function(){
+    $(".button_search").click(function(){
+        let maLop = $(".dsLop").val();
+        if(maLop!=-1){
+            search(maLop)
+        }
+        
+    })
+    
+})
+function search(maLop){
+    $.post("../../Models/ProcessModel.php",{
+        'search': maLop
+    },function(data){
+        $(".table").html(data);
+        $('#tablePro').DataTable({
+            "lengthMenu": [ 5, 10, 15, 20, 25, 30, 40, 50 ]
+        });
+    })
+}
+$(".btn-add-process").click(function(){
+    let maLop = $(".dsLop").val();
+    let tieuDe = $(".TieuDe").val();
+    let ghiChu = $(".GhiChu").val();
+    let thoiGianBD = $(".ThoiGianBD").val();
+    let thoiGianKT = $(".ThoiGianKT").val();
+    let cbSP = document.getElementById("cbSP");
+    let sanPham = 0;
+    if(cbSP.checked)
+        sanPham = 1;
+    if(tieuDe==""){
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi...',
+            text: 'Chưa nhập tiêu đề!'
+        })
+        return;
+    }
+    if(maLop==-1){
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi...',
+            text: 'Chưa chọn lớp học phần!'
+        })
+        return;
+    }
+    if(thoiGianBD==""){
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi...',
+            text: 'Chưa thời gian bắt đầu!'
+        })
+        return;
+    }
+    if(thoiGianKT==""){
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi...',
+            text: 'Chưa thời gian kết thúc!'
+        })
+        return;
+    }
+    $.post("../../Models/ProcessModel.php",{
+        'add': "addProcess",
+        'tieuDe': tieuDe,
+        'thoiGianBD': thoiGianBD,
+        'thoiGianKT': thoiGianKT,
+        'maLop': maLop,
+        'ghiChu': ghiChu,
+        'sanPham': sanPham
+    },function(data){
+        if(data==1){
+            Swal.fire(
+                'Đã thêm!',
+                'Bạn đã thêm tiến độ thành công.',
+                'success'
+            )
+            search(maLop);
+            document.querySelector('.modal').style.visibility = 'hidden';
+            document.querySelector('.modal').style.opacity = '0';
+        }else if(data==2){
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi...',
+                text: 'Học kỳ đã kết thúc!'
+            })
+        }else if(data==3){
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi...',
+                text: 'Lớp đã có địa chỉ nộp sản phẩm!'
+            })
+        }else{
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi...',
+                text: data
+            })
+        }
+    })
+})
+$(".btn-edit-process").click(function(){
+    let id = $("#editID").val();
+    let maLop = $(".dsLop").val();
+    let tieuDe = $("#editTitle").val();
+    let ghiChu = $(".GhiChu").val();
+    let thoiGianBD = $("#editBD").val();
+    let thoiGianKT = $("#editBD").val();
+    if(tieuDe==""){
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi...',
+            text: 'Chưa nhập tiêu đề!'
+        })
+        return;
+    }
+    if(maLop==-1){
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi...',
+            text: 'Chưa chọn lớp học phần!'
+        })
+        return;
+    }
+    if(thoiGianBD==""){
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi...',
+            text: 'Chưa thời gian bắt đầu!'
+        })
+        return;
+    }
+    if(thoiGianKT==""){
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi...',
+            text: 'Chưa thời gian kết thúc!'
+        })
+        return;
+    }
+    $.post("../../Models/ProcessModel.php",{
+        'edit': "addProcess",
+        'id': id,
+        'tieuDe': tieuDe,
+        'thoiGianBD': thoiGianBD,
+        'thoiGianKT': thoiGianKT,
+        'maLop': maLop,
+        'ghiChu': ghiChu,
+    },function(data){
+        if(data==1){
+            Swal.fire(
+                'Đã cập nhật!',
+                'Bạn đã cập nhật tiến độ thành công.',
+                'success'
+            )
+            search(maLop);
+            document.querySelector('.modal_edit').style.visibility = 'hidden';
+            document.querySelector('.modal_edit').style.opacity = '0';
+        }else{
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi...',
+                text: data
+            })
+        }
+    })
+})
 var form = document.getElementsByClassName("form-delete");
 for(i=0;i<form.length;i++){
     form[i].addEventListener('submit', function(e){

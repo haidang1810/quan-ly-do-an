@@ -1,6 +1,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        <title>Đề tài đề xuất</title>
         <link rel="stylesheet" href="style.css">
         <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
         <script src="../../../public/sweetalert2/node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
@@ -27,11 +28,6 @@
         <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
         <script src="../../../public/chosen/chosen.jquery.js"></script>
         <script src="../../../public/chosen/chosen.jquery.min.js"></script>
-        <script>
-            $('#tableTopic').DataTable({
-                "lengthMenu": [ 5, 10, 15, 20, 25, 30, 40, 50 ]            
-            });
-        </script>
         <script>
             $(".dsHKNH").chosen({
                 allow_single_deselect: true,

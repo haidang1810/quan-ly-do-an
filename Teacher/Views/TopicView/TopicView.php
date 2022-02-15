@@ -32,31 +32,10 @@
                             <div class="close">+</div>
                             <div class="tab_content">                                
                                 <form method="POST">
-                                    <input type="text" name="TenDeTai" placeholder="Tên đề tài">
-                                    <input type="number" name="SoThanVien" placeholder="Số thành viên">                                
-                                    <select name="LopHP" class='select_AddTopic'>
-                                        <?php
-                                            if (session_id() === '')
-                                                session_start();
-                                            if(isset($_SESSION['login'])){
-                                                $data = $_SESSION['login'];
-                                            }
-                                            $findND = "SELECT MaGV FROM giangvien WHERE TaiKhoan='".$data."'";
-                                            $resultND = $conn->query($findND);
-                                            if ($resultND->num_rows > 0) {
-                                                $rowND = $resultND->fetch_assoc();
-                                                $findLop = "SELECT * FROM lophocphan WHERE MaGV='".$rowND['MaGV']."'";
-                                                $resultLop = $conn->query($findLop);
-                                                if($resultLop->num_rows > 0){
-                                                    while($rowLop = $resultLop->fetch_assoc()){
-                                                        echo "<option value='".$rowLop['MaLopHP']."'>".$rowLop['MaLopHP']." ".$rowLop['TenLop']."</option>";                                            
-                                                    }
-                                                }
-                                            }
-                                        ?>
-                                    </select>
-                                    <textarea name="GhiChu" rows="7" cols="70" placeholder="Ghi Chú"></textarea>
-                                    <input type="submit" value="Thêm đề tài" name="addTopic">
+                                    <input type="text" class="TenDeTai" placeholder="Tên đề tài">
+                                    <input type="number" class="SoThanVien" placeholder="Số thành viên">
+                                    <textarea class="GhiChu" rows="7" cols="70" placeholder="Ghi Chú"></textarea>
+                                    <button type='button' class="btn-add-topic">Thêm đề tài</button>
                                 </form>
                             </div>
                             <div class="tab_content">
@@ -103,7 +82,7 @@
                                 <input type="number" id="AmountEdit" name="SoThanVien" placeholder="Số thành viên">  
                                 <input type="hidden" id="idEdit" name="MaDeTai">     
                                 <textarea name="GhiChu" id ="noteEdit" rows="9" cols="70" placeholder="Ghi Chú"></textarea>                        
-                                <input type="submit" value="Cập nhật đề tài" name="editTopic">
+                                <button type='button' class="btn-edit-topic">Cập nhật đề tài</button>
                             </form>
                         </div>
                     </div>
@@ -118,10 +97,6 @@
         <script src="../../../public/chosen/chosen.jquery.js"></script>
         <script src="../../../public/chosen/chosen.jquery.min.js"></script>
         <script>
-        $('#tableTopic').DataTable({
-            "lengthMenu": [ 5, 10, 15, 20, 25, 30, 40, 50 ],
-            
-        });
         $(".topic_select").chosen({
             allow_single_deselect: true,
             no_results_text: "Không tìm thấy kết quả :"
@@ -129,6 +104,7 @@
         $(".select_class").chosen({
             allow_single_deselect: true,
             no_results_text: "Không tìm thấy kết quả :",
+            width: "20%"
         });
         $(".select_AddTopic").chosen({
             allow_single_deselect: true,
