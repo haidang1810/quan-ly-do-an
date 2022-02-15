@@ -69,8 +69,7 @@ ob_start();
                         onclick='showEditProcess(this.id)' type='button'>";
                         echo "<i class='fas fa-edit'></i>";
                         echo "</button>";
-                        echo "<input type='hidden' value='".$row['Id']."'  name='id-delete'>";
-                        echo "<button class='btn_process btn_danger' name='deleteProcess' type='submit'>";
+                        echo "<button class='btn_process btn_danger' id='".$row['Id']."' name='deleteProcess' type='button'>";
                         echo "<i class='fas fa-trash-alt'></i>";
                         echo "</button>";
                         echo "<button class='btn_process btn_detail'  name='detailProcess' id='".
@@ -137,38 +136,24 @@ ob_start();
         }
     }
 
-    function deleProcess($conn,$id){
-        
+    if(isset($_POST['delete'])){
+        include("../../public/config.php");
+        global $conn;
+        $id = $_POST['maTD'];
         $findTitle = "SELECT * FROM nopbai WHERE Id='".$id."'";
         $result = $conn->query($findTitle);
         $row = $result->fetch_assoc();
-        $path = "../../../public/item/".$row['MaLopHP']."/".$row['TieuDe']."/";
+        $path = "../../public/item/".$row['MaLopHP']."/".$row['TieuDe']."/";
         $findDetail = "SELECT * FROM nopbaichitiet WHERE Ma='".$id."'";
         $resultDetail = $conn->query($findDetail);
         if($resultDetail->num_rows <= 0){
             $sql = "DELETE FROM nopbai WHERE Id='".$id."'";
             if(mysqli_query($conn, $sql)){  
-                echo"
-                <script>
-                    Swal.fire(
-                        'Đã xoá!',
-                        'Bạn đã xoá tiến độ thành công.',
-                        'success'
-                    )
-                </script>
-                ";  
+                echo 1;
                 rmdir($path);
             } else
-                echo"<script type='text/javascript'> alert('Lỗi ".mysqli_error($conn)."')</script>";
-        }else echo "
-        <script>
-            Swal.fire({
-                icon: 'error',
-                title: 'Lỗi...',
-                text: 'Tiến độ đã có sinh viên nộp bài không thể xoá!'
-            })
-        </script>
-        ";
+                echo mysqli_error($conn);
+        }else 2;
         
     }
 
@@ -185,8 +170,8 @@ ob_start();
         $resultPro = $conn->query($findPro);
         if($resultPro->num_rows > 0){
             $row = $resultPro->fetch_assoc();
-            $path = "../../../public/item/".$row['MaLopHP']."/".$row['TieuDe'];
-            $newPath = "../../../public/item/".$row['MaLopHP']."/".$title;
+            $path = "../../public/item/".$row['MaLopHP']."/".$row['TieuDe'];
+            $newPath = "../../public/item/".$row['MaLopHP']."/".$title;
             $sql = "UPDATE nopbai SET TieuDe='".$title."', GhiChu='".$note."',
             ThoiGianBatDau='".$timeStart."', ThoiGianKetThuc='".$timeEnd."' WHERE Id='".$id."'";
             if(mysqli_query($conn, $sql)){  

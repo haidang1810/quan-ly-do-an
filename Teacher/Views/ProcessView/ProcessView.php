@@ -45,7 +45,7 @@
                                     <label for="cbSP" class="label-checkbox">Nộp sản phầm cuối kỳ</label>
                                 </div>
                                 
-                                <button type='button' class="btn-add-process">Thêm đề tài</button>
+                                <button type='button' class="btn-add-process">Thêm tiến độ</button>
                             </form>
                         </div>
                     </div>

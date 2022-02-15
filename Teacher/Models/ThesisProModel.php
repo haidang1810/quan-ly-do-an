@@ -10,11 +10,25 @@
             }
         }
     }
-    function loadProcess($conn,$MaLop){
-        $_SESSION['LLV'] = $MaLop;
+    if(isset($_POST['search'])){
+        include("../../public/config.php");
+        global $conn;
+        $MaLop = $_POST['search'];
         $sql = "SELECT * FROM nopbailuanvan WHERE MaLopLV='".$MaLop."'";
         $result = $conn->query($sql);
         if($result->num_rows > 0){
+            echo "<table id='tablePro'>";
+            echo "<thead>";
+            echo "<tr>";
+            echo "<th>Tiêu đề</th>";
+            echo "<th>Ghi chú</th>";
+            echo "<th>Thời gian bắt đầu</th>";
+            echo "<th>Thời gian kết thúc</th>";
+            echo "<th>Số nhóm đã nộp</th>";
+            echo "<th>Thao tác</th>";
+            echo "</tr>";
+            echo "</thead>";
+            echo "<tbody>";
             while($row = $result->fetch_assoc()){
                 echo "<tr>";
                 echo "<td>".$row['TieuDe']."</td>";
@@ -53,8 +67,7 @@
                         onclick='showEditProcess(this.id)' type='button'>";
                         echo "<i class='fas fa-edit'></i>";
                         echo "</button>";
-                        echo "<input type='hidden' value='".$row['Id']."'  name='id-delete'>";
-                        echo "<button class='btn_process btn_danger' name='deleteProcess' type='submit'>";
+                        echo "<button class='btn_process btn_danger' id='".$row['Id']."' name='deleteProcess' type='button'>";
                         echo "<i class='fas fa-trash-alt'></i>";
                         echo "<button class='btn_process btn_detail'  name='detailProcess' id='".
                         $row['Id'].",".$row['TieuDe']."' type='button' onclick='showDetail(this.id)'>";
@@ -66,10 +79,20 @@
                 echo "</td>";
                 echo "</tr>";
             }
+            echo "</tbody>";
+            echo "</table>";
         }
         
     }
-    function addProcess($conn,$title,$note,$timeStart,$timeEnd,$class,$isFinal){
+    if(isset($_POST['add'])){
+        include("../../public/config.php");
+        global $conn;
+        $title = $_POST['tieuDe'];
+        $note = $_POST['ghiChu'];
+        $timeStart =$_POST['thoiGianBD'];
+        $timeEnd = $_POST['thoiGianKT'];
+        $class = $_POST['maLop'];
+        $isFinal = $_POST['sanPham'];
         $findClass = "SELECT Id_hknh FROM lopluanvan WHERE MaLopLV='".$class."'";
         $resultClass = $conn->query($findClass);
         if($resultClass->num_rows > 0){
@@ -78,45 +101,21 @@
             $resultHK = $conn->query($checkHK);
             $rowHK = $resultHK->fetch_assoc();
             if($rowHK['TrangThai']!=1){
-                echo "
-                <script>
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Lỗi...',
-                        text: 'Học kỳ đã kết thúc!'
-                    })
-                </script>
-                ";
+                echo 2;
             }else{
                 if($isFinal==1){
                     $findFinal = "SELECT * FROM nopbailuanvan WHERE MaLopLV='".$class."' AND Loai=1";
                     $resultFinal = $conn->query($findFinal);
                     if ($resultFinal->num_rows > 0){
-                        echo "
-                        <script>
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Lỗi...',
-                                text: 'Lớp đã có địa chỉ nộp sản phẩm!'
-                            })
-                        </script>
-                        ";
+                        echo 3;
                         return;
                     }
                 }
                 $sql = "INSERT INTO nopbailuanvan(TieuDe,GhiChu,ThoiGianBD,ThoiGianKT,Loai,MaLopLV) VALUE('".$title."','".$note."','".$timeStart."','".$timeEnd."',".$isFinal.",'".$class."')";
                 if(mysqli_query($conn, $sql)){ 
-                    echo"
-                        <script>
-                            Swal.fire(
-                                'Đã thêm!',
-                                'Thêm tiến độ thành công.',
-                                'success'
-                            )
-                        </script>
-                        ";
-                    $pathClass = "../../../public/item/".$class;
-                    $pathTitle = "../../../public/item/".$class."/".$title;
+                    echo 1;
+                    $pathClass = "../../public/item/".$class;
+                    $pathTitle = "../../public/item/".$class."/".$title;
                     if(file_exists($pathClass)){                
                         if(!file_exists($pathTitle)){
                             mkdir($pathTitle, 7);
@@ -127,78 +126,56 @@
                     }
                     
                 } else{
-                    echo"<script type='text/javascript'> alert('Lỗi ".mysqli_error($conn)." vui lòng thử lại')</script>";
+                    mysqli_error($conn);
                 }
             }
         }
         
     }
 
-    function deleProcess($conn,$id){
+    if(isset($_POST['delete'])){
+        include("../../public/config.php");
+        global $conn;
+        $id = $_POST['maTD'];
         $findTitle = "SELECT * FROM nopbailuanvan WHERE Id='".$id."'";
         $result = $conn->query($findTitle);
         $row = $result->fetch_assoc();
-        $path = "../../../public/item/".$row['MaLopLV']."/".$row['TieuDe']."/";
+        $path = "../../public/item/".$row['MaLopLV']."/".$row['TieuDe']."/";
         $findDetail = "SELECT * FROM nopluanvanct WHERE Ma='".$id."'";
         $resultDetail = $conn->query($findDetail);
         if($resultDetail->num_rows <= 0){
             $sql = "DELETE FROM nopbailuanvan WHERE Id='".$id."'";
             if(mysqli_query($conn, $sql)){  
-                echo"
-                    <script>
-                        Swal.fire(
-                            'Đã xoá!',
-                            'Bạn đã xoá tiến độ thành công.',
-                            'success'
-                        )
-                    </script>
-                    ";  
+                echo 1;  
                 rmdir($path);      
             } else
-                echo"<script type='text/javascript'> alert('Lỗi ".mysqli_error($conn)."')</script>";
-        }else echo "
-        <script>
-            Swal.fire({
-                icon: 'error',
-                title: 'Lỗi...',
-                text: 'Tiến độ đã có sinh viên nộp bài không thể xoá!'
-            })
-        </script>
-        ";
+                echo mysqli_error($conn);
+        }else echo 2;
     }
 
-    function editProcess($conn,$id,$title,$note,$timeStart,$timeEnd){
+    if(isset($_POST['edit'])){
+        include("../../public/config.php");
+        global $conn;
+        $id = $_POST['id'];
+        $title = $_POST['tieuDe'];
+        $note = $_POST['ghiChu'];
+        $timeStart = $_POST['thoiGianBD'];
+        $timeEnd = $_POST['thoiGianKT'];
         $findPro = "SELECT * FROM nopbailuanvan WHERE Id='".$id."'";
         $resultPro = $conn->query($findPro);
         if($resultPro->num_rows > 0){
             $row = $resultPro->fetch_assoc();
-            $path = "../../../public/item/".$row['MaLopLV']."/".$row['TieuDe'];
-            $newPath = "../../../public/item/".$row['MaLopLV']."/".$title;
+            $path = "../../public/item/".$row['MaLopLV']."/".$row['TieuDe'];
+            $newPath = "../../public/item/".$row['MaLopLV']."/".$title;
             $sql = "UPDATE nopbailuanvan SET TieuDe='".$title."', GhiChu='".$note."',
             ThoiGianBD='".$timeStart."', ThoiGianKT='".$timeEnd."' WHERE Id='".$id."'";
             if(mysqli_query($conn, $sql)){  
-                echo"
-                    <script>
-                        Swal.fire(
-                            'Đã cập nhật!',
-                            'Bạn đã cập nhật tiến độ thành công.',
-                            'success'
-                        )
-                    </script>
-                    ";  
+                echo 1;  
                 rename($path,$newPath);      
             } else{
-                echo"<script type='text/javascript'> alert('".mysqli_error($conn)."')</script>";
+                echo mysqli_error($conn);
             }
-        }else echo "
-            <script>
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Lỗi...',
-                    text: 'Tiến độ không tồn tại!'
-                })
-            </script>
-            ";
+        }
     }
 
     function loadDetailProcess($conn,$id){

@@ -89,6 +89,7 @@ function search(maLop){
         $('#tablePro').DataTable({
             "lengthMenu": [ 5, 10, 15, 20, 25, 30, 40, 50 ]
         });
+        submitDelete();
     })
 }
 $(".btn-add-process").click(function(){
@@ -176,7 +177,7 @@ $(".btn-edit-process").click(function(){
     let id = $("#editID").val();
     let maLop = $(".dsLop").val();
     let tieuDe = $("#editTitle").val();
-    let ghiChu = $(".GhiChu").val();
+    let ghiChu = $("#editNote").val();
     let thoiGianBD = $("#editBD").val();
     let thoiGianKT = $("#editBD").val();
     if(tieuDe==""){
@@ -238,22 +239,49 @@ $(".btn-edit-process").click(function(){
         }
     })
 })
-var form = document.getElementsByClassName("form-delete");
-for(i=0;i<form.length;i++){
-    form[i].addEventListener('submit', function(e){
-        e.preventDefault();    
-        Swal.fire({
-            title: 'Bạn có chắc muốn xoá?',
-            text: "Bạn sẽ không thể khôi phục dữ liệu đã xoá!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Vâng, hãy xoá!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                this.submit();            
-            }
+function submitDelete(){
+    var form = document.getElementsByClassName("btn_danger");
+    for(i=0;i<form.length;i++){
+        form[i].addEventListener('click', function(){
+            Swal.fire({
+                title: 'Bạn có chắc muốn xoá?',
+                text: "Bạn sẽ không thể khôi phục dữ liệu đã xoá!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Vâng, hãy xoá!',
+                cancelButtonText: 'Huỷ.'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let maLop = $(".dsLop").val();
+                    $.post("../../Models/ProcessModel.php",{
+                        'delete': 'deleTopic',
+                        'maTD': this.id
+                    },function(data){
+                        if(data==1){
+                            Swal.fire(
+                                'Đã xoá!',
+                                'Bạn đã xoá tiến độ thành công.',
+                                'success'
+                            )
+                            search(maLop);
+                        }else if(data==2){
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Lỗi...',
+                                text: 'Tiến độ đã có sinh viên nộp bài không thể xoá!'
+                            })
+                        }else{
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Lỗi...',
+                                text: data
+                            })
+                        }
+                    })
+                }
+            })
         })
-    })
+    }
 }

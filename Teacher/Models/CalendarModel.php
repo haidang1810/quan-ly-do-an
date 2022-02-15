@@ -11,11 +11,24 @@
         }
     }
 
-    function loadCalendar($conn,$MaHP){
-        $_SESSION['LHP'] = $MaHP;
-        $findCalen = "SELECT * FROM ngaybaocao WHERE MaLopHP='".$MaHP."'";
+    if(isset($_POST['search'])){
+        include("../../public/config.php");
+        global $conn;
+        $MaLop = $_POST['search'];
+        $findCalen = "SELECT * FROM ngaybaocao WHERE MaLopHP='".$MaLop."'";
         $resultCalen = $conn->query($findCalen);
         if($resultCalen->num_rows > 0){
+            echo "<table id='tableCalen'>";
+            echo "<thead>";
+            echo "<tr>";
+            echo "<th>Ngày báo cáo</th>";
+            echo "<th>Thời gian bắt đầu</th>";
+            echo "<th>Số nhóm báo cáo</th>";
+            echo "<th>Đề tài đã đăng ký</th>";
+            echo "<th>Thao tác</th>";
+            echo "</tr>";
+            echo "</thead>";
+            echo "<tbody>";
             while($rowCalen = $resultCalen->fetch_assoc()){
                 echo "<tr>";
                 $NgayBC = date("d/m/Y", strtotime($rowCalen['NgayBC']));
@@ -23,7 +36,7 @@
                 echo "<td>".$rowCalen['ThoiGianBatDau']."</td>";
                 echo "<td>".$rowCalen['SoNhomBC']."</td>";
                 $findSVHP = "SELECT * FROM sinhvien_hocphan WHERE"
-                ." MaLopHP='".$MaHP."' AND LichBaoCao='".$rowCalen['Id']."'";
+                ." MaLopHP='".$MaLop."' AND LichBaoCao='".$rowCalen['Id']."'";
                 $resultSVHP = $conn->query($findSVHP);    
                 if($resultSVHP->num_rows > 0){
                     echo "<td>";
@@ -65,7 +78,7 @@
                                                 
                     }   
                     echo "</td>";   
-                    $findClass = "SELECT Id_hknh FROM lophocphan WHERE MaLopHP='".$MaHP."'";
+                    $findClass = "SELECT Id_hknh FROM lophocphan WHERE MaLopHP='".$MaLop."'";
                     $resultClass = $conn->query($findClass);
                     if($resultClass->num_rows > 0){
                         $rowClass = $resultClass->fetch_assoc();
@@ -89,7 +102,7 @@
                     
                 }else{
                     echo "<td></td>";
-                    $findClass = "SELECT Id_hknh FROM lophocphan WHERE MaLopHP='".$MaHP."'";
+                    $findClass = "SELECT Id_hknh FROM lophocphan WHERE MaLopHP='".$MaLop."'";
                     $resultClass = $conn->query($findClass);
                     if($resultClass->num_rows > 0){
                         $rowClass = $resultClass->fetch_assoc();
@@ -106,8 +119,7 @@
                             .",".$rowCalen['SoNhomBC']."' type='button' onclick='showEditCalen(this.id)'>";
                             echo "<i class='fas fa-edit'></i>";
                             echo "</button>";
-                            echo "<input type='hidden' value='".$rowCalen['Id']."' name='id-delete'>";
-                            echo "<button class='btn_Calen btn_danger'  name='deleCalen' type='submit'>";
+                            echo "<button class='btn_Calen btn_danger' id='".$rowCalen['Id']."' name='deleCalen' type='button'>";
                             echo "<i class='fas fa-trash-alt'></i>";
                             echo "</button>";
                             echo "</form>";
@@ -118,10 +130,18 @@
                 }
                 echo "</tr>";
             }
+            echo "</tbody>";
+            echo "</table>";
         }
     }
 
-    function addCalen($conn,$dateReport,$timeStart,$Amount,$class){
+    if(isset($_POST['add'])){
+        include("../../public/config.php");
+        global $conn;
+        $dateReport = $_POST['ngayBC'];
+        $timeStart = $_POST['thoiGianBD'];
+        $Amount = $_POST['soNhom'];
+        $class = $_POST['maLop'];
         $findClass = "SELECT Id_hknh FROM lophocphan WHERE MaLopHP='".$class."'";
         $resultClass = $conn->query($findClass);
         if($resultClass->num_rows > 0){
@@ -130,92 +150,54 @@
             $resultHK = $conn->query($checkHK);
             $rowHK = $resultHK->fetch_assoc();
             if($rowHK['TrangThai']!=1){
-                echo "
-                <script>
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Lỗi...',
-                        text: 'Học kỳ đã kết thúc!'
-                    })
-                </script>
-                ";
+                echo 2;
             }else{
                 $sql = "INSERT INTO ngaybaocao(NgayBC,ThoiGianBatDau,SoNhomBC,MaLopHP)"
                 ."VALUE('".$dateReport."','".$timeStart."','".$Amount."','".$class."')";
                 if(mysqli_query($conn, $sql)){
-                    echo"
-                        <script>
-                            Swal.fire(
-                                'Đã thêm!',
-                                'Thêm lịch báo cáo thành công.',
-                                'success'
-                            )
-                        </script>
-                        ";
+                    echo 1;
                 } else{
-                    echo"<script type='text/javascript'> alert('Lỗi ".mysqli_error($conn)."')</script>";
+                    echo mysqli_error($conn);
                 }
             }
         }
         
     }
-    function deleCalen($conn, $id){
+
+    if(isset($_POST['delete'])){
+        include("../../public/config.php");
+        global $conn;
+        $id = $_POST['maLich'];
         $findCalen = "SELECT * FROM ngaybaocao WHERE Id='".$id."'";
         $resultCalen = $conn->query($findCalen);
         if($resultCalen->num_rows > 0){
             $sql = "DELETE FROM ngaybaocao WHERE Id='".$id."'";
             if(mysqli_query($conn, $sql)){
-                echo"
-                <script>
-                    Swal.fire(
-                        'Đã xoá!',
-                        'Xoá lịch báo cáo thành công.',
-                        'success'
-                    )
-                </script>
-                ";  
+                echo 1;  
             } else{
-                echo"<script type='text/javascript'> alert('Lỗi ".mysqli_error($conn)."')</script>";
+                mysqli_error($conn);
             }
-        }else echo "
-        <script>
-            Swal.fire({
-                icon: 'error',
-                title: 'Lỗi...',
-                text: 'Lịch báo cáo không tồn tại!'
-            })
-        </script>
-        ";
+        }
     }
 
-    function editCalen($conn,$id,$date,$time,$amount){
+    if(isset($_POST['edit'])){
+        include("../../public/config.php");
+        global $conn;
+        $id = $_POST['id'];
+        $date = $_POST['ngayBC'];
+        $time = $_POST['thoiGianBD'];
+        $amount = $_POST['soNhom'];
         $findCalen = "SELECT * FROM ngaybaocao WHERE Id='".$id."'";
         $resultCalen = $conn->query($findCalen);
         if($resultCalen->num_rows > 0){
             $sql = "UPDATE ngaybaocao SET NgayBC='".$date."', ThoiGianBatDau='".$time."', SoNhomBC='".
             $amount."' WHERE Id='".$id."'";
             if(mysqli_query($conn, $sql)){
-                echo"
-                    <script>
-                        Swal.fire(
-                            'Đã cập nhật!',
-                            'Cập nhật lịch báo cáo thành công.',
-                            'success'
-                        )
-                    </script>
-                    ";
+                echo 1;
             } else{
-                echo"<script type='text/javascript'> alert('Lỗi ".mysqli_error($conn)."')</script>";
+                echo mysqli_error($conn);
             }
-        }else echo "
-        <script>
-            Swal.fire({
-                icon: 'error',
-                title: 'Lỗi...',
-                text: 'Lịch báo cáo không tồn tại!'
-            })
-        </script>
-        ";
+        }
     }
 
     if(isset($_POST['id'])){

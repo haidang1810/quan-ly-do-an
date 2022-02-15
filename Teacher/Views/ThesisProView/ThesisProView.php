@@ -30,46 +30,23 @@
                                 <div class="close">+</div>
                             </div>
                             <form method="POST">
-                                <input type="text" name="TieuDe" placeholder="Tiêu đề">
-                                <textarea name="GhiChu" id="addNote" rows="7" cols="70" placeholder="Ghi Chú"></textarea>
+                                <input type="text" class="TieuDe" placeholder="Tiêu đề">
+                                <textarea class="GhiChu" id="addNote" rows="7" cols="70" placeholder="Ghi Chú"></textarea>
                                 
                                 <div class="form_field">
-                                    <input type="datetime-local" name="ThoiGianBD" class="form_input">
+                                    <input type="datetime-local" class="form_input ThoiGianBD">
                                     <label for="BD" class="form_label">Thời gian bắt đầu</label>
                                 </div>
                                 <div class="form_field">
-                                    <input type="datetime-local" name="ThoiGianKT" class="form_input">
+                                    <input type="datetime-local"  class="form_input ThoiGianKT">
                                     <label for="KT" class="form_label">Thời gian kết thúc</label>
                                 </div>
-                                <div class="form_select">
-                                    <select name="lopLV" class='select_AddProcess'>
-                                        <?php
-                                            if (session_id() === '')
-                                                session_start();
-                                            if(isset($_SESSION['login'])){
-                                                $data = $_SESSION['login'];
-                                            }
-                                            $findND = "SELECT MaGV FROM giangvien WHERE TaiKhoan='".$data."'";
-                                            $resultND = $conn->query($findND);
-                                            if ($resultND->num_rows > 0) {
-                                                $rowND = $resultND->fetch_assoc();
-                                                $findLop = "SELECT * FROM lopluanvan WHERE MaGV='".$rowND['MaGV']."'";
-                                                $resultLop = $conn->query($findLop);
-                                                if($resultLop->num_rows > 0){
-                                                    while($rowLop = $resultLop->fetch_assoc()){
-                                                        echo "<option value='".$rowLop['MaLopLV']."'>".$rowLop['MaLopLV']." ".$rowLop['TenLop']."</option>";                                            
-                                                    }
-                                                }
-                                            }
-                                        ?>
-                                    </select>
-                                </div>
                                 <div>
-                                    <input type="checkbox" name="SanPham" id="cbSP">
-                                    <label for="cbSP">Nộp sản phầm cuối kỳ</label>
+                                    <input type="checkbox" class="SanPham" id="cbSP">
+                                    <label for="cbSP" class="label-checkbox">Nộp sản phầm cuối kỳ</label>
                                 </div>
                                 
-                                <input type="submit" value="Thêm tiến độ" name="addProcess">
+                                <button type='button' class="btn-add-process">Thêm tiến độ</button>
                             </form>
                         </div>
                     </div>
@@ -83,19 +60,19 @@
                                 <div class="close close_edit">+</div>
                             </div>
                             <form method="POST">
-                                <input type="hidden" name="Id" id="editID">
-                                <input type="text" name="TieuDe" id="editTitle" placeholder="Tiêu đề">
-                                <textarea name="GhiChu" id="editNote" rows="7" cols="70" placeholder="Ghi Chú"></textarea>
+                            <input type="hidden" class="Id" id="editID">
+                                <input type="text" class="TieuDe" id="editTitle" placeholder="Tiêu đề">
+                                <textarea class="GhiChu" id="editNote" rows="7" cols="70" placeholder="Ghi Chú"></textarea>
                                 
                                 <div class="form_field">
-                                    <input type="datetime-local" id="editBD" name="ThoiGianBD" class="form_input">
+                                    <input type="datetime-local" id="editBD" class="form_input ThoiGianBD">
                                     <label for="BD" class="form_label">Thời gian bắt đầu</label>
                                 </div>
                                 <div class="form_field">
-                                    <input type="datetime-local" id="editKT" name="ThoiGianKT" class="form_input">
+                                    <input type="datetime-local" id="editKT" class="form_input ThoiGianKT">
                                     <label for="KT" class="form_label">Thời gian kết thúc</label>
-                                </div>                                
-                                <input type="submit" value="cập nhật tiến độ" name="editProcess">
+                                </div>  
+                                <button type='button' class="btn-edit-process">Cập nhật tiến độ</button>
                             </form>
                         </div>
                     </div>
@@ -130,11 +107,6 @@
         <script src="../../../public/chosen/chosen.jquery.js"></script>
         <script src="../../../public/chosen/chosen.jquery.min.js"></script>
         
-        <script>
-            $('#tablePro').DataTable({
-                "lengthMenu": [ 5, 10, 15, 20, 25, 30, 40, 50 ]
-            });
-        </script>
         <script>
             $('#tableDetail').DataTable({
                 "lengthMenu": [ 5, 10, 15, 20]

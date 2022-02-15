@@ -31,39 +31,18 @@
                             </div>
                             <form name="edit" method="POST">
                                 <div class="form_field">
-                                    <input type="date" name="NgayBC" class="form_input">
+                                    <input type="date"  class="form_input NgayBC">
                                     <label for="dayBC" class="form_label">Ngày báo cáo</label>
                                 </div>
                                 <div class="form_field">
-                                    <input type="time" name="ThoiGianBD" class="form_input">  
+                                    <input type="time"  class="form_input ThoiGianBD">  
                                     <label for="timeBC" class="form_label">Thời gian bắt đầu</label>
                                 </div>
                                 <div class="form_field">
-                                    <input type="number" name="SoNhomBC" min="0" class="form_input">
+                                    <input type="number"  min="0" class="form_input SoNhomBC">
                                     <label for="timeBC" class="form_label">Số nhóm báo cáo</label>
-                                </div>
-                                <select name="LopHP" class='select_AddCalen'>
-                                    <?php
-                                        if (session_id() === '')
-                                            session_start();
-                                        if(isset($_SESSION['login'])){
-                                            $data = $_SESSION['login'];
-                                        }
-                                        $findND = "SELECT MaGV FROM giangvien WHERE TaiKhoan='".$data."'";
-                                        $resultND = $conn->query($findND);
-                                        if ($resultND->num_rows > 0) {
-                                            $rowND = $resultND->fetch_assoc();
-                                            $findLop = "SELECT * FROM lophocphan WHERE MaGV='".$rowND['MaGV']."'";
-                                            $resultLop = $conn->query($findLop);
-                                            if($resultLop->num_rows > 0){
-                                                while($rowLop = $resultLop->fetch_assoc()){
-                                                    echo "<option value='".$rowLop['MaLopHP']."'>".$rowLop['MaLopHP']." ".$rowLop['TenLop']."</option>";                                            
-                                                }
-                                            }
-                                        }
-                                    ?>
-                                </select>                        
-                                <input type="submit" value="thêm lịch" name="addCalen">
+                                </div>                      
+                                <button type='button' class="btn-add-calen">Thêm lịch</button>
                             </form>
                         </div>
                     </div>
@@ -90,7 +69,7 @@
                                     <label for="timeBC" class="form_label">Số nhóm báo cáo</label>
                                 </div>
                                 <input type="hidden" id='editHidden' name="id-edit">
-                                <input type="submit" value="cập nhật" name="editCalen">
+                                <button type='button' class="btn-edit-calen">Cập nhật lịch</button>                              
                             </form>
                         </div>
                     </div>
@@ -125,11 +104,6 @@
         <script src="../../../public/chosen/chosen.jquery.js"></script>
         <script src="../../../public/chosen/chosen.jquery.min.js"></script>
         <script src="CalendarView.js"></script>
-        <script>
-        $('#tableCalen').DataTable({
-            "lengthMenu": [ 5, 10],
-        });
-        </script>
         <script>
             $(".dsHKNH").chosen({
                 allow_single_deselect: true,
