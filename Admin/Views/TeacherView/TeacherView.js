@@ -56,52 +56,82 @@ function showAdd(){
     document.querySelector('.form_add_tea').style.display = 'block';
 }
 
-function showPass(){
-    
-    var currentPass = document.getElementById("currentPass").value;
-    var pass = document.getElementById("pass").value;
-    var rowShow = document.getElementById("rowShow").value;
-    if(currentPass==pass){
-        document.getElementById(rowShow).type='text';
-        document.querySelector('.modal').style.visibility = 'hidden';
-        document.querySelector('.modal').style.opacity = '0';     
-        document.getElementById("pass").value="";   
-    }        
-    else{
-        document.querySelector('.modal').style.visibility = 'hidden';
-        document.querySelector('.modal').style.opacity = '0'; 
-        document.getElementById("pass").value="";
-        alert("Sai mật khẩu");
+function disableAcc(){
+    var form = document.getElementsByClassName("form-disable");
+    console.log(form.length);
+    for(i=0;i<form.length;i++){
+        form[i].addEventListener('submit', function(e){
+            e.preventDefault();
+            Swal.fire({
+                title: 'Vô hiệu hoá?',
+                text: "Bạn có chắc muốn vô hiệu hoá tài khoản!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Đồng ý!',
+                cancelButtonText: 'Huỷ.'
+            }).then((result) => {
+                if (result.isConfirmed)
+                    this.submit();
+            })
+        })
     }
-    
 }
-function showModalPass(value){
-    var data =value.split(",");
-    if(document.getElementById(data[0]).type=='password'){
-        document.querySelector('.modal').style.visibility = 'visible';
-        document.querySelector('.modal').style.opacity = '1';        
-        document.getElementById('currentPass').value = data[1];
-        document.getElementById('rowShow').value = data[0];
-    }else
-        document.getElementById(data[0]).type='password';
-    
+
+function enableAcc(){
+    var form = document.getElementsByClassName("form-enable");
+    for(i=0;i<form.length;i++){
+        form[i].addEventListener('submit', function(e){
+            e.preventDefault();
+            Swal.fire({
+                title: 'Khôi phục tài khoản?',
+                text: "Bạn có chắc muốn khôi phục tài khoản!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Đồng ý!',
+                cancelButtonText: 'Huỷ.'
+            }).then((result) => {
+                if (result.isConfirmed)
+                    this.submit();
+            })
+        })
+    }
 }
-document.querySelector('.close').addEventListener('click',
-function() {
-    document.querySelector('.modal').style.visibility = 'hidden';
-    document.querySelector('.modal').style.opacity = '0';
-});
-function ConfirmDisable(){
-    var x = confirm("Bạn có chắc muốn vô hiệu hoá tài khoản?");
-    if (x)
-        return true;
-    else
-        return false;
-}
-function ConfirmEnable(){
-    var x = confirm("Bạn có chắc muốn kích hoạt tài khoản?");
-    if (x)
-        return true;
-    else
-        return false;
+
+
+
+$(window).on('load',function(){
+    resetPass();
+    enableAcc();
+    disableAcc();
+    $(".paginate_button").click(function(){
+        resetPass();
+        enableAcc();
+        disableAcc();
+    })
+})
+
+function resetPass(){
+    var form = document.getElementsByClassName("reset-pass");
+    for(i=0;i<form.length;i++){
+        form[i].addEventListener('submit', function(e){
+            e.preventDefault();
+            Swal.fire({
+                title: 'Khôi phục mật khẩu?',
+                text: "Bạn có chắc muốn khôi phục mật khẩu  về mặc định là 123!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Đồng ý!',
+                cancelButtonText: 'Huỷ.'
+            }).then((result) => {
+                if (result.isConfirmed)
+                    this.submit();
+            })
+        })
+    }
 }

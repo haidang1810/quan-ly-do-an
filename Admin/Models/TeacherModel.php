@@ -47,7 +47,12 @@
     function editTeacher($conn,$maGV,$hoTen,$hocVi,$namSinh,$SDT,$gmail,$loai){
         $checkPhone = preg_match( '/^0(\d{9}|9\d{8})$/', $SDT );
         if(!$checkPhone){
-            echo"<script type='text/javascript'> alert('Số điện thoại sai định dạng')</script>";
+            echo "<script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi...',
+                text: 'Số điện thoại sai định dạng!'
+            })</script>";            
             return;
         }        
         $findGV = "SELECT * FROM giangvien WHERE MaGV='".$maGV."'";
@@ -60,9 +65,19 @@
                     if($loai!=0){
                         $updateType = "UPDATE nguoidung SET Loai=".$loai." WHERE TaiKhoan='".$rowGV['TaiKhoan']."'";
                         if(mysqli_query($conn, $updateType))
-                            echo"<script type='text/javascript'> alert('cập nhật thành công')</script>";
+                            echo "<script>
+                            Swal.fire(
+                                'Đã lưu!',
+                                'Bạn đã cập nhật giảng viên thành công.',
+                                'success'
+                            )</script>";
                     }else
-                    echo"<script type='text/javascript'> alert('cập nhật thành công')</script>";
+                    echo "<script>
+                    Swal.fire(
+                        'Đã lưu!',
+                        'Bạn đã cập nhật giảng viên thành công.',
+                        'success'
+                    )</script>";                
                 } else{
                     echo"<script type='text/javascript'> alert('Lỗi ".mysqli_error($conn)."')</script>";
                 }
@@ -78,18 +93,42 @@
                             if(mysqli_query($conn, $sql)){
                                 $deleteAcc = "DELETE FROM  nguoidung WHERE TaiKhoan='".$rowGV['Gmail']."'";
                                 if(mysqli_query($conn, $deleteAcc)){
-                                    echo"<script type='text/javascript'> alert('Cập nhật thành công')</script>";
-                                }else echo"<script type='text/javascript'> alert('Cập nhật thành công. Xoá tài khoản thất bại mời bạn vô hiệu hoá tài khoản')</script>";                             
+                                    echo "<script>
+                                    Swal.fire(
+                                        'Đã lưu!',
+                                        'Bạn đã cập nhật giảng viên thành công.',
+                                        'success'
+                                    )</script>"; 
+                                }else echo "<script>
+                                Swal.fire(
+                                    'Đã lưu!',
+                                    'Cập nhật thành công. Xoá tài khoản thất bại mời bạn vô hiệu hoá tài khoản.',
+                                    'success'
+                                )</script>"; 
                             } else{
                                 echo"<script type='text/javascript'> alert('Lỗi ".mysqli_error($conn)."')</script>";
                             }                 
                         }else echo"<script type='text/javascript'> alert('Lỗi ".mysqli_error($conn)."')</script>";
-                    }else echo"<script type='text/javascript'> alert('Chưa chọn phân quyền')</script>";
-                    
-                }else echo"<script type='text/javascript'> alert('Gmail đã tồn tại')</script>";
+                    }else echo "<script>
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi...',
+                        text: 'Chưa chọn phân quyền!'
+                    })</script>";                    
+                }else echo "<script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi...',
+                    text: 'Gmail đã tồn tại!'
+                })</script>";
             }
             
-        }else echo"<script type='text/javascript'> alert('Giảng viên không tồn tại')</script>";
+        }else echo "<script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi...',
+            text: 'Giảng viên không tồn tại!'
+        })</script>";
     }
     function multiAddTea($conn,$file,$auto=false){
         $objReader = PHPExcel_IOFactory::createReaderForFile($file);
@@ -216,18 +255,36 @@
             }
         }
         if(empty($error))
-            echo"<script type='text/javascript'> alert('Đã thêm thành công ".$success
-            ." giảng viên')</script>";
+            echo"
+            <script>
+                Swal.fire(
+                    'Đã lưu!',
+                    'Bạn đã thêm thành công ".$success." giảng viên.',
+                    'success'
+                )
+            </script>";
         else
-            echo"<script type='text/javascript'> alert('Đã thêm thành công ".$success
-            ." giảng viên. \\nCác hàng bị lỗi: ".$error."')</script>";
+        echo"
+            <script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Đã thêm!',
+                    text: 'Bạn đã thêm thành công ".$success." giảng viên.',
+                    footer: 'Các hàng bị lỗi: ".$error."'
+                })
+            </script>";
     }
 
     function addTeacher($conn,$maGV,$hoTen,$hocVi,$namSinh,$SDT,$gmail,$auto=false){
         
         $checkPhone = preg_match( '/^0(\d{9}|9\d{8})$/', $SDT );
         if(!$checkPhone){
-            echo"<script type='text/javascript'> alert('Số điện thoại sai định dạng')</script>";
+            echo "<script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi...',
+            text: 'Số điện thoại sai định dạng!'
+        })</script>";
             return;
         }
         $findGV = "SELECT * FROM giangvien WHERE MaGV='".$maGV."'";
@@ -239,7 +296,14 @@
                     $sql="INSERT INTO giangvien VALUES('".$maGV."','".$hoTen."','".$hocVi."','".$namSinh."','".
                     $SDT."','".$gmail."','".$gmail."')";
                     if(mysqli_query($conn, $sql)){
-                        echo"<script type='text/javascript'> alert('Thêm giảng viên thành công')</script>";
+                        echo"
+                        <script>
+                            Swal.fire(
+                                'Đã lưu!',
+                                'Thêm giảng viên thành công.',
+                                'success'
+                            )
+                        </script>";
                     }else echo"<script type='text/javascript'> alert('Lỗi ".mysqli_error($conn)."')</script>";
                 }else echo"<script type='text/javascript'> alert('Lỗi ".mysqli_error($conn)."')</script>";
             }else{
@@ -247,10 +311,22 @@
                     VALUES('".$maGV."','".$hoTen."','".$hocVi."','".$namSinh."','".
                     $SDT."','".$gmail."')";
                 if(mysqli_query($conn, $sql)){
-                    echo"<script type='text/javascript'> alert('Thêm giảng viên thành công')</script>";
+                    echo"
+                        <script>
+                            Swal.fire(
+                                'Đã lưu!',
+                                'Thêm giảng viên thành công.',
+                                'success'
+                            )
+                        </script>";
                 }else echo"<script type='text/javascript'> alert('Lỗi ".mysqli_error($conn)."')</script>";
             }
-        }else echo"<script type='text/javascript'> alert('Giảng viên đã tồn tại')</script>";
+        }else echo "<script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi...',
+            text: 'Giảng viên đã tồn tại!'
+        })</script>";
         
     }
 
@@ -267,13 +343,25 @@
                 if(mysqli_query($conn, $createAcc)){
                     $sql = "UPDATE giangvien SET TaiKhoan='".$rowGV['Gmail']."' WHERE MaGV='".$maGV."'";
                     if(mysqli_query($conn, $sql))
-                        echo"<script type='text/javascript'> alert('Tạo tài khoản thành công')</script>";
+                    echo"
+                    <script>
+                        Swal.fire(
+                            'Đã lưu!',
+                            'Tạo tài khoản thành công.',
+                            'success'
+                        )
+                    </script>";
                     else echo"<script type='text/javascript'> alert('Lỗi ".mysqli_error($conn)."')</script>";
                 }
                 else{
                     echo"<script type='text/javascript'> alert('Lỗi ".mysqli_error($conn)."')</script>";
                 }
-            }else echo"<script type='text/javascript'> alert('Giảng viên đã có tài khoản')</script>";
+            }else echo "<script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi...',
+                text: 'Giảng viên đã có tài khoản!'
+            })</script>";
             
         }else{
             $findGV = "SELECT * FROM giangvien";
@@ -290,7 +378,14 @@
                     }
                 }
             }
-            echo"<script type='text/javascript'> alert('Đã tạo thành công ".$success." tài khoản')</script>";
+            echo"
+            <script>
+                Swal.fire(
+                    'Đã lưu!',
+                    'Đã tạo thành công ".$success." tài khoản.',
+                    'success'
+                )
+            </script>";
         }
     }
     function loadAccount($conn){
@@ -312,20 +407,23 @@
                 echo "<td><input type='password' class='form_pass' id='".$row['TaiKhoan']."' value='".$row['MatKhau']."'></td>";
                 echo "<td>";                
                 if($row['TrangThai']==1){    
-                    echo "<form method='POST' onsubmit='if(ConfirmDisable() == false) return false;'>";                
-                    echo "<button class='btn_student btn_danger' value='".$row['TaiKhoan']."' name='disableAcc' type='submit'>";
+                    echo "<form method='POST' class='form-disable'>";    
+                    echo "<input type='hidden' name='disableAcc' value='".$row['TaiKhoan']."'>";          
+                    echo "<button class='btn_student btn_danger'  type='submit'>";
                     echo "<i class='fas fa-user-slash'></i></button>";
-                    echo "<button class='btn_student btn_primary' id='".$row['TaiKhoan'].",".$rowUser['MatKhau']."' type='button' onclick='showModalPass(this.id)'>";
-                    echo "<i class='fas fa-eye'></i></button>";
                     echo "</form>";
                 }else{
-                    echo "<form method='POST' onsubmit='if(ConfirmEnable() == false) return false;'>";
-                    echo "<button class='btn_student btn_check' value='".$row['TaiKhoan']."' name='enableAcc' type='submit'>";
+                    echo "<form method='POST' class='form-enable'>";
+                    echo "<input type='hidden' name='enableAcc' value='".$row['TaiKhoan']."'>";
+                    echo "<button class='btn_student btn_check'  type='submit'>";
                     echo "<i class='fas fa-user-check'></i></button>";
-                    echo "<button class='btn_student btn_primary' id='".$row['TaiKhoan'].",".$rowUser['MatKhau']."' type='button' onclick='showModalPass(this.id)'>";
-                    echo "<i class='fas fa-eye'></i></button>";
                     echo "</form>";
-                }                
+                }    
+                echo "<form method='POST' class='reset-pass'>";
+                echo "<input type='hidden' name='resetPass' value='".$row['TaiKhoan']."'>";
+                echo "<button class='btn_student btn_primary' type='submit' >";
+                echo "<i class='fas fa-undo'></i></button>";      
+                echo "</form>";                
                 echo "</td>";                    
                 echo "</tr>";   
             }
@@ -337,10 +435,21 @@
         if($resultUser->num_rows > 0){
             $sql = "UPDATE nguoidung SET TrangThai='0' WHERE TaiKhoan='".$user."'";
             if(mysqli_query($conn, $sql))
-                echo"<script type='text/javascript'> alert('Đã vô hiệu hoá tài khoản')</script>";
+            echo"
+            <script>
+                Swal.fire(
+                    'Đã lưu!',
+                    'Đã vô hiệu hoá tài khoản.',
+                    'success'
+                )</script>";
             else 
                 echo"<script type='text/javascript'> alert('Lỗi ".mysqli_error($conn)."')</script>";
-        }else echo"<script type='text/javascript'> alert('Tài khoản không tồn tại')</script>";
+        }else echo "<script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi...',
+            text: 'Tài khoản không tồn tại!'
+        })</script>";
     }
     function enable($conn,$user){
         $findUser = "SELECT * FROM nguoidung WHERE TaiKhoan='".$user."'";
@@ -348,9 +457,42 @@
         if($resultUser->num_rows > 0){
             $sql = "UPDATE nguoidung SET TrangThai='1' WHERE TaiKhoan='".$user."'";
             if(mysqli_query($conn, $sql))
-                echo"<script type='text/javascript'> alert('Kích hoạt tài khoản thành công')</script>";
+            echo"
+            <script>
+                Swal.fire(
+                    'Đã lưu!',
+                    'Kích hoạt tài khoản thành công.',
+                    'success'
+                )</script>";
             else 
                 echo"<script type='text/javascript'> alert('Lỗi ".mysqli_error($conn)."')</script>";
-        }else echo"<script type='text/javascript'> alert('Tài khoản không tồn tại')</script>";
+        }else echo "<script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi...',
+            text: 'Tài khoản không tồn tại!'
+        })</script>";
+    }
+    function resetPass($conn,$user){
+        $findUser = "SELECT * FROM nguoidung WHERE TaiKhoan='".$user."'";
+        $resultUser = $conn->query($findUser);
+        if($resultUser->num_rows > 0){
+            $sql = "UPDATE nguoidung SET MatKhau='123' WHERE TaiKhoan='".$user."'";
+            if(mysqli_query($conn, $sql))
+            echo"
+            <script>
+                Swal.fire(
+                    'Đã lưu!',
+                    'Kích hoạt khôi phục mật khẩu về mặc định.',
+                    'success'
+                )</script>";
+            else 
+                echo"<script type='text/javascript'> alert('Lỗi ".mysqli_error($conn)."')</script>";
+        }else echo "<script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi...',
+            text: 'Tài khoản không tồn tại!'
+        })</script>";
     }
 ?>

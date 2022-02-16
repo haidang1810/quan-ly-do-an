@@ -203,7 +203,7 @@
     echo "</thead>";
     echo "<tbody>";
 
-    if(!isset($_POST['disableAcc'])&&!isset($_POST['enableAcc']))
+    if(!isset($_POST['disableAcc'])&&!isset($_POST['enableAcc'])&&!isset($_POST['resetPass']))
         loadAccount($conn);
 
     if(isset($_POST['disableAcc'])){
@@ -216,7 +216,11 @@
         enable($conn,$user);
         loadAccount($conn);
     }
-
+    if(isset($_POST['resetPass'])){
+        $user = $_POST['resetPass'];
+        resetPass($conn,$user);
+        loadAccount($conn);
+    }
     echo "</tbody>";
     echo "</table>";
     echo "</div>";
