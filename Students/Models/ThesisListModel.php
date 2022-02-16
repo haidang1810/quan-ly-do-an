@@ -6,13 +6,13 @@
         include("../../public/config.php");
         global $conn;
         $mssv = $_POST['mssv'];
-        $sql = "SELECT sinhvien_hocphan.MaLopHP,
-        lophocphan.TenLop,NgayBD,NgayKT,Id_hknh,HoTen
-        FROM sinhvien_hocphan, lophocphan, giangvien, hocky_namhoc 
-        WHERE sinhvien_hocphan.MaLopHP=lophocphan.MaLopHP 
-        and lophocphan.MaGV=giangvien.MaGV 
-        and lophocphan.Id_hknh=hocky_namhoc.Id
-        and sinhvien_hocphan.Mssv='$mssv'";
+        $sql = "SELECT sinhvien_luanvan.MaLopLV,
+        lopluanvan.TenLop,NgayBD,NgayKT,Id_hknh,HoTen
+        FROM sinhvien_luanvan, lopluanvan, giangvien, hocky_namhoc 
+        WHERE sinhvien_luanvan.MaLopLV=lopluanvan.MaLopLV 
+        and lopluanvan.MaGV=giangvien.MaGV 
+        and lopluanvan.Id_hknh=hocky_namhoc.Id
+        and sinhvien_luanvan.Mssv='$mssv'";
         $result = $conn->query($sql);
         $res = "";
         if ($result->num_rows > 0){
@@ -29,8 +29,8 @@
                     $percent=100;
                 $res .= "
                 <div class='course'>
-                    <a href='#' class='link-course'>".$row['MaLopHP']." - ".$row['TenLop']."</a>
-                    <input type='hidden' value='".$row['MaLopHP']."' class='MaHP'>
+                    <a href='#' class='link-course'>".$row['MaLopLV']." - ".$row['TenLop']."</a>
+                    <input type='hidden' value='".$row['MaLopLV']."' class='MaHP'>
                     <p class='info'>Giảng viên: ".$row['HoTen']."</p>
                     <div class='complete'>
                         <progress id='course-complete' value='$percent' max='100'></progress>
@@ -48,14 +48,14 @@
         global $conn;
         $mssv = $_POST['sv'];
         $key = $_POST['key'];
-        $sql = "SELECT sinhvien_hocphan.MaLopHP,
-        lophocphan.TenLop,NgayBD,NgayKT,Id_hknh,HoTen
-        FROM sinhvien_hocphan, lophocphan, giangvien, hocky_namhoc 
-        WHERE sinhvien_hocphan.MaLopHP=lophocphan.MaLopHP 
-        and lophocphan.MaGV=giangvien.MaGV 
-        and lophocphan.Id_hknh=hocky_namhoc.Id
-        and sinhvien_hocphan.Mssv='$mssv'
-        and lophocphan.TenLop LIKE '%$key%'";
+        $sql = "SELECT sinhvien_luanvan.MaLopLV,
+        lopluanvan.TenLop,NgayBD,NgayKT,Id_hknh,HoTen
+        FROM sinhvien_luanvan, lopluanvan, giangvien, hocky_namhoc 
+        WHERE sinhvien_luanvan.MaLopLV=lopluanvan.MaLopLV 
+        and lopluanvan.MaGV=giangvien.MaGV 
+        and lopluanvan.Id_hknh=hocky_namhoc.Id
+        and sinhvien_luanvan.Mssv='$mssv'
+        and lopluanvan.TenLop LIKE '%$key%'";
         $result = $conn->query($sql);
         $res = "";
         if ($result->num_rows > 0){
@@ -72,8 +72,8 @@
                     $percent=100;
                 $res .= "
                 <div class='course'>
-                    <a href='#' class='link-course'>".$row['MaLopHP']." - ".$row['TenLop']."</a>
-                    <input type='hidden' value='".$row['MaLopHP']."' class='MaHP'>
+                    <a href='#' class='link-course'>".$row['MaLopLV']." - ".$row['TenLop']."</a>
+                    <input type='hidden' value='".$row['MaLopLV']."' class='MaHP'>
                     <p class='info'>Giảng viên: ".$row['HoTen']."</p>
                     <div class='complete'>
                         <progress id='course-complete' value='$percent' max='100'></progress>
@@ -83,14 +83,14 @@
                 ";
             }
         }else{
-            $sql = "SELECT sinhvien_hocphan.MaLopHP,
-            lophocphan.TenLop,NgayBD,NgayKT,Id_hknh,HoTen
-            FROM sinhvien_hocphan, lophocphan, giangvien, hocky_namhoc 
-            WHERE sinhvien_hocphan.MaLopHP=lophocphan.MaLopHP 
-            and lophocphan.MaGV=giangvien.MaGV 
-            and lophocphan.Id_hknh=hocky_namhoc.Id
-            and sinhvien_hocphan.Mssv='$mssv'
-            and sinhvien_hocphan.MaLopHP LIKE '%$key%'";
+            $sql = "SELECT sinhvien_luanvan.MaLopLV,
+            lopluanvan.TenLop,NgayBD,NgayKT,Id_hknh,HoTen
+            FROM sinhvien_luanvan, lopluanvan, giangvien, hocky_namhoc 
+            WHERE sinhvien_luanvan.MaLopLV=lopluanvan.MaLopLV 
+            and lopluanvan.MaGV=giangvien.MaGV 
+            and lopluanvan.Id_hknh=hocky_namhoc.Id
+            and sinhvien_luanvan.Mssv='$mssv'
+            and sinhvien_luanvan.MaLopLV LIKE '%$key%'";
             $result = $conn->query($sql);
             if ($result->num_rows > 0){
                 while($row = $result->fetch_assoc()){
@@ -106,8 +106,8 @@
                         $percent=100;
                     $res .= "
                     <div class='course'>
-                        <a href='#' class='link-course'>".$row['MaLopHP']." - ".$row['TenLop']."</a>
-                        <input type='hidden' value='".$row['MaLopHP']."' class='MaHP'>
+                        <a href='#' class='link-course'>".$row['MaLopLV']." - ".$row['TenLop']."</a>
+                        <input type='hidden' value='".$row['MaLopLV']."' class='MaHP'>
                         <p class='info'>Giảng viên: ".$row['HoTen']."</p>
                         <div class='complete'>
                             <progress id='course-complete' value='$percent' max='100'></progress>
@@ -117,13 +117,13 @@
                     ";
                 }
             }else{
-                $sql = "SELECT sinhvien_hocphan.MaLopHP,
-                lophocphan.TenLop,NgayBD,NgayKT,Id_hknh,HoTen
-                FROM sinhvien_hocphan, lophocphan, giangvien, hocky_namhoc 
-                WHERE sinhvien_hocphan.MaLopHP=lophocphan.MaLopHP 
-                and lophocphan.MaGV=giangvien.MaGV 
-                and lophocphan.Id_hknh=hocky_namhoc.Id
-                and sinhvien_hocphan.Mssv='$mssv'
+                $sql = "SELECT sinhvien_luanvan.MaLopLV,
+                lopluanvan.TenLop,NgayBD,NgayKT,Id_hknh,HoTen
+                FROM sinhvien_luanvan, lopluanvan, giangvien, hocky_namhoc 
+                WHERE sinhvien_luanvan.MaLopLV=lopluanvan.MaLopLV 
+                and lopluanvan.MaGV=giangvien.MaGV 
+                and lopluanvan.Id_hknh=hocky_namhoc.Id
+                and sinhvien_luanvan.Mssv='$mssv'
                 and HoTen LIKE '%$key%'";
                 $result = $conn->query($sql);
                 if ($result->num_rows > 0){
@@ -140,8 +140,8 @@
                             $percent=100;
                         $res .= "
                         <div class='course'>
-                            <a href='#' class='link-course'>".$row['MaLopHP']." - ".$row['TenLop']."</a>
-                            <input type='hidden' value='".$row['MaLopHP']."' class='MaHP'>
+                            <a href='#' class='link-course'>".$row['MaLopLV']." - ".$row['TenLop']."</a>
+                            <input type='hidden' value='".$row['MaLopLV']."' class='MaHP'>
                             <p class='info'>Giảng viên: ".$row['HoTen']."</p>
                             <div class='complete'>
                                 <progress id='course-complete' value='$percent' max='100'></progress>
@@ -160,13 +160,13 @@
         include("../../public/config.php");
         global $conn;
         $mssv = $_POST['history'];
-        $sql = "SELECT lichsu_hocphan.MaLopHP,
-        lophocphan.TenLop,NgayBD,NgayKT,Id_hknh,HoTen
-        FROM lichsu_hocphan, lophocphan, giangvien, hocky_namhoc 
-        WHERE lichsu_hocphan.MaLopHP=lophocphan.MaLopHP 
-        and lophocphan.MaGV=giangvien.MaGV 
-        and lophocphan.Id_hknh=hocky_namhoc.Id
-        and lichsu_hocphan.Mssv='$mssv' ORDER BY ThoiGian DESC";
+        $sql = "SELECT lichsu_luanvan.MaLopLV,
+        lopluanvan.TenLop,NgayBD,NgayKT,Id_hknh,HoTen
+        FROM lichsu_luanvan, lopluanvan, giangvien, hocky_namhoc 
+        WHERE lichsu_luanvan.MaLopLV=lopluanvan.MaLopLV 
+        and lopluanvan.MaGV=giangvien.MaGV 
+        and lopluanvan.Id_hknh=hocky_namhoc.Id
+        and lichsu_luanvan.Mssv='$mssv' ORDER BY ThoiGian DESC";
         $result = $conn->query($sql);
         $res = "";
         if ($result->num_rows > 0){
@@ -183,8 +183,8 @@
                     $percent=100;
                 $res .= "
                 <div class='course'>
-                    <a href='#' class='link-course'>".$row['MaLopHP']." - ".$row['TenLop']."</a>
-                    <input type='hidden' value='".$row['MaLopHP']."' class='MaHP'>
+                    <a href='#' class='link-course'>".$row['MaLopLV']." - ".$row['TenLop']."</a>
+                    <input type='hidden' value='".$row['MaLopLV']."' class='MaHP'>
                     <p class='info'>Giảng viên: ".$row['HoTen']."</p>
                     <div class='complete'>
                         <progress id='course-complete' value='$percent' max='100'></progress>
@@ -198,8 +198,8 @@
     }
 
     if(isset($_POST['MaHP'])){
-        unset($_SESSION['DetailThesis']);
-        $_SESSION['DetailClass'] = $_POST['MaHP'];
+        unset($_SESSION['DetailClass']);
+        $_SESSION['DetailThesis'] = $_POST['MaHP'];
         echo 1;
     }
 

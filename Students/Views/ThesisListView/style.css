@@ -1,0 +1,138 @@
+.main {
+    position: relative;
+    width: 100%;
+    height: auto;
+}
+.content {
+    margin-left: 250px;
+    padding-top: 45px;
+    padding-left: 45px;
+    min-height: 600px;
+    padding-bottom: 45px;
+}
+
+
+.tabs {
+    width: 95%;
+    height: 120%;
+    box-shadow: 0 3px 5px rgba(0,0,0,0.2);
+}
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700);
+
+
+input[type=radio], section {
+    clear: both;
+    padding-top: 10px;
+    display: none;
+    
+}
+section{
+    display: block;
+    height: 80%;
+    padding: 20px;
+    overflow-y: scroll;
+}
+.content-tab::-webkit-scrollbar{
+    width: 10px;
+    background: lightgrey;
+    
+}
+.content-tab::-webkit-scrollbar-thumb{
+    background-color: gray;
+    border-radius: 2px;
+}
+label {
+    font-weight: bold;
+    color: #ccc;
+    font-size: 14px;
+    display: block;
+    float: left;
+    padding: 10px 30px;
+    border-top: 2px solid transparent;
+    border-right: 1px solid transparent;
+    border-left: 1px solid transparent;
+    border-bottom: 1px solid #DDD;
+}
+label:hover {
+    cursor: pointer;
+}
+
+input[type=radio]:checked + label {
+    color: #000;
+    border-top-color: #FFB03D;
+    border-right-color: #DDD;
+    border-left-color: #DDD;
+    border-bottom-color: transparent;
+    text-decoration: none;
+}
+.course{
+    width: 90%;
+    height: auto;
+    padding: 10px 20px;
+    border: #ccc solid 2px;
+    margin: 10px 0 10px 0;
+}
+.link-course{
+    display: block;
+    text-decoration: none;
+    color: #f90d06;
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+.link-course:hover{
+    text-decoration: underline;
+}
+.info{
+    color: #585858;
+    margin: 5px;
+}
+h4{
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.search-box{
+    position: relative;
+    float: right;
+    margin-right: 7%;
+    width: 40px;
+    height: 40px;
+    background-color: #fff;
+    transition: all 0.5s ease;
+}
+.input-search{
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    color: #000;
+    font-size: 18px;
+    padding: 5px 0px 5px 10px;
+    border: 1px #ccc solid;
+    outline: none;
+}
+.input-search:focus{
+    border: 1px #ccc solid;
+}
+.btn-search{
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 40px;
+    color: #fff;
+    background-color: #22a6b3;
+    border: none;
+}
+.search-box:hover {
+    width: 300px;
+}
+.search-box:hover > .input-search{
+    padding-right: 55px;
+}
+.open{
+    width: 300px;
+}
+.MaHP{
+    display: none;
+}

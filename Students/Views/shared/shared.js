@@ -41,9 +41,9 @@ function goThesisReg(){
 function goClassList(){
     location.href = "../../Views/ClassListView/ClassListView.php";
 }
-function goThesisTopic(){
-    location.href = "../../Views/ThesisTopicView/ThesisTopicView.php";
+function goThesisList(){
+    location.href = "../../Views/ThesisListView/ThesisListView.php";
 }
-function goThesisPro(){
-    location.href = "../../Views/ThesisProView/ThesisProView.php";
+function goDashboard(){
+    location.href = "../../Views/DashboardView/DashboardView.php";
 }

@@ -14,6 +14,7 @@
         deleteFile($conn,$id);
         loadData($conn);
     }
-    
+    if(!isset($_SESSION['DetailThesis'])&&!isset($_SESSION['DetailClass']))
+        header("location: ../../Views/DashboardView/DashboardView.php");
     
 ?>

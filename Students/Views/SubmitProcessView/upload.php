@@ -6,6 +6,7 @@
   $msv=$_POST['msv'];
   $mtd=$_POST['mtd'];
   $target_dir = $_POST['target_dir'];
+  $loaiLop = $_POST['loaiLop'];
   // Upload directory
   
   if(file_exists($target_dir))
@@ -28,32 +29,60 @@
         $date = getdate();
         $gio=$date["hours"]+6;
         $time = $date['year']."-" .$date['mon']."-" .$date['mday']." " .$gio.":" .$date['minutes'].":" .$date['seconds'];
-        $sql = "INSERT INTO nopbaichitiet (Ma, Mssv, File, ThoiGianNop) VALUES ('".$mtd."','".$msv."','".$dd."','".$time."')";
-        if ($result = $conn->query($sql)){
-            $msg = "<script>
-                    Swal.fire(
-                        'Đã thêm!',
-                        'Bạn đã upload thành công.',
-                        'success'
-                    ).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location.reload()        
-                        }
-                    })
-                </script>";
-            }
-            else
-            $msg = "<script>
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Lỗi...',
-                            text: 'Lỗi khi lưu vào cơ sở dữ liệu!'
-                        }).then((result) => {
+        if($loaiLop=='hocphan'){
+            $sql = "INSERT INTO nopbaichitiet (Ma, Mssv, File, ThoiGianNop) VALUES ('".$mtd."','".$msv."','".$dd."','".$time."')";
+            if (mysqli_query($conn, $sql)){
+                $msg = "<script>
+                        Swal.fire(
+                            'Đã thêm!',
+                            'Bạn đã upload thành công.',
+                            'success'
+                        ).then((result) => {
                             if (result.isConfirmed) {
                                 window.location.reload()        
                             }
                         })
                     </script>";
+            }else
+                $msg = "<script>
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Lỗi...',
+                                text: 'Lỗi khi lưu vào cơ sở dữ liệu!'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.reload()        
+                                }
+                            })
+                        </script>";
+        }else{
+            $sql = "INSERT INTO nopluanvanct (Ma, Mssv, File, ThoiGianNop) VALUES ('".$mtd."','".$msv."','".$dd."','".$time."')";
+            if (mysqli_query($conn, $sql)){
+                $msg = "<script>
+                        Swal.fire(
+                            'Đã thêm!',
+                            'Bạn đã upload thành công.',
+                            'success'
+                        ).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.reload()        
+                            }
+                        })
+                    </script>";
+            }else
+                $msg = "<script>
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Lỗi...',
+                                text: 'Lỗi khi lưu vào cơ sở dữ liệu!'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.reload()        
+                                }
+                            })
+                        </script>";
+        }
+        
     }
     else
     { 

@@ -52,7 +52,7 @@
             </div>
             <div class="line"></div>     
             <div>
-                <button class="btn item" onclick="">
+                <button class="btn item" onclick="goDashboard()">
                 <i class="far fa-comment"></i><span class="showTitle">Trang chủ</span>
                 </button>
             </div>     
@@ -79,7 +79,7 @@
                     <button class="btn subitem" onclick="goClassList()">
                         <i class="fas fa-users"></i><span class="showTitle">Lớp đồ án</span>
                     </button>
-                    <button class="btn subitem" onclick="">
+                    <button class="btn subitem" onclick="goThesisList()">
                         <i class="fas fa-graduation-cap"></i><span class="showTitle">Lớp luận văn</span>
                     </button>
                 </div>

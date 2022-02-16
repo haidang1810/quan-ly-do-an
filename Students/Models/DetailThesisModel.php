@@ -10,10 +10,10 @@
         $resultSV = $conn->query($checkSV);
         if ($resultSV->num_rows > 0){
             $rowSV = $resultSV->fetch_assoc();
-            $sql = "SELECT * FROM sinhvien_hocphan, lophocphan
-            WHERE sinhvien_hocphan.Mssv='".$rowSV['Mssv']
-            ."' and sinhvien_hocphan.MaLopHP='".$maLop."'
-            and sinhvien_hocphan.MaLopHP=lophocphan.MaLopHP";
+            $sql = "SELECT * FROM sinhvien_luanvan, lopluanvan
+            WHERE sinhvien_luanvan.Mssv='".$rowSV['Mssv']
+            ."' and sinhvien_luanvan.MaLopLV='".$maLop."'
+            and sinhvien_luanvan.MaLopLV=lopluanvan.MaLopLV";
             $result = $conn->query($sql);
             if ($result->num_rows > 0){
                 $row = $result->fetch_assoc();
@@ -23,22 +23,15 @@
                 $poin = "";
                 $final = "";
                 //tìm đề tài của sv
-                $selectTopic = "SELECT MaDeTai FROM detai WHERE MaLopHP='".$row['MaLopHP']."'";
+                $selectTopic = "SELECT Ten FROM detailuanvan WHERE MaLopLV='".$row['MaLopLV']."'
+                AND Mssv='".$rowSV['Mssv']."'";
                 $resultTopic = $conn->query($selectTopic);
                 if ($resultTopic->num_rows > 0){
-                    while($rowTopic = $resultTopic->fetch_assoc()){
-                        $checkDK = "SELECT detai.TenDeTai FROM dangkydetai, detai
-                        WHERE dangkydetai.MaDeTai='".$rowTopic['MaDeTai']."'
-                        AND dangkydetai.Mssv='".$row['Mssv']."'";
-                        $resultDK = $conn->query($checkDK);
-                        if ($resultDK->num_rows > 0){
-                            $rowDK = $resultDK->fetch_assoc();
-                            $topic = $rowDK['TenDeTai'];
-                        }
-                    }
+                    $rowTopic = $resultTopic->fetch_assoc();
+                    $topic = $rowTopic['Ten'];
                 }
                 //Tìm tiến độ hiện tại
-                $findTD = "SELECT * FROM nopbai WHERE MaLopHP='".$row['MaLopHP']."' and Loai=0";
+                $findTD = "SELECT * FROM nopbailuanvan WHERE MaLopLV='".$row['MaLopLV']."' and Loai=0";
                 $resultTD = $conn->query($findTD);
                 if ($resultTD->num_rows > 0){
                     $process .= "<ul class='list-process'>";
@@ -49,29 +42,43 @@
                     $process .= "</ul>";
                 }
                 //Tìm lịch báo cáo
-                if($row['LichBaoCao']!=null){
-                    $findBC = "SELECT NgayBC, ThoiGianBatDau FROM ngaybaocao
-                    WHERE Id=".$row['LichBaoCao'];
-                    $resultBC = $conn->query($findBC);
-                    if ($resultBC->num_rows > 0){
-                        $rowBC = $resultBC->fetch_assoc();
-                        $date = date("d/m/Y", strtotime($rowBC['NgayBC']));
-                        $calen = "".$date.", ".$rowBC['ThoiGianBatDau'];
+                $findHD = "SELECT MaHD
+                FROM hoidong, sinhvien_luanvan, lopluanvan
+                WHERE sinhvien_luanvan.MaLopLV=lopluanvan.MaLopLV
+                AND hoidong.ThuKy=lopluanvan.MaGV
+                AND sinhvien_luanvan.MaLopLV='$maLop'
+                GROUP BY MaHD";
+                $resultHD = $conn->query($findHD);
+                if ($resultHD->num_rows > 0){
+                    while($rowHD=$resultHD->fetch_assoc()){
+                        $findCalen = "SELECT * FROM lichbaove WHERE
+                        MaHD='".$rowHD['MaHD']."' AND Mssv='".$rowSV['Mssv']."'";
+                        $resultCalen = $conn->query($findCalen);
+                        if($resultCalen->num_rows > 0){
+                            $rowCalen=$resultCalen->fetch_assoc();
+                            if($rowCalen['BVLan2']!=null){
+                                $calen = "Lần 1: ".$rowCalen['BVLan1'].", lần 2:".$rowCalen['BVLan2'];
+                            }else
+                                $calen = "Lần 1: ".$rowCalen['BVLan1'];
+                        }else
+                            $calen = "Chưa có lịch bảo vệ ";
                     }
-                }else $calen = "Chưa có lịch báo cáo";
-                
+                }
                 //tìm điểm
-                if($row['DiemSo']==null){
+                if($row['DiemTB']==null){
                     $poin = "<ul><li>Chưa có kết quả</li></ul>";
                 }else{
                     $poin = "<ul>
-                    <li>Điểm số: ".$row['DiemSo']."</li>
+                    <li>Điểm tịch hội đồng: ".$row['DiemCTHD']."</li>
+                    <li>Điểm cán bộ hướng dẫn: ".$row['DiemCBHD']."</li>
+                    <li>Điểm giảng viên phản biện: ".$row['DiemPB']."</li>
+                    <li>Điểm trung bình: ".$row['DiemTB']."</li>
                     <li>Điểm chữ: ".$row['DiemChu']."</li>
                     </ul>";
                 }
                 
                 //nộp sản phẩm
-                $findSP = "SELECT * FROM nopbai WHERE MaLopHP='".$row['MaLopHP']."'
+                $findSP = "SELECT * FROM nopbailuanvan WHERE MaLopLV='".$row['MaLopLV']."'
                 and Loai=1";
                 $resultSP = $conn->query($findSP);
                 if ($resultSP->num_rows > 0){
@@ -85,10 +92,10 @@
                         $final = "Đang trong thời gian nộp";
                 }else
                     $final = "Giảng viên chưa tạo thư mục nộp";
-                echo "<h3 class='content-title'>".$row['MaLopHP']." - ".$row['TenLop']."</h3>";
+                echo "<h3 class='content-title'>".$row['MaLopLV']." - ".$row['TenLop']."</h3>";
                 echo "
                 <div class='content-body'>
-                    <a href='#' class='title-box link-topic'>1. Đăng ký đề tài</a>
+                    <a href='#' class='title-box link-topic'>1. Đề tài thực hiện</a>
                     <ul><li>Đề tài đã đăng ký: $topic</li></ul>
                     <div class='dec-line'></div>
                     <a href='#' class='title-box link-proces'>2. Tiến độ thực hiện</a>
@@ -101,7 +108,7 @@
                     echo "<ul><li>Tình trạng: $final</li></ul>
                     <div class='dec-line'></div>
                     <a href='#' class='title-box link-calen'>4. Lịch báo cáo</a>
-                    <ul><li>Lịch đã đăng ký: $calen</li></ul>
+                    <ul><li>Thời gian bảo vệ: $calen</li></ul>
                     <div class='dec-line'></div>
                     <a href='#' class='title-box link-scores'>5. Kết quả</a>
                     $poin
@@ -124,28 +131,28 @@
             
             $today = date("Y-m-d H:i:s");
             //đã từng vào lớp đó chưa nếu có cập nhật time mới
-            $check = "SELECT Id FROM lichsu_hocphan WHERE Mssv='".$rowSV['Mssv']."' and MaLopHP='$maLop'";
+            $check = "SELECT Id FROM lichsu_luanvan WHERE Mssv='".$rowSV['Mssv']."' and MaLopLV='$maLop'";
             $resultCheck = $conn->query($check);
             if($resultCheck->num_rows >0){
                 $rowCheck = $resultCheck->fetch_assoc();
-                $update = "UPDATE lichsu_hocphan SET ThoiGian='$today'
+                $update = "UPDATE lichsu_luanvan SET ThoiGian='$today'
                 WHERE Id=".$rowCheck['Id'];
                 if(mysqli_query($conn, $update))
                     return true;
             }else{
-                $count = "SELECT * FROM lichsu_hocphan WHERE Mssv='".$rowSV['Mssv']."'";
+                $count = "SELECT * FROM lichsu_luanvan WHERE Mssv='".$rowSV['Mssv']."'";
                 $resultCount = $conn->query($count);
                 //nếu chưa vào lớp đó và đã đủ slot lịch sử thì đổi lần vào củ nhất ngược lại thì thêm lịch sử mới
                 if ($resultCount->num_rows == 4){
-                    $findLast = "SELECT Id FROM lichsu_hocphan ORDER by ThoiGian desc LIMIT 1";
+                    $findLast = "SELECT Id FROM lichsu_luanvan ORDER by ThoiGian desc LIMIT 1";
                     $resultLast = $conn->query($findLast);
                     $rowLast = $resultLast->fetch_assoc();
-                    $update = "UPDATE lichsu_hocphan SET MaLopHP='$maLop', ThoiGian='$today'
+                    $update = "UPDATE lichsu_luanvan SET MaLopLV='$maLop', ThoiGian='$today'
                     WHERE Id=".$rowLast['Id'];
                     if(mysqli_query($conn, $update))
                         return true;
                 }else{
-                    $add = "INSERT INTO lichsu_hocphan(Mssv, MaLopHP, ThoiGian) 
+                    $add = "INSERT INTO lichsu_luanvan(Mssv, MaLopLV, ThoiGian) 
                     VALUES('".$rowSV['Mssv']."','$maLop','$today')";
                     if(mysqli_query($conn, $add))
                         return true;
@@ -154,8 +161,8 @@
         }
     }
     if(isset($_POST['id-title'])){
-        unset($_SESSION['id-process-thesis']);
-        $_SESSION['id-process'] = $_POST['id-title'];
+        unset($_SESSION['id-process']);
+        $_SESSION['id-process-thesis'] = $_POST['id-title'];
         echo 1;
     }
 ?>
