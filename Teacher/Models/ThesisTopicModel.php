@@ -98,10 +98,10 @@
                         if(mysqli_query($conn, $sql)){ 
                             echo 1;
                         } else{
-                            echo"<script type='text/javascript'> alert('Lỗi: ".mysqli_error($conn)."')</script>";
+                            mysqli_error($conn);
                         }
                     }else echo 3;
-                }
+                }else echo 4;
             }
         }
     }

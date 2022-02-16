@@ -116,6 +116,9 @@ function search(maLop){
             "lengthMenu": [ 5, 10, 15, 20, 25, 30, 40, 50 ],
             
         });
+        $(".paginate_button").click(function(){
+            submitDelete();
+        })
         submitDelete();
     })
 }

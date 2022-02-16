@@ -4,6 +4,19 @@
     global $conn;
     if (session_id() === '')
         session_start();
+    if(isset($_SESSION['login'])){
+        $data = $_SESSION['login'];
+        $findGV = "SELECT Loai FROM nguoidung WHERE TaiKhoan='$data'";
+        $resultGV = $conn->query($findGV);
+        if($resultGV->num_rows>0){
+            $rowGV = $resultGV->fetch_assoc();
+            if($rowGV['Loai']==2){
+                header("location: ../../Views/DashboardView/DashboardView.php");
+            }
+        }
+        
+    }
+    
     echo "<div>
     <form method='POST'>";
     echo "<select name='HKNH' class='dsHKNH'>";

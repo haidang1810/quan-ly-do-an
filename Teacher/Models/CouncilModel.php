@@ -23,9 +23,10 @@
                 echo "<td>".$rowPB['HoTen']."</td>";
 
                 echo "<td>";
-                echo "<form method='POST'>";
+                echo "<form method='POST'class='form-delete'>";
+                echo "<input type='hidden' name='deleteCouncil' value='".$rowHD['MaHD']."'>";
                 echo "<button class='btn_topic btn_primary' id='".$rowHD['MaHD'].",".$rowHD['ChuTich'].",".$rowHD['ThuKy'].",".$rowHD['PhanBien']."' type='button' onclick='showEditCouncil(this.id)'><i class='fas fa-edit'></i></button>";  
-                echo "<button class='btn_topic btn_danger' value='".$rowHD['MaHD']."' name='deleteCouncil' type='submit'><i class='fas fa-trash-alt'></i></button>";
+                echo "<button class='btn_topic btn_danger'  type='submit'><i class='fas fa-trash-alt'></i></button>";
                 echo "</form>";
                 echo "</td>";
 
@@ -41,13 +42,22 @@
             $sql = "INSERT INTO hoidong 
             VALUES('".$maHD."','".$CTHD."','".$CBHD."','".$GVPB."')";
             if(mysqli_query($conn, $sql)){ 
-                echo"<script type='text/javascript'>alert('Thêm hội đồng thành công');
-                </script>";
+                echo"
+            <script>
+                Swal.fire(
+                    'Đã thêm!',
+                    'Thêm hội đồng thành công.',
+                    'success'
+                )</script>";
             } else{
                 echo"<script type='text/javascript'> alert('".mysqli_error($conn)."')</script>";
             }
-        }else echo"<script type='text/javascript'>alert('Hội đồng đã tồn tại');
-        </script>";
+        }else echo "<script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi...',
+            text: 'Hội đồng đã tồn tại!'
+        })</script>";
         
         
     }
@@ -57,13 +67,24 @@
         if ($resultHD->num_rows > 0){
             $sql = "DELETE FROM hoidong WHERE MaHD='".$MaHD."'";
             if(mysqli_query($conn, $sql)){  
-                echo"<script type='text/javascript'> alert('Xoá hội đồng thành công')</script>";      
+                echo"
+            <script>
+                Swal.fire(
+                    'Đã xoá!',
+                    'Xoá hội đồng thành công.',
+                    'success'
+                )</script>";
             } else{
                 echo"<script type='text/javascript'> alert('".mysqli_error($conn)."')</script>";
             }
         }
         else
-            echo"<script type='text/javascript'> alert('Hội đồng không tồn tại')</script>";
+        echo "<script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi...',
+            text: 'Hội đồng đã tồn tại!'
+        })</script>";
     }
     function editCouncil($MaHD, $CTHD, $CBHD, $GVPB, $conn){
         $findHD = "SELECT * FROM hoidong WHERE MaHD='".$MaHD."'";
@@ -71,7 +92,14 @@
         if($resultHD->num_rows > 0){
             $sql = "UPDATE hoidong SET ChuTich='".$CTHD."', ThuKY='".$CBHD."', PhanBien='".$GVPB."' WHERE MaHD='".$MaHD."'";
             if(mysqli_query($conn, $sql))
-                echo"<script type='text/javascript'> alert('Cập nhật thành công')</script>";
+                
+            echo"
+            <script>
+                Swal.fire(
+                    'Đã lưu!',
+                    'Cập nhật hội đồng thành công.',
+                    'success'
+                )</script>";
             else
                 echo"<script type='text/javascript'> alert('".mysqli_error($conn)."')</script>";
         }      
@@ -114,10 +142,23 @@
             }
         }
         if(empty($error))
-            echo"<script type='text/javascript'> alert('Đã thêm thành công ".$success
-            ." đề tài')</script>";
-        else
-            echo"<script type='text/javascript'> alert('Đã thêm thành công ".$success
-            ." đề tài. \\nCác hàng bị lỗi: ".$error."')</script>";
+        echo"
+        <script>
+            Swal.fire(
+                'Đã lưu!',
+                'Bạn đã thêm thành công ".$success." đê tài.',
+                'success'
+            )
+        </script>";
+    else
+    echo"
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Đã thêm!',
+                text: 'Bạn đã thêm thành công ".$success." đê tài.',
+                footer: 'Các hàng bị lỗi: ".$error."'
+            })
+        </script>";
     }
 ?>

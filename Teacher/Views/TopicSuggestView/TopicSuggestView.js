@@ -119,5 +119,9 @@ function search(maLop){
         });
         suggest();
         refuse()
+        $(".paginate_button").click(function(){
+            suggest();
+            refuse()
+        })
     })
 }

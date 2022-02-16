@@ -90,6 +90,9 @@ function search(maLop){
             "lengthMenu": [ 5, 10],
         });
         submitDelete();
+        $(".paginate_button").click(function(){
+            submitDelete();
+        })
     })
 }
 $(".btn-add-calen").click(function(){

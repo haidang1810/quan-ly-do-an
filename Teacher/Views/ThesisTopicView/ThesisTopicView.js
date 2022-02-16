@@ -1,10 +1,3 @@
-function ConfirmSuggest(){
-    var x = confirm("Bạn có chắc muốn duyệt đề tài này?");
-    if (x)
-        return true;
-    else
-        return false;
-}
 function showAddTopic() {
     document.querySelector('.modal').style.visibility = 'visible';
     document.querySelector('.modal').style.opacity = '1';
@@ -109,6 +102,9 @@ function search(maLop){
             "lengthMenu": [ 5, 10, 15, 20, 25, 30, 40, 50 ],
         });
         submitDelete();
+        $(".paginate_button").click(function(){
+            submitDelete();
+        })
     })
 }
 $(".btn-add-topic").click(function(){
