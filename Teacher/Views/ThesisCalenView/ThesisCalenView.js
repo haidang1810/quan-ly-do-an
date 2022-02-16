@@ -6,8 +6,8 @@ function showEditCalen(value){
     if(data.length>1){               
         if(data[0]!=null)
             document.getElementById('editMaLich').value = data[0];
-            $('#editMaHD').val(data[1]).change();
-            $('#editMaHD').trigger("chosen:updated");
+        $('#editMaHD').val(data[1]).change();
+        $('#editMaHD').trigger("chosen:updated");
         if(data[2]!=null){
             var lan1 = data[2].replace(" ","T");
             document.getElementById('editLan1').value = lan1;
@@ -22,7 +22,7 @@ function showEditCalen(value){
     }else{
         document.getElementById('editMaLich').value = "";
         document.getElementById('editMssv').value = value;
-        $('#editMaHD').val("").change();
+        $('#editMaHD').val("-1").change();
         $('#editMaHD').trigger("chosen:updated");
         $('#editLan1').val("mm/dd/yyyy --:-- --");
         $('#editLan2').val("mm/dd/yyyy --:-- --");
@@ -71,4 +71,122 @@ $(document).ready(function(){
             $('.dsLop').trigger("chosen:updated");
         })
     })
+})
+$(window).on('load',function(){
+    $(".button_search").click(function(){
+        let maLop = $(".dsLop").val();
+        if(maLop!=-1){
+            search(maLop);
+            loadHD(maLop);
+        }
+        
+    })
+    
+})
+function loadHD(maLop){
+    $.post("../../Models/ThesisCalenModel.php",{
+        'loadHD': maLop
+    },function(data){
+        $("#editMaHD").html(data);
+        $(".calen_select_Add").chosen({
+            allow_single_deselect: true,
+            no_results_text: "Không tìm thấy kết quả :",
+            width: "70%"
+        });
+        console.log(data);
+    })
+    console.log("load hd dc goi");
+}
+function search(maLop){
+    $.post("../../Models/ThesisCalenModel.php",{
+        'search': maLop
+    },function(data){
+        $(".table").html(data);
+        $('#tableCalen').DataTable({
+            "lengthMenu": [ 5, 10, 15, 20, 25, 30, 40, 50 ]
+        });
+    })
+}
+$(".btn-save-calen").click(function(){
+    let maLop = $(".dsLop").val();
+    let maLich = $("#editMaLich").val();
+    let mssv = $("#editMssv").val();
+    let maHD = $("#editMaHD").val();
+    let lan1 = $("#editLan1").val();
+    let lan2 = $("#editLan2").val();
+    if(maLop==-1){
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi...',
+            text: 'Chưa chọn lớp học phần!'
+        })
+        return;
+    }
+    if(maHD==-1){
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi...',
+            text: 'Chưa chọn hội đồng!'
+        })
+        return;
+    }
+    if(lan1==""){
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi...',
+            text: 'Chưa nhập thời gian bảo vệ lần 1!'
+        })
+        return;
+    }
+    if(maLich!=''){
+        $.post("../../Models/ThesisCalenModel.php",{
+            'edit': "editCalen",
+            'maLich': maLich,
+            'maHD': maHD,
+            'lan1': lan1,
+            'lan2': lan2,
+        },function(data){
+            if(data==1){
+                Swal.fire(
+                    'Đã cập nhật!',
+                    'Bạn đã cập nhật lịch bảo vệ thành công.',
+                    'success'
+                )
+                search(maLop);
+                document.querySelector('.modal').style.visibility = 'hidden';
+                document.querySelector('.modal').style.opacity = '0';
+            }else{
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi...',
+                    text: data
+                })
+            }
+        })
+    }else{
+        $.post("../../Models/ThesisCalenModel.php",{
+            'add': "addCalen",
+            'maHD': maHD,
+            'mssv': mssv,
+            'lan1': lan1,
+        },function(data){
+            if(data==1){
+                Swal.fire(
+                    'Đã cập nhật!',
+                    'Bạn đã xếp lịch bảo vệ thành công.',
+                    'success'
+                )
+                search(maLop);
+                document.querySelector('.modal').style.visibility = 'hidden';
+                document.querySelector('.modal').style.opacity = '0';
+            }else{
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi...',
+                    text: data
+                })
+            }
+        })
+    }
+    
 })
