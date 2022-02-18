@@ -169,6 +169,7 @@
             <option value='Cử nhân'>Cử nhân</option>
             <option value='Thạc sĩ'>Thạc sĩ</option>
             <option value='Tiến sĩ'>Tiến sĩ</option>
+            <option value='Cao học'>Cao học</option>
         </select>
         <div class='form_field'>
             <input type='date' name='NamSinh' class='form_input'>

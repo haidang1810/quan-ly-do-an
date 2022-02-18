@@ -94,26 +94,33 @@ function onChecked(id){
 		changeCheckbox(false);
 	}
 }
-var form = document.getElementsByClassName("form-cancel");
-for(i=0;i<form.length;i++){
-    form[i].addEventListener('submit', function(e){
-        e.preventDefault();    
-        Swal.fire({
-            title: 'Xác nhận huỷ',
-            text: "Bạn có chắc muốn huỷ đề tài!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Đồng ý!',
-			cancelButtonText: 'Huỷ'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                this.submit();            
-            }
-        })
-    })
+submitCancel();
+$(".paginate_button").click(function(){
+	submitCancel();
+})
+function submitCancel(){
+	var form = document.getElementsByClassName("form-cancel");
+	for(i=0;i<form.length;i++){
+		form[i].addEventListener('submit', function(e){
+			e.preventDefault();    
+			Swal.fire({
+				title: 'Xác nhận huỷ',
+				text: "Bạn có chắc muốn huỷ đề tài!",
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Đồng ý!',
+				cancelButtonText: 'Huỷ'
+			}).then((result) => {
+				if (result.isConfirmed) {
+					this.submit();            
+				}
+			})
+		})
+	}
 }
+
 
 $(window).on('load',function () {
 	$(".modal__button__submit").click(function(){

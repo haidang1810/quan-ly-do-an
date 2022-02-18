@@ -158,7 +158,7 @@
                     continue;
                 }
 
-                if($hocVi!="Thạc sĩ" && $hocVi!="Cử nhân" && $hocVi!="Tiến sĩ"){
+                if($hocVi!="Thạc sĩ" && $hocVi!="Cử nhân" && $hocVi!="Tiến sĩ" && $hocVi!="Cao học"){
                     $error.=$i." ";
                     continue;
                 }
@@ -217,7 +217,7 @@
                     $error.=$i." ";
                     continue;
                 }
-                if($hocVi!="Thạc sĩ" && $hocVi!="Cử nhân" && $hocVi!="Tiến sĩ"){
+                if($hocVi!="Thạc sĩ" && $hocVi!="Cử nhân" && $hocVi!="Tiến sĩ" && $hocVi!="Cao học"){
                     $error.=$i." ";
                     continue;
                 }

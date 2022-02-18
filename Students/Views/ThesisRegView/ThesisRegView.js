@@ -12,6 +12,9 @@ function loadData(id,mssv){
             });
             //event form submit
             eventSubmitForm();
+            $(".paginate_button").click(function(){
+                eventSubmitForm();
+            })
         }else{
             var content = "<h4>Không có lớp trong học kỳ này</h4>"
             $(".table-class").html(content);
