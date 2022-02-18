@@ -33,7 +33,6 @@
     echo "<tr>";
     echo "<th>Mã lớp</th>";
     echo "<th>Tên lớp</th>";
-    echo "<th>Thông tin</th>";
     echo "<th>Giảng viên</th>";
     echo "<th>Thao tác</th>";
     echo "</tr>";
@@ -50,62 +49,40 @@
     if(isset($_POST['addClass'])){
         if(!empty($_POST['MaLopLV']))
             if(!empty($_POST['TenLop']))
-                if(!empty($_POST['TuanBD']))
-                    if(!empty($_POST['TuanKT']))
-                        if(!empty($_POST['MaGV'])){
-                            if(isset($_SESSION['HKNH']) && !empty($_SESSION['HKNH'])){
-                                $maLop = $_POST['MaLopLV'];
-                                $tenLop = $_POST['TenLop'];
-                                $tuanBD = $_POST['TuanBD'];
-                                $tuanKT = $_POST['TuanKT'];
-                                $maGV = $_POST['MaGV'];
-                                if($tuanKT-$tuanBD<=17){
-                                    addClass($conn,$maLop,$tenLop,$tuanBD,$tuanKT,$maGV,$_SESSION['HKNH']);
-                                    loadLopHP($conn,$_SESSION['HKNH']);
-                                }else echo "
-                                <script>
-                                    Swal.fire({
-                                        icon: 'error',
-                                        title: 'Lỗi...',
-                                        text: 'Thời gian học quá lớn!'
-                                    })
-                                </script>
-                                ";
-                            }else echo "
-                            <script>
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Lỗi...',
-                                    text: 'Chưa chọn học kỳ!'
-                                })
-                            </script>
-                            ";
+                if(!empty($_POST['MaGV'])){
+                    if(isset($_SESSION['HKNH']) && !empty($_SESSION['HKNH'])){
+                        $maLop = $_POST['MaLopLV'];
+                        $tenLop = $_POST['TenLop'];
+                        $maGV = $_POST['MaGV'];
+                        if($tuanKT-$tuanBD<=17){
+                            addClass($conn,$maLop,$tenLop,$maGV,$_SESSION['HKNH']);
+                            loadLopHP($conn,$_SESSION['HKNH']);
                         }else echo "
                         <script>
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Lỗi...',
-                                text: 'Chưa chọn giảng viên!'
+                                text: 'Thời gian học quá lớn!'
                             })
                         </script>
                         ";
-                    else echo "
-                        <script>
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Lỗi...',
-                                text: 'Chưa nhập tuần kết thúc!'
-                            })
-                        </script>
-                    ";
-                else echo "
+                    }else echo "
                     <script>
                         Swal.fire({
                             icon: 'error',
                             title: 'Lỗi...',
-                            text: 'Chưa nhập tuần bắt đầu!'
+                            text: 'Chưa chọn học kỳ!'
                         })
                     </script>
+                    ";
+                }else echo "
+                <script>
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi...',
+                        text: 'Chưa chọn giảng viên!'
+                    })
+                </script>
                 ";
             else echo "
                 <script>
@@ -130,50 +107,28 @@
     if(isset($_POST['editClass'])){
         if(!empty($_POST['MaLop']))
             if(!empty($_POST['TenLop']))
-                if(!empty($_POST['TuanBD']))
-                    if(!empty($_POST['TuanKT']))
-                        if(!empty($_POST['MaGV'])){
-                            $maLop = $_POST['MaLop'];
-                            $tenLop = $_POST['TenLop'];
-                            $tuanBD = $_POST['TuanBD'];
-                            $tuanKT = $_POST['TuanKT'];
-                            $maGV = $_POST['MaGV'];
-                            if($tuanKT-$tuanBD<=17){
-                                editClass($conn,$maLop,$tenLop,$tuanBD,$tuanKT,$maGV);
-                                loadLopHP($conn,$_SESSION['HKNH']);
-                            }else echo "
-                            <script>
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Lỗi...',
-                                    text: 'Thời gian học quá lớn!'
-                                })
-                            </script>
-                            ";
-                        }else echo "
-                        <script>
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Lỗi...',
-                                text: 'Chưa chọn giảng viên!'
-                            })
-                        </script>
-                        ";
-                    else echo "
+                if(!empty($_POST['MaGV'])){
+                    $maLop = $_POST['MaLop'];
+                    $tenLop = $_POST['TenLop'];
+                    $maGV = $_POST['MaGV'];
+                    if($tuanKT-$tuanBD<=17){
+                        editClass($conn,$maLop,$tenLop,$maGV);
+                        loadLopHP($conn,$_SESSION['HKNH']);
+                    }else echo "
                     <script>
                         Swal.fire({
                             icon: 'error',
                             title: 'Lỗi...',
-                            text: 'Chưa nhập tuần kết thúc!'
+                            text: 'Thời gian học quá lớn!'
                         })
                     </script>
                     ";
-                else echo "
+                }else echo "
                 <script>
                     Swal.fire({
                         icon: 'error',
                         title: 'Lỗi...',
-                        text: 'Chưa nhập tuần bắt đầu!'
+                        text: 'Chưa chọn giảng viên!'
                     })
                 </script>
                 ";

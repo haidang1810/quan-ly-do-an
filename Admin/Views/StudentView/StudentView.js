@@ -29,17 +29,7 @@ function showEdit(value){
     if(data[1]!=null)
         document.getElementById('editHoten').value = data[1];    
     if(data[2]!=null)
-        document.getElementById('editGmail').value = "@"+mail[1];    
-    if(data[3]!=null)
-        document.getElementById('editNamSinh').value = data[3];
-    if(data[4]!=null)
-        document.getElementById('editSDT').value = data[4];
-    if(data[5]!=null)
-        document.getElementById('editDiaChi').value = data[5];
-    if(data[6]!=null)
-        document.getElementById('editKhoa').value = data[6];
-    if(data[7]!=null)
-        document.getElementById('editLop').value = data[7];
+        document.getElementById('editGmail').value = "@"+mail[1]; 
 
     document.querySelector('.form_edit_Stu').style.display = 'block';
 }

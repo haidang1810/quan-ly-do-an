@@ -28,12 +28,6 @@
                 echo "<tr>";
                 echo "<td>".$rowLop['MaLopHP']." </td>";
                 echo "<td>".$rowLop['TenLop']." </td>";
-                echo "<td>";
-                echo "<ul>";
-                echo "<li><b>Tuần bắt đầu:</b> ".$rowLop['TuanBD']."</li>";
-                echo "<li><b>Tuần kết thúc:</b> ".$rowLop['TuanKT']."</li>";
-                echo "</ul>";
-                echo "</td>";
                 if($resultGV->num_rows > 0){
                     $rowGV = $resultGV->fetch_assoc();
                     echo "<td><a id='".$rowGV['MaGV'].",".$rowGV['HoTen'].",".$rowGV['NamSinh']
@@ -72,7 +66,7 @@
         }        
     }
     
-    function addClass($conn,$maLop,$tenLop,$tuanBD,$tuanKT,$maGV,$hknh){
+    function addClass($conn,$maLop,$tenLop,$maGV,$hknh){
         $checkHK = "SELECT TrangThai FROM hocky_namhoc WHERE Id=".$hknh;
         $resultHK = $conn->query($checkHK);
         $rowHK = $resultHK->fetch_assoc();
@@ -90,8 +84,7 @@
             $findLop = "SELECT * FROM lophocphan WHERE MaLopHP='".$maLop."'";
             $resultLop = $conn->query($findLop);
             if($resultLop->num_rows <= 0){
-                $sql = "INSERT INTO lophocphan VALUES('".$maLop."','".$tenLop."','".$tuanBD
-                ."','".$tuanKT."','".$maGV."',".$hknh.")";
+                $sql = "INSERT INTO lophocphan VALUES('".$maLop."','".$tenLop."','".$maGV."',".$hknh.")";
                 if(mysqli_query($conn, $sql)){
                     echo"
                     <script>
@@ -115,12 +108,11 @@
             ";
         }
     }
-    function editClass($conn,$maLop,$tenLop,$tuanBD,$tuanKT,$maGV){
+    function editClass($conn,$maLop,$tenLop,$maGV){
         $findLop = "SELECT * FROM lophocphan WHERE MaLopHP='".$maLop."'";
         $resultLop = $conn->query($findLop);
         if($resultLop->num_rows > 0){
-            $sql = "UPDATE lophocphan SET TenLop='".$tenLop."', TuanBD=".$tuanBD
-            .", TuanKT=".$tuanKT.", MaGV='".$maGV."' WHERE MaLopHP='".$maLop."'";
+            $sql = "UPDATE lophocphan SET TenLop='".$tenLop."', MaGV='".$maGV."' WHERE MaLopHP='".$maLop."'";
             if(mysqli_query($conn, $sql)){
                 echo"
                     <script>
@@ -196,28 +188,18 @@
             for($i=2;$i<=$lastRow;$i++){
                 $maLopHP = $sheetData[$i]['A'];
                 $tenLop = $sheetData[$i]['B'];
-                $tuanBD = $sheetData[$i]['C'];
-                $tuanKT = $sheetData[$i]['D'];
-                if(!is_numeric($tuanBD)||!is_numeric($tuanKT)){
+                if($maLopHP=='null'||$tenLop=='null'){
                     $error.=$i." ";
                     continue;
                 }
-                if((int)$tuanKT-(int)$tuanBD>17){
-                    $error.=$i." ";
-                    continue;
-                }
-                if($maLopHP=='null'||$tenLop=='null'||$tuanBD=='null'||$tuanKT=='null'){
-                    $error.=$i." ";
-                    continue;
-                }
-                if($maLopHP=='null'&&$tenLop=='null'&&$tuanBD=='null'&&$tuanKT=='null'){
+                if($maLopHP=='null'&&$tenLop=='null'){
                     continue;
                 }
                 $findLop = "SELECT * FROM lophocphan WHERE MaLopHP='".$maLopHP."'";
                 $resultLop = $conn->query($findLop);
                 if($resultLop->num_rows <= 0){
-                    $sql = "INSERT INTO lophocphan(MaLopHP,TenLop,TuanBD,TuanKT,Id_hknh) VALUES('".
-                    $maLopHP."','".$tenLop."',".$tuanBD.",".$tuanKT.",".$hknh.")";
+                    $sql = "INSERT INTO lophocphan(MaLopHP,TenLop,Id_hknh) VALUES('".
+                    $maLopHP."','".$tenLop."',".$hknh.")";
                     if(mysqli_query($conn, $sql)){
                         $success++;
                     }else{

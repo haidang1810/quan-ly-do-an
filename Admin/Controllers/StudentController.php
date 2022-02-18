@@ -23,11 +23,6 @@
     echo "<th>Mssv</th>";
     echo "<th>Họ Tên</th>";
     echo "<th>Gmail</th>";
-    echo "<th>Năm sinh</th>";
-    echo "<th>Số điện thoại</th>";
-    echo "<th>Địa chỉ</th>";
-    echo "<th>Khoá</th>";
-    echo "<th>Lớp</th>";
     echo "<th>Thao tác</th>";
     echo "</tr>";
     echo "</thead>";
@@ -38,27 +33,13 @@
     if(isset($_POST['editStudent'])){
         if(!empty($_POST['Mssv']))
             if(!empty($_POST['Hoten']))
-                if(!empty($_POST['Gmail']))
-                    if(!empty($_POST['NamSinh']))
-                        if(!empty($_POST['SDT']))
-                            if(!empty($_POST['DiaChi']))
-                                if(!empty($_POST['Khoa']))
-                                    if(!empty($_POST['Lop'])){
-                                        $mssv = $_POST['Mssv'];
-                                        $hoTen = $_POST['Hoten'];
-                                        $gmail = $_POST['Gmail'];
-                                        $namSinh = $_POST['NamSinh'];
-                                        $SDT = $_POST['SDT'];
-                                        $diaChi = $_POST['DiaChi'];
-                                        $khoa = $_POST['Khoa'];
-                                        $lop = $_POST['Lop'];
-                                        editStudent($conn,$mssv,$hoTen,$gmail,$namSinh,$SDT,$diaChi,$khoa,$lop);
-                                        loadStudent($conn);
-                                    }else echo"<script type='text/javascript'> alert('Chưa nhập lớp')</script>";
-                                else echo"<script type='text/javascript'> alert('Chưa nhập khoá')</script>";
-                            else echo"<script type='text/javascript'> alert('Chưa nhập địa chỉ')</script>";
-                        else echo"<script type='text/javascript'> alert('Chưa nhập số điện thoại')</script>";
-                    else echo"<script type='text/javascript'> alert('Chưa nhập năm sinh')</script>";    
+                if(!empty($_POST['Gmail'])){
+                    $mssv = $_POST['Mssv'];
+                    $hoTen = $_POST['Hoten'];
+                    $gmail = $_POST['Gmail'];
+                    editStudent($conn,$mssv,$hoTen,$gmail);
+                    loadStudent($conn);
+                }  
                 else echo"<script type='text/javascript'> alert('Chưa nhập gmail')</script>";            
             else echo"<script type='text/javascript'> alert('Chưa nhập họ và tên')</script>";
         else echo"<script type='text/javascript'> alert('Lỗi chưa chọn sinh viên vui lòng thử lại')</script>";   
@@ -77,30 +58,16 @@
     if(isset($_POST['addStudent'])){
         if(!empty($_POST['Mssv']))
             if(!empty($_POST['Hoten']))
-                if(!empty($_POST['Gmail']))
-                    if(!empty($_POST['NamSinh']))
-                        if(!empty($_POST['SDT']))
-                            if(!empty($_POST['DiaChi']))
-                                if(!empty($_POST['Khoa']))
-                                    if(!empty($_POST['Lop'])){
-                                        $mssv = $_POST['Mssv'];
-                                        $hoTen = $_POST['Hoten'];
-                                        $gmail = $_POST['Gmail'];
-                                        $namSinh = $_POST['NamSinh'];
-                                        $SDT = $_POST['SDT'];
-                                        $diaChi = $_POST['DiaChi'];
-                                        $khoa = $_POST['Khoa'];
-                                        $lop = $_POST['Lop'];
-                                        if(isset($_POST['autoAcc']))
-                                            addStu($conn,$mssv,$hoTen,$gmail,$namSinh,$SDT,$diaChi,$khoa,$lop,true);
-                                        else 
-                                            addStu($conn,$mssv,$hoTen,$gmail,$namSinh,$SDT,$diaChi,$khoa,$lop,false);
-                                        loadStudent($conn);
-                                    }else echo"<script type='text/javascript'> alert('Chưa nhập lớp')</script>";
-                                else echo"<script type='text/javascript'> alert('Chưa nhập khoá')</script>";
-                            else echo"<script type='text/javascript'> alert('Chưa nhập địa chỉ')</script>";
-                        else echo"<script type='text/javascript'> alert('Chưa nhập số điện thoại')</script>";
-                    else echo"<script type='text/javascript'> alert('Chưa nhập năm sinh')</script>"; 
+                if(!empty($_POST['Gmail'])){
+                    $mssv = $_POST['Mssv'];
+                    $hoTen = $_POST['Hoten'];
+                    $gmail = $_POST['Gmail'];
+                    if(isset($_POST['autoAcc']))
+                        addStu($conn,$mssv,$hoTen,$gmail,true);
+                    else 
+                        addStu($conn,$mssv,$hoTen,$gmail,false);
+                    loadStudent($conn);
+                }
                 else echo"<script type='text/javascript'> alert('Chưa nhập gmail')</script>";         
             else echo"<script type='text/javascript'> alert('Chưa nhập họ và tên')</script>";
         else echo"<script type='text/javascript'> alert('Chưa nhập mssv')</script>";
@@ -146,26 +113,6 @@
             <input type='text' id='editGmail' name='Gmail' class='form_input'>
             <label for='mail' class='form_label'>Gmail</label>
         </div>
-        <div class='form_field'>
-            <input type='date' name='NamSinh' id='editNamSinh' class='form_input'>
-            <label for='ns' class='form_label'>Năm sinh</label>
-        </div>
-        <div class='form_field'>
-            <input type='number' name='SDT' id='editSDT' class='form_input'>
-            <label for='sdt' class='form_label'>Số điện thoại</label>
-        </div>
-        <div class='form_field'>
-            <input type='text' name='DiaChi' id='editDiaChi' class='form_input'>
-            <label for='diaChi' class='form_label'>Địa chỉ</label>
-        </div>
-        <div class='form_field'>
-            <input type='text' name='Khoa' id='editKhoa' class='form_input'>
-            <label for='khoa' class='form_label'>Khoá</label>
-        </div>
-        <div class='form_field'>
-            <input type='text' name='Lop' id='editLop' class='form_input'>
-            <label for='Ms' class='form_label'>Lớp</label>
-        </div>
         <input type='submit' name='editStudent' value='Lưu'> 
     </form>
 </div> ";
@@ -183,26 +130,6 @@
         <div class='form_field'>
             <input type='text' name='Gmail' class='form_input' placeholder='Nhập tên miền. Vd: @gmail.com'>
             <label for='mail' class='form_label'>Gmail</label>
-        </div>
-        <div class='form_field'>
-            <input type='date' name='NamSinh' class='form_input'>
-            <label for='ns' class='form_label'>Năm sinh</label>
-        </div>
-        <div class='form_field'>
-            <input type='number' name='SDT' class='form_input'>
-            <label for='sdt' class='form_label'>Số điện thoại</label>
-        </div>
-        <div class='form_field'>
-            <input type='text' name='DiaChi' class='form_input'>
-            <label for='diaChi' class='form_label'>Địa chỉ</label>
-        </div>
-        <div class='form_field'>
-            <input type='text' name='Khoa' class='form_input'>
-            <label for='khoa' class='form_label'>Khoá</label>
-        </div>
-        <div class='form_field'>
-            <input type='text' name='Lop' class='form_input'>
-            <label for='Ms' class='form_label'>Lớp</label>
         </div>
         <input type='checkbox' name='autoAcc' id='autoAcc_add' checked='checked'>
         <label for='autoAcc_add'>Tự động tạo tài khoản cho sinh viên</label>

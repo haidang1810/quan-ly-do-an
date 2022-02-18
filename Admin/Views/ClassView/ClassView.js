@@ -36,9 +36,7 @@ function showEditClass(value) {
     
     document.getElementById('editMaLop').value = data[0];
     document.getElementById('editTen').value = data[1];
-    document.getElementById('editTuanBD').value = data[2];
-    document.getElementById('editTuanKT').value = data[3];
-    $('#editGV').val(data[4]).change();
+    $('#editGV').val(data[2]).change();
     $('#editGV').trigger("chosen:updated");
 }
 document.querySelector('.close_edit').addEventListener('click',

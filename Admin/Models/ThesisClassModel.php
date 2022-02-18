@@ -25,12 +25,6 @@
                 echo "<tr>";
                 echo "<td>".$rowLop['MaLopLV']." </td>";
                 echo "<td>".$rowLop['TenLop']." </td>";
-                echo "<td>";
-                echo "<ul>";
-                echo "<li><b>Tuần bắt đầu:</b> ".$rowLop['TuanBD']."</li>";
-                echo "<li><b>Tuần kết thúc:</b> ".$rowLop['TuanKT']."</li>";
-                echo "</ul>";
-                echo "</td>";
                 if($resultGV->num_rows > 0){
                     $rowGV = $resultGV->fetch_assoc();
                     echo "<td><a id='".$rowGV['MaGV'].",".$rowGV['HoTen'].",".$rowGV['NamSinh']
@@ -51,8 +45,7 @@
                     $resultSV = $conn->query($findSV);
                     if($resultSV->num_rows <= 0 && $rowHK['TrangThai']==1){
                         echo "<button class='btn_class btn_primary' id='".$rowLop['MaLopLV']
-                        .",".$rowLop['TenLop'].",".$rowLop['TuanBD'].",".$rowLop['TuanKT']
-                        .",".$rowLop['MaGV']."' type='button' onclick='showEditClass(this.id)'>";
+                        .",".$rowLop['TenLop'].",".$rowLop['MaGV']."' type='button' onclick='showEditClass(this.id)'>";
                         echo "<i class='fas fa-edit'></i>";
                         echo "</button>";
                         echo "<input type='hidden' value='".$rowLop['MaLopLV']."' name='id-delete'>";
@@ -69,7 +62,7 @@
         }        
     }
     
-    function addClass($conn,$maLop,$tenLop,$tuanBD,$tuanKT,$maGV,$hknh){
+    function addClass($conn,$maLop,$tenLop,$maGV,$hknh){
         $checkHK = "SELECT TrangThai FROM hocky_namhoc WHERE Id=".$hknh;
         $resultHK = $conn->query($checkHK);
         $rowHK = $resultHK->fetch_assoc();
@@ -87,8 +80,7 @@
             $findLop = "SELECT * FROM lopluanvan WHERE MaLopLV='".$maLop."'";
             $resultLop = $conn->query($findLop);
             if($resultLop->num_rows <= 0){
-                $sql = "INSERT INTO lopluanvan VALUES('".$maLop."','".$tenLop."','".$tuanBD
-                ."','".$tuanKT."','".$maGV."',".$hknh.")";
+                $sql = "INSERT INTO lopluanvan VALUES('".$maLop."','".$tenLop."','".$maGV."',".$hknh.")";
                 if(mysqli_query($conn, $sql)){
                     echo"
                     <script>
@@ -112,12 +104,11 @@
             ";
         }
     }
-    function editClass($conn,$maLop,$tenLop,$tuanBD,$tuanKT,$maGV){
+    function editClass($conn,$maLop,$tenLop,$maGV){
         $findLop = "SELECT * FROM lopluanvan WHERE MaLopLV='".$maLop."'";
         $resultLop = $conn->query($findLop);
         if($resultLop->num_rows > 0){
-            $sql = "UPDATE lopluanvan SET TenLop='".$tenLop."', TuanBD=".$tuanBD
-            .", TuanKT=".$tuanKT.", MaGV='".$maGV."' WHERE MaLopLV='".$maLop."'";
+            $sql = "UPDATE lopluanvan SET TenLop='".$tenLop."', MaGV='".$maGV."' WHERE MaLopLV='".$maLop."'";
             if(mysqli_query($conn, $sql)){
                 echo"
                     <script>
@@ -193,28 +184,18 @@
             for($i=2;$i<=$lastRow;$i++){
                 $MaLopLV = $sheetData[$i]['A'];
                 $tenLop = $sheetData[$i]['B'];
-                $tuanBD = $sheetData[$i]['C'];
-                $tuanKT = $sheetData[$i]['D'];
-                if(!is_numeric($tuanBD)||!is_numeric($tuanKT)){
+                if($MaLopLV=='null'||$tenLop=='null'){
                     $error.=$i." ";
                     continue;
                 }
-                if((int)$tuanKT-(int)$tuanBD>17){
-                    $error.=$i." ";
-                    continue;
-                }
-                if($MaLopLV=='null'||$tenLop=='null'||$tuanBD=='null'||$tuanKT=='null'){
-                    $error.=$i." ";
-                    continue;
-                }
-                if($MaLopLV=='null'&&$tenLop=='null'&&$tuanBD=='null'&&$tuanKT=='null'){
+                if($MaLopLV=='null'&&$tenLop=='null'){
                     continue;
                 }
                 $findLop = "SELECT * FROM lopluanvan WHERE MaLopLV='".$MaLopLV."'";
                 $resultLop = $conn->query($findLop);
                 if($resultLop->num_rows <= 0){
                     $sql = "INSERT INTO lopluanvan(MaLopLV,TenLop,TuanBD,TuanKT,Id_hknh) VALUES('".
-                    $MaLopLV."','".$tenLop."',".$tuanBD.",".$tuanKT.",".$hknh.")";
+                    $MaLopLV."','".$tenLop."',".$hknh.")";
                     if(mysqli_query($conn, $sql)){
                         $success++;
                     }else{

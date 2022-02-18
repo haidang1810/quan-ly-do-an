@@ -1,6 +1,6 @@
 <?php
     require '../../../public/validator/vendor/autoload.php';
-    use SMTPValidateEmail\Validator as SmtpEmailValidator;
+    //use SMTPValidateEmail\Validator as SmtpEmailValidator;
     if (session_id() === '')
         session_start();
     function loadStudent($conn){
@@ -12,15 +12,9 @@
                 echo "<td>".$row['Mssv']."</td>";
                 echo "<td>".$row['HoTen']."</td>";
                 echo "<td>".$row['Gmail']."</td>";
-                echo "<td>".$row['NamSinh']."</td>";
-                echo "<td>".$row['SDT']."</td>";
-                echo "<td>".$row['DiaChi']."</td>";
-                echo "<td>".$row['Khoa']."</td>";
-                echo "<td>".$row['LOP']."</td>";
                 echo "<td>";
                 echo "<button class='btn_student btn_primary' id='";
-                echo $row['Mssv'].",".$row['HoTen'].",".$row['Gmail'].",".$row['NamSinh'].",".
-                $row['SDT'].",".$row['DiaChi'].",".$row['Khoa'].",".$row['LOP'];
+                echo $row['Mssv'].",".$row['HoTen'].",".$row['Gmail'];
                 echo "' onclick='showEdit(this.id)' type='button'>";
                 echo "<i class='fas fa-edit'></i>";  
                 echo "</button>";                
@@ -36,7 +30,7 @@
             }            
         }
     }
-    function editStudent($conn,$mssv,$hoTen,$gmail,$namSinh,$SDT,$diaChi,$khoa,$lop){
+    function editStudent($conn,$mssv,$hoTen,$gmail){
         $findSV = "SELECT * FROM sinhvien WHERE Mssv='".$mssv."'";
         $resultSV = $conn->query($findSV);
         $temp = explode("@", $gmail);
@@ -49,31 +43,9 @@
             })</script>";
             return;
         }
-        $today = date('Y-m-d');
-        $toYear = getdate(strtotime($today));
-        $birth = getdate(strtotime($namSinh));
-        if($toYear['year']-$birth['year']<18){
-            echo "<script>
-            Swal.fire({
-                icon: 'error',
-                title: 'Lỗi...',
-                text: 'Năm sinh sai. Tuổi sinh viên phải lớn hơn bằng 18!'
-            })</script>";
-            return;
-        }
-        $checkPhone = preg_match( '/^0(\d{9}|9\d{8})$/', $SDT );
-        if(!$checkPhone){
-            echo "<script>
-            Swal.fire({
-                icon: 'error',
-                title: 'Lỗi...',
-                text: 'Số điện thoại sai định dạng!'
-            })</script>";
-            return;
-        }
+        
         if($resultSV->num_rows > 0){
-            $sql = "UPDATE sinhvien SET HoTen='".$hoTen."', NamSinh='".$namSinh."',Gmail='".$mssv.$gmail."'".
-            ", SDT='".$SDT."', DiaChi='".$diaChi."', Khoa='".$khoa."', LOP='".$lop."' WHERE Mssv='".$mssv."'";
+            $sql = "UPDATE sinhvien SET HoTen='".$hoTen."', Gmail='".$mssv.$gmail."' WHERE Mssv='".$mssv."'";
             if(mysqli_query($conn, $sql)){
                 echo "<script>
                 Swal.fire(
@@ -105,18 +77,11 @@
                 $mssv = $sheetData[$i]['A'];
                 $hoTen = $sheetData[$i]['B'];
                 $gmail = $sheetData[$i]['C'];
-                $namSinh = $sheetData[$i]['D'];
-                $SDT = $sheetData[$i]['E'];
-                $diaChi = $sheetData[$i]['F'];
-                $khoa = $sheetData[$i]['G'];
-                $lop = $sheetData[$i]['H'];
                 
-                if($mssv=='null'&&$hoTen=='null'&&$gmail=='null'&&$namSinh=='null'
-                &&$SDT=='null'&&$diaChi=='null'&&$khoa=='null'&&$lop=='null'){
+                if($mssv=='null'&&$hoTen=='null'&&$gmail=='null'){
                     continue;
                 }
-                if($mssv=='null'||$hoTen=='null'||$gmail=='null'||$namSinh=='null'
-                ||$SDT=='null'||$diaChi=='null'||$khoa=='null'||$lop=='null'){
+                if($mssv=='null'||$hoTen=='null'||$gmail=='null'){
                     $error.=$i." ";
                     continue;
                 }
@@ -136,25 +101,13 @@
                     $error.=$i." ";
                     continue;
                 }
-                $today = date('Y-m-d');
-                $toYear = getdate(strtotime($today));
-                $birth = getdate(strtotime($namSinh));
-                if($toYear['year']-$birth['year']<18){
-                    $error.=$i." ";
-                    continue;
-                }
-                $checkPhone = preg_match( '/^0(\d{9}|9\d{8})$/', $SDT );
-                if(!$checkPhone){
-                    $error.=$i." ";
-                    continue;
-                }
+                
                 $findSV = "SELECT * FROM sinhvien WHERE Mssv='".$mssv."'";
                 $resultSV = $conn->query($findSV);
                 if($resultSV->num_rows <= 0){
                     $createAcc = "INSERT INTO nguoidung VALUES('".$gmail."','".$gmail."',1,1)";
                     if(mysqli_query($conn, $createAcc)){
-                        $sql="INSERT INTO sinhvien VALUES('".$mssv."','".$hoTen."','".$gmail."','".$namSinh."','".
-                        $SDT."','".$diaChi."','".$khoa."','".$lop."','".$gmail."')";
+                        $sql="INSERT INTO sinhvien VALUES('".$mssv."','".$hoTen."','".$gmail."','".$gmail."')";
                         if(mysqli_query($conn, $sql)){
                             $success++;
                         }else {
@@ -178,18 +131,11 @@
                 $mssv = $sheetData[$i]['A'];
                 $hoTen = $sheetData[$i]['B'];
                 $gmail = $sheetData[$i]['C'];
-                $namSinh = $sheetData[$i]['D'];
-                $SDT = $sheetData[$i]['E'];
-                $diaChi = $sheetData[$i]['F'];
-                $khoa = $sheetData[$i]['G'];
-                $lop = $sheetData[$i]['H'];
                 
-                if($mssv=='null'&&$hoTen=='null'&&$gmail=='null'&&$namSinh=='null'
-                &&$SDT=='null'&&$diaChi=='null'&&$khoa=='null'&&$lop=='null'){
+                if($mssv=='null'&&$hoTen=='null'&&$gmail=='null'){
                     continue;
                 }
-                if($mssv=='null'||$hoTen=='null'||$gmail=='null'||$namSinh=='null'
-                ||$SDT=='null'||$diaChi=='null'||$khoa=='null'||$lop=='null'){
+                if($mssv=='null'||$hoTen=='null'||$gmail=='null'){
                     $error.=$i." ";
                     continue;
                 }
@@ -210,25 +156,13 @@
                     $error.=$i." ";
                     continue;
                 }
-                $today = date('Y-m-d');
-                $toYear = getdate(strtotime($today));
-                $birth = getdate(strtotime($namSinh));
-                if($toYear['year']-$birth['year']<18){
-                    $error.=$i." ";
-                    continue;
-                }
-                $checkPhone = preg_match( '/^0(\d{9}|9\d{8})$/', $SDT );
-                if(!$checkPhone){
-                    $error.=$i." ";
-                    continue;
-                }
+                
                 $findSV = "SELECT * FROM sinhvien WHERE Mssv='".$mssv."'";
                 $resultSV = $conn->query($findSV);
                 if($resultSV->num_rows <= 0){
                     
                     $sql="INSERT INTO sinhvien (Mssv,HoTen,Gmail,NamSinh,SDT,DiaChi,Khoa,LOP) 
-                    VALUES('".$mssv."','".$hoTen."','".$gmail."','".$namSinh."','".
-                    $SDT."','".$diaChi."','".$khoa."','".$lop."')";
+                    VALUES('".$mssv."','".$hoTen."','".$gmail."')";
                     if(mysqli_query($conn, $sql)){
                         $success++;
                     }else {
@@ -264,7 +198,7 @@
             </script>";
     }
 
-    function addStu($conn,$mssv,$hoTen,$gmail,$namSinh,$SDT,$diaChi,$khoa,$lop,$auto=false){
+    function addStu($conn,$mssv,$hoTen,$gmail,$auto=false){
         if(!is_numeric($mssv)){
             echo "<script>
         Swal.fire({
@@ -284,36 +218,14 @@
         })</script>";
             return;
         }
-        $today = date('Y-m-d');
-        $toYear = getdate(strtotime($today));
-        $birth = getdate(strtotime($namSinh));
-        if($toYear['year']-$birth['year']<18){
-            echo "<script>
-        Swal.fire({
-            icon: 'error',
-            title: 'Lỗi...',
-            text: 'Năm sinh sai. Tuổi sinh viên phải lớn hơn bằng 18!'
-        })</script>";
-            return;
-        }
-        $checkPhone = preg_match( '/^0(\d{9}|9\d{8})$/', $SDT );
-        if(!$checkPhone){
-            echo "<script>
-        Swal.fire({
-            icon: 'error',
-            title: 'Lỗi...',
-            text: 'Số điện thoại sai định dạng!'
-        })</script>";
-            return;
-        }
+        
         $findSV = "SELECT * FROM sinhvien WHERE Mssv='".$mssv."'";
         $resultSV = $conn->query($findSV);
         if($resultSV->num_rows <= 0){
             if($auto){
                 $createAcc = "INSERT INTO nguoidung VALUES('".$mssv.$gmail."','".$mssv.$gmail."',1,1)";
                 if(mysqli_query($conn, $createAcc)){
-                    $sql="INSERT INTO sinhvien VALUES('".$mssv."','".$hoTen."','".$gmail."','".$namSinh."','".
-                    $SDT."','".$diaChi."','".$khoa."','".$lop."','".$mssv.$gmail."')";
+                    $sql="INSERT INTO sinhvien VALUES('".$mssv."','".$hoTen."','".$gmail."','".$mssv.$gmail."')";
                     if(mysqli_query($conn, $sql)){
                         echo"
                         <script>
@@ -326,9 +238,8 @@
                     }else echo"<script type='text/javascript'> alert('Lỗi ".mysqli_error($conn)."')</script>";
                 }else echo"<script type='text/javascript'> alert('Lỗi ".mysqli_error($conn)."')</script>";
             }else{
-                $sql="INSERT INTO sinhvien (Mssv,HoTen,Gmail,NamSinh,SDT,DiaChi,Khoa,LOP) 
-                    VALUES('".$mssv."','".$hoTen."','".$mssv.$gmail."','".$namSinh."','".
-                    $SDT."','".$diaChi."','".$khoa."','".$lop."')";
+                $sql="INSERT INTO sinhvien (Mssv,HoTen,Gmail) 
+                    VALUES('".$mssv."','".$hoTen."','".$mssv.$gmail."')";
                 if(mysqli_query($conn, $sql)){
                     echo"
                         <script>

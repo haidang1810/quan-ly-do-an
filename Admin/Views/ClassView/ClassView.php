@@ -38,14 +38,6 @@
                                     <input type="text" name="TenLop" class="form_input">
                                     <label for="ht" class="form_label">Tên lớp</label>
                                 </div>
-                                <div class="form_field">
-                                    <input type="number" name="TuanBD" class="form_input">
-                                    <label for="bd" class="form_label">Tuần bất đầu</label>
-                                </div>
-                                <div class="form_field">
-                                    <input type="number" name="TuanKT" class="form_input">
-                                    <label for="kr" class="form_label">Tuần kết thúc</label>
-                                </div>
                                 <div class="form_select">
                                     <select name="MaGV" class='select_AddClass'>
                                         <?php                                            
@@ -77,14 +69,6 @@
                                 <div class="form_field">
                                     <input type="text" name="TenLop" id="editTen" class="form_input">
                                     <label for="ht" class="form_label">Tên lớp</label>
-                                </div>
-                                <div class="form_field">
-                                    <input type="number" name="TuanBD" id="editTuanBD" class="form_input" min="1" max="52">
-                                    <label for="bd" class="form_label">Tuần bất đầu</label>
-                                </div>
-                                <div class="form_field">
-                                    <input type="number" name="TuanKT" id="editTuanKT" class="form_input" min="1" max="52">
-                                    <label for="kr" class="form_label">Tuần kết thúc</label>
                                 </div>
                                 <div class="form_select">
                                     <select name="MaGV" id="editGV" class='select_AddClass'>

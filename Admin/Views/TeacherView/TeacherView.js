@@ -31,13 +31,9 @@ function showEdit(value){
     $('#editHocVi').val(data[2]).change();
     $('#editHocVi').trigger("chosen:updated");
     if(data[3]!=null)
-        document.getElementById('editNamSinh').value = data[3];
-    if(data[4]!=null)
-        document.getElementById('editSDT').value = data[4];
-    if(data[5]!=null)
-        document.getElementById('editGmail').value = data[5];      
-    if(data[6]!=null && data[6]!=0){
-        $('#editLoai').val(data[6]).change();
+        document.getElementById('editGmail').value = data[3];      
+    if(data[4]!=null && data[4]!=0){
+        $('#editLoai').val(data[4]).change();
         $('#editLoai').trigger("chosen:updated");
         document.querySelector('.select_type').style.display = 'inline-block';
     }else{

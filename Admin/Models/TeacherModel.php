@@ -1,6 +1,6 @@
 <?php
     require '../../../public/validator/vendor/autoload.php';
-    use SMTPValidateEmail\Validator as SmtpEmailValidator;
+    //use SMTPValidateEmail\Validator as SmtpEmailValidator;
     if (session_id() === '')
         session_start();
     function loadTeacher($conn){
@@ -11,15 +11,12 @@
                 echo "<tr>";
                 echo "<td>".$row['MaGV']."</td>";
                 echo "<td>".$row['HoTen']."</td>";                
-                echo "<td>".$row['HocVi']."</td>";                
-                echo "<td>".$row['NamSinh']."</td>";
-                echo "<td>".$row['SDT']."</td>";
+                echo "<td>".$row['HocVi']."</td>";    
                 echo "<td>".$row['Gmail']."</td>";
                 echo "<td>";                                
                 if(empty($row['TaiKhoan'])){
                     echo "<button class='btn_student btn_primary' id='";
-                    echo $row['MaGV'].",".$row['HoTen'].",".$row['HocVi'].",".$row['NamSinh'].",".
-                    $row['SDT'].",".$row['Gmail'].",0";
+                    echo $row['MaGV'].",".$row['HoTen'].",".$row['HocVi'].",".$row['Gmail'].",0";
                     echo "' onclick='showEdit(this.id)' type='button'>";
                     echo "<i class='fas fa-edit'></i>";  
                     echo "</button>";
@@ -33,8 +30,7 @@
                     $resultAcc = $conn->query($findAcc);
                     $rowAcc = $resultAcc->fetch_assoc();
                     echo "<button class='btn_student btn_primary' id='";
-                    echo $row['MaGV'].",".$row['HoTen'].",".$row['HocVi'].",".$row['NamSinh'].",".
-                    $row['SDT'].",".$row['Gmail'].",".$rowAcc['Loai'];
+                    echo $row['MaGV'].",".$row['HoTen'].",".$row['HocVi'].",".$row['Gmail'].",".$rowAcc['Loai'];
                     echo "' onclick='showEdit(this.id)' type='button'>";
                     echo "<i class='fas fa-edit'></i>";  
                     echo "</button>";
@@ -44,23 +40,13 @@
             }            
         }
     }
-    function editTeacher($conn,$maGV,$hoTen,$hocVi,$namSinh,$SDT,$gmail,$loai){
-        $checkPhone = preg_match( '/^0(\d{9}|9\d{8})$/', $SDT );
-        if(!$checkPhone){
-            echo "<script>
-            Swal.fire({
-                icon: 'error',
-                title: 'Lỗi...',
-                text: 'Số điện thoại sai định dạng!'
-            })</script>";            
-            return;
-        }        
+    function editTeacher($conn,$maGV,$hoTen,$hocVi,$gmail,$loai){     
         $findGV = "SELECT * FROM giangvien WHERE MaGV='".$maGV."'";
         $resultGV = $conn->query($findGV);
         if($resultGV->num_rows > 0){
             $rowGV = $resultGV->fetch_assoc();
             if($rowGV['Gmail']==$gmail){
-                $sql = "UPDATE giangvien SET HoTen='".$hoTen."', HocVi='".$hocVi."', NamSinh='".$namSinh."', SDT='".$SDT."' WHERE MaGV='".$maGV."'";
+                $sql = "UPDATE giangvien SET HoTen='".$hoTen."', HocVi='".$hocVi."' WHERE MaGV='".$maGV."'";
                 if(mysqli_query($conn, $sql)){
                     if($loai!=0){
                         $updateType = "UPDATE nguoidung SET Loai=".$loai." WHERE TaiKhoan='".$rowGV['TaiKhoan']."'";
@@ -88,8 +74,7 @@
                     if($loai!=0){
                         $createAcc = "INSERT INTO nguoidung VALUES('".$gmail."','".$gmail."',".$loai.",1)";
                         if(mysqli_query($conn, $createAcc)){                           
-                            $sql = "UPDATE giangvien SET HoTen='".$hoTen."', HocVi='".$hocVi."', NamSinh='".$namSinh."', SDT='".$SDT
-                            ."', Gmail='".$gmail."', TaiKhoan='".$gmail."' WHERE MaGV='".$maGV."'";
+                            $sql = "UPDATE giangvien SET HoTen='".$hoTen."', HocVi='".$hocVi."', Gmail='".$gmail."', TaiKhoan='".$gmail."' WHERE MaGV='".$maGV."'";
                             if(mysqli_query($conn, $sql)){
                                 $deleteAcc = "DELETE FROM  nguoidung WHERE TaiKhoan='".$rowGV['Gmail']."'";
                                 if(mysqli_query($conn, $deleteAcc)){
@@ -144,16 +129,12 @@
                 $maGV = $sheetData[$i]['A'];
                 $hoTen = $sheetData[$i]['B'];
                 $hocVi = trim($sheetData[$i]['C']);
-                $namSinh = $sheetData[$i]['D'];
-                $SDT = $sheetData[$i]['E'];
-                $gmail = $sheetData[$i]['F'];
+                $gmail = $sheetData[$i]['D'];
                 
-                if($maGV=='null'&&$hoTen=='null' &&$hocVi=='null'&&$gmail=='null'&&$namSinh=='null'
-                &&$SDT=='null'){
+                if($maGV=='null'&&$hoTen=='null' &&$hocVi=='null'&&$gmail=='null'){
                     continue;
                 }
-                if($maGV=='null'||$hoTen=='null'||$hocVi=='null'||$gmail=='null'||$namSinh=='null'
-                ||$SDT=='null'){
+                if($maGV=='null'||$hoTen=='null'||$hocVi=='null'||$gmail=='null'){
                     $error.=$i." ";
                     continue;
                 }
@@ -169,18 +150,12 @@
                     //$error.=$i." ";
                     //continue;
                 //}
-                $checkPhone = preg_match( '/^0(\d{9}|9\d{8})$/', $SDT );
-                if(!$checkPhone){
-                    $error.=$i." ";
-                    continue;
-                }
                 $findGV = "SELECT * FROM giangvien WHERE MaGV='".$maGV."'";
                 $resultGV = $conn->query($findGV);
                 if($resultGV->num_rows <= 0){
                     $createAcc = "INSERT INTO nguoidung VALUES('".$gmail."','".$gmail."',2,1)";
                     if(mysqli_query($conn, $createAcc)){
-                        $sql="INSERT INTO giangvien VALUES('".$maGV."','".$hoTen."','".$hocVi."','".$namSinh."','".
-                        $SDT."','".$gmail."','".$gmail."')";
+                        $sql="INSERT INTO giangvien VALUES('".$maGV."','".$hoTen."','".$hocVi."','".$gmail."','".$gmail."')";
                         if(mysqli_query($conn, $sql)){
                             $success++;
                         }else {
@@ -204,16 +179,12 @@
                 $maGV = $sheetData[$i]['A'];
                 $hoTen = $sheetData[$i]['B'];
                 $hocVi = trim($sheetData[$i]['C']);
-                $namSinh = $sheetData[$i]['D'];
-                $SDT = $sheetData[$i]['E'];
-                $gmail = $sheetData[$i]['F'];
+                $gmail = $sheetData[$i]['D'];
                 
-                if($maGV=='null'&&$hoTen=='null' &&$hocVi=='null'&&$gmail=='null'&&$namSinh=='null'
-                &&$SDT=='null'){
+                if($maGV=='null'&&$hoTen=='null' &&$hocVi=='null'&&$gmail=='null'){
                     continue;
                 }
-                if($maGV=='null'||$hoTen=='null'||$hocVi=='null'||$gmail=='null'||$namSinh=='null'
-                ||$SDT=='null'){
+                if($maGV=='null'||$hoTen=='null'||$hocVi=='null'||$gmail=='null'){
                     $error.=$i." ";
                     continue;
                 }
@@ -228,18 +199,12 @@
                     //$error.=$i." ";
                     //continue;
                 //}
-                $checkPhone = preg_match( '/^0(\d{9}|9\d{8})$/', $SDT );
-                if(!$checkPhone){
-                    $error.=$i." ";
-                    continue;
-                }
                 $findGV = "SELECT * FROM giangvien WHERE MaGV='".$maGV."'";
                 $resultGV = $conn->query($findGV);
                 if($resultGV->num_rows <= 0){
                     
                     $sql="INSERT INTO giangvien (MaGV,HoTen,HocVi,NamSinh,SDT,Gmail) 
-                    VALUES('".$maGV."','".$hoTen."','".$hocVi."','".$namSinh."','".
-                    $SDT."','".$gmail."')";
+                    VALUES('".$maGV."','".$hoTen."','".$hocVi."','".$gmail."')";
                     if(mysqli_query($conn, $sql)){
                         $success++;
                     }else {
@@ -275,26 +240,15 @@
             </script>";
     }
 
-    function addTeacher($conn,$maGV,$hoTen,$hocVi,$namSinh,$SDT,$gmail,$auto=false){
+    function addTeacher($conn,$maGV,$hoTen,$hocVi,$gmail,$auto=false){
         
-        $checkPhone = preg_match( '/^0(\d{9}|9\d{8})$/', $SDT );
-        if(!$checkPhone){
-            echo "<script>
-        Swal.fire({
-            icon: 'error',
-            title: 'Lỗi...',
-            text: 'Số điện thoại sai định dạng!'
-        })</script>";
-            return;
-        }
         $findGV = "SELECT * FROM giangvien WHERE MaGV='".$maGV."'";
         $resultGV = $conn->query($findGV);
         if($resultGV->num_rows <= 0){
             if($auto){
                 $createAcc = "INSERT INTO nguoidung VALUES('".$gmail."','".$gmail."',2,1)";
                 if(mysqli_query($conn, $createAcc)){
-                    $sql="INSERT INTO giangvien VALUES('".$maGV."','".$hoTen."','".$hocVi."','".$namSinh."','".
-                    $SDT."','".$gmail."','".$gmail."')";
+                    $sql="INSERT INTO giangvien VALUES('".$maGV."','".$hoTen."','".$hocVi."','".$gmail."','".$gmail."')";
                     if(mysqli_query($conn, $sql)){
                         echo"
                         <script>
@@ -308,8 +262,7 @@
                 }else echo"<script type='text/javascript'> alert('Lỗi ".mysqli_error($conn)."')</script>";
             }else{
                 $sql="INSERT INTO giangvien (MaGV,HoTen,HocVi,NamSinh,SDT,Gmail) 
-                    VALUES('".$maGV."','".$hoTen."','".$hocVi."','".$namSinh."','".
-                    $SDT."','".$gmail."')";
+                    VALUES('".$maGV."','".$hoTen."','".$hocVi."','".$gmail."')";
                 if(mysqli_query($conn, $sql)){
                     echo"
                         <script>
