@@ -1,7 +1,8 @@
 <?php
     include("../../Models/TopicModel.php");
     include("../../../public/config.php");
-    require("../../../public/PHPExcel/Classes/PHPExcel.php");
+    include("../../../public/vendor/autoload.php");
+    //require("../../../public/PHPExcel/Classes/PHPExcel.php");
     global $conn;
     if (session_id() === '')
         session_start();

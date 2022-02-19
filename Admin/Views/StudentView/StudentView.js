@@ -44,7 +44,6 @@ function showAdd(){
 
 function disableAcc(){
     var form = document.getElementsByClassName("form-disable");
-    console.log(form.length);
     for(i=0;i<form.length;i++){
         form[i].addEventListener('submit', function(e){
             e.preventDefault();

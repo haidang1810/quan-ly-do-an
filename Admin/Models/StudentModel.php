@@ -1,6 +1,4 @@
 <?php
-    require '../../../public/validator/vendor/autoload.php';
-    //use SMTPValidateEmail\Validator as SmtpEmailValidator;
     if (session_id() === '')
         session_start();
     function loadStudent($conn){
@@ -64,138 +62,123 @@
         })</script>";
     }
     function multiAddstu($conn,$file,$auto=false){
-        $objReader = PHPExcel_IOFactory::createReaderForFile($file);
-        $objReader->setLoadSheetsOnly("Sheet1");
+        if($_FILES["file"]["name"] != ''){
+            $allowed_extension = array('xls', 'csv', 'xlsx');
+            $file_array = explode(".", $_FILES["file"]["name"]);
+            $file_extension = end($file_array);
 
-        $objExcel = $objReader->load($file);
-        $sheetData = $objExcel->getActiveSheet()->toArray("null",true,true,true);
-        $success=0;
-        $error = "";    
-        $lastRow =  $objExcel->setActiveSheetIndex()->getHighestRow();           
-        if($auto){
-            for($i=2;$i<=$lastRow;$i++){
-                $mssv = $sheetData[$i]['A'];
-                $hoTen = $sheetData[$i]['B'];
-                $gmail = $sheetData[$i]['C'];
-                
-                if($mssv=='null'&&$hoTen=='null'&&$gmail=='null'){
-                    continue;
-                }
-                if($mssv=='null'||$hoTen=='null'||$gmail=='null'){
-                    $error.=$i." ";
-                    continue;
-                }
-                if(!is_numeric($mssv)){
-                    $error.=$i." ";
-                    continue;
-                }
-                //$sender = "dang18101999@gmail.com";
-                //$validator = new SmtpEmailValidator($gmail, $sender);
-                //$results = $validator->validate();
-                //if(!$results){
-                    //$error.=$i." ";
-                    //continue;
-                //}
-                $temp = explode("@", $gmail);
-                if($temp[0]!=$mssv){
-                    $error.=$i." ";
-                    continue;
-                }
-                
-                $findSV = "SELECT * FROM sinhvien WHERE Mssv='".$mssv."'";
-                $resultSV = $conn->query($findSV);
-                if($resultSV->num_rows <= 0){
-                    $createAcc = "INSERT INTO nguoidung VALUES('".$gmail."','".$gmail."',1,1)";
-                    if(mysqli_query($conn, $createAcc)){
-                        $sql="INSERT INTO sinhvien VALUES('".$mssv."','".$hoTen."','".$gmail."','".$gmail."')";
-                        if(mysqli_query($conn, $sql)){
-                            $success++;
-                        }else {
+            if(in_array($file_extension, $allowed_extension)){
+                $file_name = time() . '.' . $file_extension;
+                move_uploaded_file($file, $file_name);
+                $file_type = \PhpOffice\PhpSpreadsheet\IOFactory::identify($file_name);
+                $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader($file_type);
+
+                $spreadsheet = $reader->load($file_name);
+
+                unlink($file_name);
+
+                $data = $spreadsheet->getActiveSheet()->toArray();
+                $error = "";
+                $success = 0;
+                $i=1;
+                foreach($data as $row){
+                    if($i==1){
+                        $i++;
+                        continue;
+                    }
+                        
+                    $mssv = "";
+                    $hoTen = "";
+                    $gmail = "";
+                    
+                    if(empty($row[0])||empty($row[1])||empty($row[2])){
+                        $error.=$i." ";
+                        $i++;
+                        continue;
+                    }else{
+                        $mssv = $row[0];
+                        $hoTen = $row[1];
+                        $gmail = $row[2];
+                    } 
+                    if(!is_numeric($mssv)){
+                        $error.=$i." ";
+                        $i++;
+                        continue;
+                    }
+                    $temp = explode("@", $gmail);
+                    if($temp[0]!=$mssv){
+                        $error.=$i." ";
+                        $i++;
+                        continue;
+                    }
+                    if($auto){
+                        $findSV = "SELECT * FROM sinhvien WHERE Mssv='".$mssv."'";
+                        $resultSV = $conn->query($findSV);
+                        if($resultSV->num_rows <= 0){
+                            $createAcc = "INSERT INTO nguoidung VALUES('".$gmail."','".$gmail."',1,1)";
+                            if(mysqli_query($conn, $createAcc)){
+                                $sql="INSERT INTO sinhvien VALUES('".$mssv."','".$hoTen."','".$gmail."','".$gmail."')";
+                                if(mysqli_query($conn, $sql)){
+                                    $success++;
+                                }else {
+                                    $error.=$i." ";
+                                    $i++;
+                                    continue;
+                                }
+                            }else{
+                                $error.=$i." ";
+                                $i++;
+                                continue;
+                            }
+                        }
+                        else{
                             $error.=$i." ";
+                            $i++;
                             continue;
                         }
                     }else{
-                        $error.=$i." ";
-                        continue;
+                        $findSV = "SELECT * FROM sinhvien WHERE Mssv='".$mssv."'";
+                        $resultSV = $conn->query($findSV);
+                        if($resultSV->num_rows <= 0){
+                            $sql="INSERT INTO sinhvien (Mssv,HoTen,Gmail) 
+                            VALUES('".$mssv."','".$hoTen."','".$gmail."')";
+                            if(mysqli_query($conn, $sql)){
+                                $success++;
+                            }else {
+                                $error.=$i." ";
+                                $i++;
+                                continue;
+                            }
+                        }
+                        else{
+                            $error.=$i." ";
+                            $i++;
+                            continue;
+                        }
                     }
+                    $i++;
                 }
-                else{
-                    $error.=$i." ";
-                    continue;
-                }
-                
-            }
-            
-        }else{            
-            for($i=2;$i<=$lastRow;$i++){
-                $mssv = $sheetData[$i]['A'];
-                $hoTen = $sheetData[$i]['B'];
-                $gmail = $sheetData[$i]['C'];
-                
-                if($mssv=='null'&&$hoTen=='null'&&$gmail=='null'){
-                    continue;
-                }
-                if($mssv=='null'||$hoTen=='null'||$gmail=='null'){
-                    $error.=$i." ";
-                    continue;
-                }
-                if(!is_numeric($mssv)){
-                    $error.=$i." ";
-                    continue;
-                }
-                //$sender = "dang18101999@gmail.com";
-                //$validator = new SmtpEmailValidator($gmail, $sender);
-                //$results = $validator->validate();
-                //if(!$results){
-                    //$error.=$i." ";
-                    //continue;
-                //}
-                $temp = explode("@", $gmail);
-                if($temp[0]!=$mssv)
-                {
-                    $error.=$i." ";
-                    continue;
-                }
-                
-                $findSV = "SELECT * FROM sinhvien WHERE Mssv='".$mssv."'";
-                $resultSV = $conn->query($findSV);
-                if($resultSV->num_rows <= 0){
-                    
-                    $sql="INSERT INTO sinhvien (Mssv,HoTen,Gmail,NamSinh,SDT,DiaChi,Khoa,LOP) 
-                    VALUES('".$mssv."','".$hoTen."','".$gmail."')";
-                    if(mysqli_query($conn, $sql)){
-                        $success++;
-                    }else {
-                        $error.=$i." ";
-                        continue;
-                    }
-                }
-                else{
-                    $error.=$i." ";
-                    continue;
-                }
-                
+                if(empty($error))
+                    echo"
+                    <script>
+                        Swal.fire(
+                            'Đã lưu!',
+                            'Bạn đã thêm thành công ".$success." sinh viên.',
+                            'success'
+                        )
+                    </script>";
+                else
+                echo"
+                    <script>
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Đã thêm!',
+                            text: 'Bạn đã thêm thành công ".$success." sinh viên.',
+                            footer: 'Các hàng bị lỗi: ".$error."'
+                        })
+                    </script>";
             }
         }
-        if(empty($error))
-            echo"
-            <script>
-                Swal.fire(
-                    'Đã lưu!',
-                    'Bạn đã thêm thành công ".$success." sinh viên.',
-                    'success'
-                )
-            </script>";
-        else
-        echo"
-            <script>
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Đã thêm!',
-                    text: 'Bạn đã thêm thành công ".$success." sinh viên.',
-                    footer: 'Các hàng bị lỗi: ".$error."'
-                })
-            </script>";
     }
 
     function addStu($conn,$mssv,$hoTen,$gmail,$auto=false){

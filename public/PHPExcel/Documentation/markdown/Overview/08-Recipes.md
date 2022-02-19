@@ -1001,7 +1001,7 @@ The following code extracts images from the current active worksheet, and writes
 $i = 0;
 foreach ($objPHPExcel->getActiveSheet()->getDrawingCollection() as $drawing) {
     if ($drawing instanceof PHPExcel_Worksheet_MemoryDrawing) {
-        
+        ob_start();
         call_user_func(
             $drawing->getRenderingFunction(),
             $drawing->getImageResource()

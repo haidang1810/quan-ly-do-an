@@ -1,7 +1,8 @@
 <?php
     include("../../Models/ClassModel.php");
     include("../../../public/config.php");
-    require("../../../public/PHPExcel/Classes/PHPExcel.php");
+    //require("../../../public/PHPExcel/Classes/PHPExcel.php");
+    include("../../../public/vendor/autoload.php");
     global $conn;
     if (session_id() === '')
         session_start();
@@ -113,18 +114,8 @@
                     $maLop = $_POST['MaLop'];
                     $tenLop = $_POST['TenLop'];
                     $maGV = $_POST['MaGV'];
-                    if($tuanKT-$tuanBD<=17){
-                        editClass($conn,$maLop,$tenLop,$maGV);
-                        loadLopHP($conn,$_SESSION['HKNH']);
-                    }else echo "
-                    <script>
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Lỗi...',
-                            text: 'Thời gian học quá lớn!'
-                        })
-                    </script>
-                    ";
+                    editClass($conn,$maLop,$tenLop,$maGV);
+                    loadLopHP($conn,$_SESSION['HKNH']);
                 }else echo "
                 <script>
                     Swal.fire({

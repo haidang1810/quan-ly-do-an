@@ -1,4 +1,5 @@
 <?php
+    
     if (session_id() === '')
         session_start();
     function loadHKNH($conn) {
@@ -10,9 +11,6 @@
             }
         }
     }
-
-
-
 
     function multiAdd($conn,$file,$class){
         $findClass = "SELECT Id_hknh FROM lophocphan WHERE MaLopHP='".$class."'";
@@ -33,52 +31,78 @@
                 </script>
                 ";
             }else{
-                $objReader = PHPExcel_IOFactory::createReaderForFile($file);
-                $objReader->setLoadSheetsOnly("Sheet1");
+                if($_FILES["file"]["name"] != ''){
+                    $allowed_extension = array('xls', 'csv', 'xlsx');
+                    $file_array = explode(".", $_FILES["file"]["name"]);
+                    $file_extension = end($file_array);
 
-                $objExcel = $objReader->load($file);
-                $sheetData = $objExcel->getActiveSheet()->toArray("null",true,true,true);
-                $success=0;
-                $error = "";
-                for($i=2;$i<=count($sheetData);$i++){
-                    $name = $sheetData[$i]['A'];
-                    $amount = $sheetData[$i]['B'];
-                    $note = $sheetData[$i]['C'];
-                    if(empty($name)||empty($amount)){
-                        $error.=$i." ";
-                        continue;
-                    }      
-                    
-                    $sql = "INSERT INTO detai(TenDeTai,GhiChu,SoThanhVien,MaLopHP)
-                    VALUES('".$name."','".$note."',".$amount.",'".$class."')";
-                    if(mysqli_query($conn, $sql)){
-                        $success++;
-                    }else
-                    {
-                        $error.=$i." ";
+                    if(in_array($file_extension, $allowed_extension)){
+                        $file_name = time() . '.' . $file_extension;
+                        move_uploaded_file($_FILES['file']['tmp_name'], $file_name);
+                        $file_type = \PhpOffice\PhpSpreadsheet\IOFactory::identify($file_name);
+                        $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader($file_type);
+
+                        $spreadsheet = $reader->load($file_name);
+
+                        unlink($file_name);
+
+                        $data = $spreadsheet->getActiveSheet()->toArray();
+                        $error = "";
+                        $success = 0;
+                        $i=1;
+                        foreach($data as $row){
+                            if($i==1){
+                                $i++;
+                                continue;
+                            }
+                                
+                            $name = "";
+                            $amount = "";
+                            $note = "";
+                            
+                            if(empty($row[0])||empty($row[1])){
+                                $error.=$i." ";
+                                $i++;
+                                continue;
+                            }else{
+                                $name = $row[0];
+                                $amount = $row[1];
+                            } 
+                            if(!empty($row[2])) 
+                                $note = $row[2];
+                            
+                            $sql = "INSERT INTO detai(TenDeTai,GhiChu,SoThanhVien,MaLopHP)
+                            VALUES('".$name."','".$note."',".$amount.",'".$class."')";
+                            if(mysqli_query($conn, $sql)){
+                                $success++;
+                            }else{
+                                $error.=$i." ";
+                            }
+                            $i++;
+                        }
+                        if(empty($error)){
+                            echo"
+                                <script>
+                                    Swal.fire(
+                                        'Đã thêm!',
+                                        'Bạn đã thêm thành công ".$success." đề tài.',
+                                        'success'
+                                    )
+                                </script>
+                            ";
+                        }else{
+                            echo"
+                                <script>
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Đã thêm!',
+                                        text: 'Bạn đã thêm thành công ".$success." đề tài.',
+                                        footer: 'Các hàng bị lỗi: ".$error."'
+                                    })
+                                </script>
+                            ";
+                        }
                     }
-                }
-                if(empty($error)){
-                    echo"
-                        <script>
-                            Swal.fire(
-                                'Đã thêm!',
-                                'Bạn đã thêm thành công ".$success." đề tài.',
-                                'success'
-                            )
-                        </script>
-                    ";
-                }else{
-                    echo"
-                        <script>
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Đã thêm!',
-                                text: 'Bạn đã thêm thành công ".$success." đề tài.',
-                                footer: 'Các hàng bị lỗi: ".$error."'
-                            })
-                        </script>
-                    ";
                 }
             }
         }

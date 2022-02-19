@@ -369,7 +369,7 @@ class PHPExcel_Writer_Excel2007 extends PHPExcel_Writer_Abstract implements PHPE
 
                     $objZip->addFromString('xl/media/' . str_replace(' ', '_', $this->getDrawingHashTable()->getByIndex($i)->getIndexedFilename()), $imageContents);
                 } elseif ($this->getDrawingHashTable()->getByIndex($i) instanceof PHPExcel_Worksheet_MemoryDrawing) {
-                    
+                    ob_start();
                     call_user_func(
                         $this->getDrawingHashTable()->getByIndex($i)->getRenderingFunction(),
                         $this->getDrawingHashTable()->getByIndex($i)->getImageResource()

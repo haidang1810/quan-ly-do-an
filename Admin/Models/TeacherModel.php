@@ -1,5 +1,4 @@
 <?php
-    require '../../../public/validator/vendor/autoload.php';
     //use SMTPValidateEmail\Validator as SmtpEmailValidator;
     if (session_id() === '')
         session_start();
@@ -116,128 +115,114 @@
         })</script>";
     }
     function multiAddTea($conn,$file,$auto=false){
-        $objReader = PHPExcel_IOFactory::createReaderForFile($file);
-        $objReader->setLoadSheetsOnly("Sheet1");
+        if($_FILES["file"]["name"] != ''){
+            $allowed_extension = array('xls', 'csv', 'xlsx');
+            $file_array = explode(".", $_FILES["file"]["name"]);
+            $file_extension = end($file_array);
 
-        $objExcel = $objReader->load($file);
-        $sheetData = $objExcel->getActiveSheet()->toArray("null",true,true,true);
-        $success=0;
-        $error = "";    
-        $lastRow =  $objExcel->setActiveSheetIndex()->getHighestRow();           
-        if($auto){
-            for($i=2;$i<=$lastRow;$i++){
-                $maGV = $sheetData[$i]['A'];
-                $hoTen = $sheetData[$i]['B'];
-                $hocVi = trim($sheetData[$i]['C']);
-                $gmail = $sheetData[$i]['D'];
-                
-                if($maGV=='null'&&$hoTen=='null' &&$hocVi=='null'&&$gmail=='null'){
-                    continue;
-                }
-                if($maGV=='null'||$hoTen=='null'||$hocVi=='null'||$gmail=='null'){
-                    $error.=$i." ";
-                    continue;
-                }
+            if(in_array($file_extension, $allowed_extension)){
+                $file_name = time() . '.' . $file_extension;
+                move_uploaded_file($file, $file_name);
+                $file_type = \PhpOffice\PhpSpreadsheet\IOFactory::identify($file_name);
+                $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader($file_type);
 
-                if($hocVi!="Thạc sĩ" && $hocVi!="Cử nhân" && $hocVi!="Tiến sĩ" && $hocVi!="Cao học"){
-                    $error.=$i." ";
-                    continue;
-                }
-                //$sender = "dang18101999@gmail.com";
-                //$validator = new SmtpEmailValidator($gmail, $sender);
-                //$results = $validator->validate();
-                //if(!$results){
-                    //$error.=$i." ";
-                    //continue;
-                //}
-                $findGV = "SELECT * FROM giangvien WHERE MaGV='".$maGV."'";
-                $resultGV = $conn->query($findGV);
-                if($resultGV->num_rows <= 0){
-                    $createAcc = "INSERT INTO nguoidung VALUES('".$gmail."','".$gmail."',2,1)";
-                    if(mysqli_query($conn, $createAcc)){
-                        $sql="INSERT INTO giangvien VALUES('".$maGV."','".$hoTen."','".$hocVi."','".$gmail."','".$gmail."')";
-                        if(mysqli_query($conn, $sql)){
-                            $success++;
-                        }else {
+                $spreadsheet = $reader->load($file_name);
+
+                unlink($file_name);
+
+                $data = $spreadsheet->getActiveSheet()->toArray();
+                $error = "";
+                $success = 0;
+                $i=1;
+                foreach($data as $row){
+                    if($i==1){
+                        $i++;
+                        continue;
+                    }
+                        
+                    $maGV = "";
+                    $hoTen = "";
+                    $hocVi = "";
+                    $gmail = "";
+                    if(empty($row[0])||empty($row[1])||empty($row[2])||empty($row[3])){
+                        $error.=$i." ";
+                        $i++;
+                        continue;
+                    }else{
+                        $maGV = $row[0];
+                        $hoTen = $row[1];
+                        $hocVi = $row[2];
+                        $gmail = $row[3];
+                    } 
+                    
+                    if($hocVi!="Thạc sĩ" && $hocVi!="Cử nhân" && $hocVi!="Tiến sĩ" && $hocVi!="Cao học"){
+                        $error.=$i." ";
+                        $i++;
+                        continue;
+                    }
+                    if($auto){
+                        $findGV = "SELECT * FROM giangvien WHERE MaGV='".$maGV."'";
+                        $resultGV = $conn->query($findGV);
+                        if($resultGV->num_rows <= 0){
+                            $createAcc = "INSERT INTO nguoidung VALUES('".$gmail."','".$gmail."',2,1)";
+                            if(mysqli_query($conn, $createAcc)){
+                                $sql="INSERT INTO giangvien VALUES('".$maGV."','".$hoTen."','".$hocVi."','".$gmail."','".$gmail."')";
+                                if(mysqli_query($conn, $sql)){
+                                    $success++;
+                                }else {
+                                    $error.=$i." ";
+                                    $i++;
+                                    continue;
+                                }
+                            }else{
+                                $error.=$i." ";
+                                $i++;
+                                continue;
+                            }
+                        }
+                    }else{
+                        $findGV = "SELECT * FROM giangvien WHERE MaGV='".$maGV."'";
+                        $resultGV = $conn->query($findGV);
+                        if($resultGV->num_rows <= 0){
+                            
+                            $sql="INSERT INTO giangvien (MaGV,HoTen,HocVi,Gmail) 
+                            VALUES('".$maGV."','".$hoTen."','".$hocVi."','".$gmail."')";
+                            if(mysqli_query($conn, $sql)){
+                                $success++;
+                            }else {
+                                $error.=$i." ";
+                                continue;
+                            }
+                        }
+                        else{
                             $error.=$i." ";
                             continue;
                         }
-                    }else{
-                        $error.=$i." ";
-                        continue;
                     }
+                    $i++;
                 }
-                else{
-                    $error.=$i." ";
-                    continue;
-                }
-                
-            }
-            
-        }else{            
-            for($i=2;$i<=$lastRow;$i++){
-                $maGV = $sheetData[$i]['A'];
-                $hoTen = $sheetData[$i]['B'];
-                $hocVi = trim($sheetData[$i]['C']);
-                $gmail = $sheetData[$i]['D'];
-                
-                if($maGV=='null'&&$hoTen=='null' &&$hocVi=='null'&&$gmail=='null'){
-                    continue;
-                }
-                if($maGV=='null'||$hoTen=='null'||$hocVi=='null'||$gmail=='null'){
-                    $error.=$i." ";
-                    continue;
-                }
-                if($hocVi!="Thạc sĩ" && $hocVi!="Cử nhân" && $hocVi!="Tiến sĩ" && $hocVi!="Cao học"){
-                    $error.=$i." ";
-                    continue;
-                }
-                //$sender = "dang18101999@gmail.com";
-                //$validator = new SmtpEmailValidator($gmail, $sender);
-                //$results = $validator->validate();
-                //if(!$results){
-                    //$error.=$i." ";
-                    //continue;
-                //}
-                $findGV = "SELECT * FROM giangvien WHERE MaGV='".$maGV."'";
-                $resultGV = $conn->query($findGV);
-                if($resultGV->num_rows <= 0){
-                    
-                    $sql="INSERT INTO giangvien (MaGV,HoTen,HocVi,NamSinh,SDT,Gmail) 
-                    VALUES('".$maGV."','".$hoTen."','".$hocVi."','".$gmail."')";
-                    if(mysqli_query($conn, $sql)){
-                        $success++;
-                    }else {
-                        $error.=$i." ";
-                        continue;
-                    }
-                }
-                else{
-                    $error.=$i." ";
-                    continue;
-                }
-                
+                if(empty($error))
+                    echo"
+                    <script>
+                        Swal.fire(
+                            'Đã lưu!',
+                            'Bạn đã thêm thành công ".$success." giảng viên.',
+                            'success'
+                        )
+                    </script>";
+                else
+                echo"
+                    <script>
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Đã thêm!',
+                            text: 'Bạn đã thêm thành công ".$success." giảng viên.',
+                            footer: 'Các hàng bị lỗi: ".$error."'
+                        })
+                    </script>";
             }
         }
-        if(empty($error))
-            echo"
-            <script>
-                Swal.fire(
-                    'Đã lưu!',
-                    'Bạn đã thêm thành công ".$success." giảng viên.',
-                    'success'
-                )
-            </script>";
-        else
-        echo"
-            <script>
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Đã thêm!',
-                    text: 'Bạn đã thêm thành công ".$success." giảng viên.',
-                    footer: 'Các hàng bị lỗi: ".$error."'
-                })
-            </script>";
+        
     }
 
     function addTeacher($conn,$maGV,$hoTen,$hocVi,$gmail,$auto=false){

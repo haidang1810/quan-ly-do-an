@@ -1,7 +1,7 @@
 <?php
     include("../../Models/StudentModel.php");
     include("../../../public/config.php");
-    require("../../../public/PHPExcel/Classes/PHPExcel.php");
+    include("../../../public/vendor/autoload.php");
     global $conn;
     if (session_id() === '')
         session_start();

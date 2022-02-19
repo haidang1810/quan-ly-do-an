@@ -124,76 +124,103 @@
                 </script>
                 ";
             }else{
-                $objReader = PHPExcel_IOFactory::createReaderForFile($file);
-                $objReader->setLoadSheetsOnly("Sheet1");
+                if($_FILES["file"]["name"] != ''){
+                    $allowed_extension = array('xls', 'csv', 'xlsx');
+                    $file_array = explode(".", $_FILES["file"]["name"]);
+                    $file_extension = end($file_array);
 
-                $objExcel = $objReader->load($file);
-                $sheetData = $objExcel->getActiveSheet()->toArray("null",true,true,true);
-                $success=0;
-                $error = "";
-                for($i=2;$i<=count($sheetData);$i++){
-                    $ten = $sheetData[$i]['A'];
-                    $ghiChu = $sheetData[$i]['B'];
-                    $mssv = $sheetData[$i]['C'];
-                    if(empty($ten)||empty($mssv)){
-                        $error.=$i." ";
-                        continue;
-                    }
+                    if(in_array($file_extension, $allowed_extension)){
+                        $file_name = time() . '.' . $file_extension;
+                        move_uploaded_file($_FILES['file']['tmp_name'], $file_name);
+                        $file_type = \PhpOffice\PhpSpreadsheet\IOFactory::identify($file_name);
+                        $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader($file_type);
 
-                    if(!is_numeric($mssv)){
-                        $error.=$i." ";
-                        continue;
-                    }
-                    
-                    $findSVL = "SELECT * FROM sinhvien_luanvan WHERE Mssv='".$mssv."' AND MaLopLV='".$lopLV."'";
-                    $resultSVL = $conn->query($findSVL);
-                    if($resultSVL->num_rows <= 0){
-                        $error.=$i." ";
-                        continue;
-                    }
-                    
-                    $findSV = "SELECT * FROM detailuanvan WHERE Mssv='".$mssv."'";
-                    $resultSV = $conn->query($findSV);
-                    if($resultSV->num_rows > 0){
-                        $error.=$i." ";
-                        continue;
-                    }
-                    $sql = "INSERT INTO detailuanvan(MaLopLV,Ten,GhiChu,Mssv)
-                    VALUES('".$lopLV."','".$ten."','".$ghiChu."','".$mssv."')";
-                    if(mysqli_query($conn, $sql)){
-                        $success++;
-                    }else
-                    {
-                        $error.=$i." ";
+                        $spreadsheet = $reader->load($file_name);
+
+                        unlink($file_name);
+
+                        $data = $spreadsheet->getActiveSheet()->toArray();
+                        $error = "";
+                        $success = 0;
+                        $i=1;
+                        foreach($data as $row){
+                            if($i==1){
+                                $i++;
+                                continue;
+                            }
+                                
+                            $ten = "";
+                            $ghiChu = "";
+                            $mssv = "";
+                            if(empty($row[0])||empty($row[1])||empty($row[2])){
+                                $error.=$i." ";
+                                $i++;
+                                continue;
+                            }else{
+                                $ten = $row[0];
+                                $ghiChu = $row[1];
+                                $mssv = $row[2];
+                            } 
+                            if(!is_numeric($mssv)){
+                                $error.=$i." ";
+                                $i++;
+                                continue;
+                            }
+                            $findSVL = "SELECT * FROM sinhvien_luanvan WHERE Mssv='".$mssv."' AND MaLopLV='".$lopLV."'";
+                            $resultSVL = $conn->query($findSVL);
+                            if($resultSVL->num_rows <= 0){
+                                $error.=$i." ";
+                                $i++;
+                                continue;
+                            }
+                            
+                            $findSV = "SELECT * FROM detailuanvan WHERE Mssv='".$mssv."'";
+                            $resultSV = $conn->query($findSV);
+                            if($resultSV->num_rows > 0){
+                                $error.=$i." ";
+                                $i++;
+                                continue;
+                            }
+                            $sql = "INSERT INTO detailuanvan(MaLopLV,Ten,GhiChu,Mssv)
+                            VALUES('".$lopLV."','".$ten."','".$ghiChu."','".$mssv."')";
+                            if(mysqli_query($conn, $sql)){
+                                $success++;
+                            }else
+                            {
+                                $error.=$i." ";
+                            }
+                            $i++;
+                        }
+                        if(empty($error))
+                            echo"
+                            <script>
+                                Swal.fire(
+                                    'Đã thêm!',
+                                    'Bạn đã thêm thành công ".$success." đề tài.',
+                                    'success'
+                                )
+                                setTimeout(() => {
+                                    window.location.href = window.location.href; 
+                                }, 1500);
+                            </script>
+                        ";
+                        else
+                            echo"
+                            <script>
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Đã thêm!',
+                                    text: 'Bạn đã thêm thành công ".$success." đề tài.',
+                                    footer: 'Các hàng bị lỗi: ".$error."'
+                                })
+                                setTimeout(() => {
+                                    window.location.href = window.location.href; 
+                                }, 1500);
+                            </script>
+                        ";
+                        
                     }
                 }
-                if(empty($error))
-                    echo"
-                    <script>
-                        Swal.fire(
-                            'Đã thêm!',
-                            'Bạn đã thêm thành công ".$success." đề tài.',
-                            'success'
-                        )
-                        setTimeout(() => {
-                            window.location.href = window.location.href; 
-                        }, 1500);
-                    </script>
-                ";
-                else
-                    echo"
-                    <script>
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Đã thêm!',
-                            text: 'Bạn đã thêm thành công ".$success." đề tài.',
-                            footer: 'Các hàng bị lỗi: ".$error."'
-                        })
-                        setTimeout(() => {
-                            window.location.href = window.location.href; 
-                        }, 1500);
-                    </script>
-                ";
             }
         }
     }

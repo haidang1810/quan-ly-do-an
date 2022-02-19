@@ -90,7 +90,7 @@
                 </div>
                 <div class="modal modal_GV">
                     <div class="modal_overlay"></div>
-                    <div class="modal_body">
+                    <div class="modal_body modal_GV_body">
                         <div class="modal_inner">
                             <div class="modal_title">
                                 <h2>Thông tin chi tiết giảng viên viên</h2>
@@ -99,8 +99,6 @@
                             <ul>
                                 <li id="MaGV"></li>
                                 <li id="HoTen"></li>
-                                <li id="NgaySinh"></li>
-                                <li id="SDT"></li>
                                 <li id="Gmail"></li>
                             </ul>                            
                         </div>

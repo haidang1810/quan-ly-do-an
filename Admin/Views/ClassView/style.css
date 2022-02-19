@@ -105,7 +105,9 @@ input[type=file]{
     position: relative;
     padding: 20px;
 }
-
+.modal_GV_body{
+    height: 50% !important;
+}
 .modal_inner {
     width: 100%;
     height: 100%;

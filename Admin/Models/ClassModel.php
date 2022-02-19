@@ -30,8 +30,7 @@
                 echo "<td>".$rowLop['TenLop']." </td>";
                 if($resultGV->num_rows > 0){
                     $rowGV = $resultGV->fetch_assoc();
-                    echo "<td><a id='".$rowGV['MaGV'].",".$rowGV['HoTen'].",".$rowGV['NamSinh']
-                .",".$rowGV['SDT'].",".$rowGV['Gmail']."' onclick='showDetailTea(this.id)'>".$rowGV['HoTen']."</a></td>";
+                    echo "<td><a id='".$rowGV['MaGV'].",".$rowGV['HoTen'].",".$rowGV['Gmail']."' onclick='showDetailTea(this.id)'>".$rowGV['HoTen']."</a></td>";
                 }else echo "<td></td>";
                 
                 echo "<td>";
@@ -48,8 +47,7 @@
                     $resultSV = $conn->query($findSV);
                     if($resultSV->num_rows <= 0 && $rowHK['TrangThai']==1){
                         echo "<button class='btn_class btn_primary' id='".$rowLop['MaLopHP']
-                        .",".$rowLop['TenLop'].",".$rowLop['TuanBD'].",".$rowLop['TuanKT']
-                        .",".$rowLop['MaGV']."' type='button' onclick='showEditClass(this.id)'>";
+                        .",".$rowLop['TenLop'].",".$rowLop['MaGV']."' type='button' onclick='showEditClass(this.id)'>";
                         echo "<i class='fas fa-edit'></i>";
                         echo "</button>";
                         echo "<input type='hidden' value='".$rowLop['MaLopHP']."' name='id-delete'>";
@@ -177,62 +175,85 @@
             </script>
             ";
         }else{
-            $objReader = PHPExcel_IOFactory::createReaderForFile($file);
-            $objReader->setLoadSheetsOnly("Sheet1");
+            if($_FILES["file"]["name"] != ''){
+                    $allowed_extension = array('xls', 'csv', 'xlsx');
+                    $file_array = explode(".", $_FILES["file"]["name"]);
+                    $file_extension = end($file_array);
+                    if(in_array($file_extension, $allowed_extension)){
+                        $file_name = time() . '.' . $file_extension;
+                        move_uploaded_file($_FILES['file']['tmp_name'], $file_name);
+                        $file_type = \PhpOffice\PhpSpreadsheet\IOFactory::identify($file_name);
+                        $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader($file_type);
 
-            $objExcel = $objReader->load($file);
-            $sheetData = $objExcel->getActiveSheet()->toArray("null",true,true,true);
-            $success=0;
-            $error = "";    
-            $lastRow =  $objExcel->setActiveSheetIndex()->getHighestRow();
-            for($i=2;$i<=$lastRow;$i++){
-                $maLopHP = $sheetData[$i]['A'];
-                $tenLop = $sheetData[$i]['B'];
-                if($maLopHP=='null'||$tenLop=='null'){
-                    $error.=$i." ";
-                    continue;
-                }
-                if($maLopHP=='null'&&$tenLop=='null'){
-                    continue;
-                }
-                $findLop = "SELECT * FROM lophocphan WHERE MaLopHP='".$maLopHP."'";
-                $resultLop = $conn->query($findLop);
-                if($resultLop->num_rows <= 0){
-                    $sql = "INSERT INTO lophocphan(MaLopHP,TenLop,Id_hknh) VALUES('".
-                    $maLopHP."','".$tenLop."',".$hknh.")";
-                    if(mysqli_query($conn, $sql)){
-                        $success++;
-                    }else{
-                        $error.=$i." ";
-                        continue;
+                        $spreadsheet = $reader->load($file_name);
+
+                        unlink($file_name);
+
+                        $data = $spreadsheet->getActiveSheet()->toArray();
+                        $error = "";
+                        $success = 0;
+                        $i=1;
+                        foreach($data as $row){
+                            if($i==1){
+                                $i++;
+                                continue;
+                            }
+                            $maLopHP = "";
+                            $tenLop = "";
+                            if(empty($row[0])||empty($row[1])){
+                                $error.=$i." ";
+                                $i++;
+                                continue;
+                            }else{
+                                $maLopHP = $row[0];
+                                $tenLop = $row[1];
+                            }
+                            
+                            $findLop = "SELECT * FROM lophocphan WHERE MaLopHP='".$maLopHP."'";
+                            $resultLop = $conn->query($findLop);
+                            if($resultLop->num_rows <= 0){
+                                $sql = "INSERT INTO lophocphan(MaLopHP,TenLop,Id_hknh) VALUES('".
+                                $maLopHP."','".$tenLop."',".$hknh.")";
+                                if(mysqli_query($conn, $sql)){
+                                    $success++;
+                                }else{
+                                    $error.=$i." ";
+                                    $i++;
+                                    continue;
+                                }
+            
+                            }else{
+                                $error.=$i." ";
+                                $i++;
+                                continue;
+                            }
+                            $i++;
+                        }
+                        if(empty($error))
+                        echo"
+                            <script>
+                                Swal.fire(
+                                    'Đã thêm!',
+                                    'Bạn đã thêm thành công ".$success." lớp học phần.',
+                                    'success'
+                                )
+                            </script>
+                        ";
+                        else
+                            echo"
+                                <script>
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Đã thêm!',
+                                        text: 'Bạn đã thêm thành công ".$success." lớp học phần.',
+                                        footer: 'Các hàng bị lỗi: ".$error."'
+                                    })
+                                </script>
+                            ";
+                        
                     }
-
-                }else{
-                    $error.=$i." ";
-                    continue;
-                }
             }
-            if(empty($error))
-                echo"
-                    <script>
-                        Swal.fire(
-                            'Đã thêm!',
-                            'Bạn đã thêm thành công ".$success." lớp học phần.',
-                            'success'
-                        )
-                    </script>
-                ";
-            else
-                echo"
-                    <script>
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Đã thêm!',
-                            text: 'Bạn đã thêm thành công ".$success." lớp học phần.',
-                            footer: 'Các hàng bị lỗi: ".$error."'
-                        })
-                    </script>
-                ";
+            
         }
     }
 ?>

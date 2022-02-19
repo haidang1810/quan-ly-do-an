@@ -660,7 +660,7 @@ class PHPExcel_Writer_HTML extends PHPExcel_Writer_Abstract implements PHPExcel_
                 if ($drawing->getCoordinates() != $coordinates) {
                     continue;
                 }
-                                                //  Let's start output buffering.
+                ob_start();                                //  Let's start output buffering.
                 imagepng($drawing->getImageResource());    //  This will normally output the image, but because of ob_start(), it won't.
                 $contents = ob_get_contents();             //  Instead, output above is saved to $contents
                 ob_end_clean();                            //  End the output buffer.

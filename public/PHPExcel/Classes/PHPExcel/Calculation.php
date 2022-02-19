@@ -4121,7 +4121,7 @@ class PHPExcel_Calculation
         } else {
             if ((PHPExcel_Calculation_Functions::getCompatibilityMode() != PHPExcel_Calculation_Functions::COMPATIBILITY_OPENOFFICE) &&
                 ((is_string($operand1) && !is_numeric($operand1) && strlen($operand1)>0) ||
-                 (is_string($operand2) && !is_numeric($operand2) && strlen($operand2)>0))) {
+                (is_string($operand2) && !is_numeric($operand2) && strlen($operand2)>0))) {
                 $result = PHPExcel_Calculation_Functions::VALUE();
             } else {
                 //    If we're dealing with non-matrix operations, execute the necessary operation
