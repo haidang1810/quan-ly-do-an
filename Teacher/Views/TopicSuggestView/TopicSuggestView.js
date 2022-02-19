@@ -113,15 +113,30 @@ function search(maLop){
     $.post("../../Models/TopicSuggestModel.php",{
         'search': maLop
     },function(data){
-        $(".table").html(data);
-        $('#tableTopic').DataTable({
-            "lengthMenu": [ 5, 10, 15, 20, 25, 30, 40, 50 ],
-        });
-        suggest();
-        refuse()
-        $(".paginate_button").click(function(){
+        if(data!=""){
+            $(".table").html(data);
+            $('#tableTopic').DataTable({
+                "lengthMenu": [ 5, 10, 15, 20, 25, 30, 40, 50 ],
+            });
             suggest();
             refuse()
-        })
+            $(".paginate_button").click(function(){
+                suggest();
+                refuse()
+            })
+        }else{
+            Swal.fire({
+                position: 'top-end',
+                icon: 'warning',
+                title: 'Lớp chưa đề xuất',
+                showConfirmButton: false,
+                toast: true,
+                width: '270px',
+                timer: 1500,
+                background: 'rgba(221, 75, 57, 0.966)',
+                color: '#fff'
+            })
+            $(".table").html("");
+        }
     })
 }

@@ -111,15 +111,30 @@ function search(maLop){
     $.post("../../Models/TopicModel.php",{
         'search': maLop
     },function(data){
-        $(".table").html(data);
-        $('#tableTopic').DataTable({
-            "lengthMenu": [ 5, 10, 15, 20, 25, 30, 40, 50 ],
-            
-        });
-        $(".paginate_button").click(function(){
+        if(data!=""){
+            $(".table").html(data);
+            $('#tableTopic').DataTable({
+                "lengthMenu": [ 5, 10, 15, 20, 25, 30, 40, 50 ],
+                
+            });
+            $(".paginate_button").click(function(){
+                submitDelete();
+            })
             submitDelete();
-        })
-        submitDelete();
+        }else{
+            Swal.fire({
+                position: 'top-end',
+                icon: 'warning',
+                title: 'Lớp chưa có đề tài',
+                showConfirmButton: false,
+                toast: true,
+                width: '275px',
+                timer: 1500,
+                background: 'rgba(221, 75, 57, 0.966)',
+                color: '#fff'
+            })
+            $(".table").html("");
+        }
     })
 }
 

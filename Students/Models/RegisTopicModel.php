@@ -132,14 +132,14 @@
         if(mysqli_query($conn,$sql)){
             echo"
                 <script>
-                    Swal.fire(
-                        'Đã huỷ!',
-                        'Bạn đã huỷ đăng ký đề tài thành công.',
-                        'success'
-                    )
-                    setTimeout(() => {
-                        window.location.href = window.location.href; 
-                    }, 1500);
+                    Swal.fire({
+                        title: 'Đã huỷ!',
+                        text: 'Bạn đã huỷ đăng ký đề tài thành công.',
+                        icon: 'success',
+                        didClose: ()=>{
+                            window.location.href = window.location.href;
+                        }
+                    })
                 </script>
                 ";
         }
@@ -176,14 +176,14 @@
         if(mysqli_query($conn,$sql)){
             echo"
                 <script>
-                    Swal.fire(
-                        'Đẫ thêm!',
-                        'Bạn đã đề xuất đề tài thành công.',
-                        'success'
-                    )
-                    setTimeout(() => {
-                        window.location.href = window.location.href; 
-                    }, 1500);
+                    Swal.fire({
+                        title: 'Đã lưu!',
+                        text: 'Bạn đã đề xuất đề tài thành công.',
+                        icon: 'success',
+                        didClose: ()=>{
+                            window.location.href = window.location.href;
+                        }
+                    })
                 </script>
                 ";
         }

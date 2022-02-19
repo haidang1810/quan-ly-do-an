@@ -93,18 +93,31 @@ function loadHD(maLop){
             no_results_text: "Không tìm thấy kết quả :",
             width: "70%"
         });
-        console.log(data);
     })
-    console.log("load hd dc goi");
 }
 function search(maLop){
     $.post("../../Models/ThesisCalenModel.php",{
         'search': maLop
     },function(data){
-        $(".table").html(data);
-        $('#tableCalen').DataTable({
-            "lengthMenu": [ 5, 10, 15, 20, 25, 30, 40, 50 ]
-        });
+        if(data!=""){
+            $(".table").html(data);
+            $('#tableCalen').DataTable({
+                "lengthMenu": [ 5, 10, 15, 20, 25, 30, 40, 50 ]
+            });
+        }else{
+            Swal.fire({
+                position: 'top-end',
+                icon: 'warning',
+                title: 'Lớp chưa có lịch bảo vệ',
+                showConfirmButton: false,
+                toast: true,
+                width: '305px',
+                timer: 1500,
+                background: 'rgba(221, 75, 57, 0.966)',
+                color: '#fff'
+            })
+            $(".table").html("");
+        }
     })
 }
 $(".btn-save-calen").click(function(){

@@ -194,28 +194,27 @@
                         if(empty($error))
                             echo"
                             <script>
-                                Swal.fire(
-                                    'Đã thêm!',
-                                    'Bạn đã thêm thành công ".$success." đề tài.',
-                                    'success'
-                                )
-                                setTimeout(() => {
-                                    window.location.href = window.location.href; 
-                                }, 1500);
+                                Swal.fire({
+                                    title: 'Đã lưu!',
+                                    text: 'Bạn đã thêm thành công ".$success." đề tài.',
+                                    icon: 'success',
+                                    didClose: ()=>{
+                                        window.location.href = window.location.href;
+                                    }
+                                })
                             </script>
                         ";
                         else
                             echo"
                             <script>
                                 Swal.fire({
-                                    icon: 'success',
-                                    title: 'Đã thêm!',
+                                    title: 'Đã lưu!',
                                     text: 'Bạn đã thêm thành công ".$success." đề tài.',
-                                    footer: 'Các hàng bị lỗi: ".$error."'
+                                    icon: 'success',
+                                    didClose: ()=>{
+                                        window.location.href = window.location.href;
+                                    }
                                 })
-                                setTimeout(() => {
-                                    window.location.href = window.location.href; 
-                                }, 1500);
                             </script>
                         ";
                         

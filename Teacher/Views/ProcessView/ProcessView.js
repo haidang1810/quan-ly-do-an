@@ -85,14 +85,30 @@ function search(maLop){
     $.post("../../Models/ProcessModel.php",{
         'search': maLop
     },function(data){
-        $(".table").html(data);
-        $('#tablePro').DataTable({
-            "lengthMenu": [ 5, 10, 15, 20, 25, 30, 40, 50 ]
-        });
-        submitDelete();
-        $(".paginate_button").click(function(){
+        if(data!=""){
+            $(".table").html(data);
+            $('#tablePro').DataTable({
+                "lengthMenu": [ 5, 10, 15, 20, 25, 30, 40, 50 ]
+            });
             submitDelete();
-        })
+            $(".paginate_button").click(function(){
+                submitDelete();
+            })
+        }else{
+            Swal.fire({
+                position: 'top-end',
+                icon: 'warning',
+                title: 'Lớp chưa có tiến độ',
+                showConfirmButton: false,
+                toast: true,
+                width: '290px',
+                timer: 1500,
+                background: 'rgba(221, 75, 57, 0.966)',
+                color: '#fff'
+            })
+            $(".table").html("");
+        }
+        
     })
 }
 $(".btn-add-process").click(function(){
