@@ -9,10 +9,7 @@
                 if($result->num_rows > 0){
                     $row = $result->fetch_assoc();
                     echo "<tr>";
-                    echo "<td><a onclick='showDetailStudent(this.id)'id='".
-                    $row['Mssv'].",".$row['HoTen'].",".$row['NamSinh'].",".
-                    $row['SDT'].",".$row['DiaChi'].",".$row['Khoa'].",".
-                    $row['LOP']."'>".$row['Mssv']."</a></td>";
+                    echo "<td>".$row['Mssv']."</td>";
                     echo "<td>".$row['HoTen']."</td>";
                     echo "<td>".$rowStudent['DiemSo']."</td>";
                     echo "<td>".$rowStudent['DiemChu']."</td>";
@@ -40,10 +37,7 @@
                 if($result->num_rows > 0){
                     $row = $result->fetch_assoc();
                     echo "<tr>";
-                    echo "<td><a onclick='showDetailStudent(this.id)'id='".
-                    $row['Mssv'].",".$row['HoTen'].",".$row['NamSinh'].",".
-                    $row['SDT'].",".$row['DiaChi'].",".$row['Khoa'].",".
-                    $row['LOP']."'>".$row['Mssv']."</a></td>";
+                    echo "<td>".$row['Mssv']."</td>";
                     echo "<td>".$row['HoTen']."</td>";
                     echo "<td>".$rowStudent['DiemCTHD']."</td>";
                     echo "<td>".$rowStudent['DiemCBHD']."</td>";
@@ -72,7 +66,6 @@
             while( $rowDT = $resultDT->fetch_assoc()){
                 echo "<tr>";
                 echo "<td>".$rowDT['TenDeTai']."</td>";
-                echo "<td>".$rowDT['GhiChu']."</td>";
                 echo "<td>".$rowDT['SoThanhVien']."</td>";
                 echo "<td>";
                 echo "<ul>";
@@ -85,10 +78,7 @@
                         if($result->num_rows > 0){
                             $row = $result->fetch_assoc();
                             echo "<li>";
-                            echo "<a onclick='showDetailStudent(this.id)'id='".
-                            $row['Mssv'].",".$row['HoTen'].",".$row['NamSinh'].",".
-                            $row['SDT'].",".$row['DiaChi'].",".$row['Khoa'].",".
-                            $row['LOP']."'>".$row['Mssv']."</a>";
+                            echo $row['Mssv'];
                             echo "</li>";
                         }
                     }
@@ -112,10 +102,7 @@
                     if($result->num_rows > 0){
                         $row = $result->fetch_assoc();
                         echo "<li>";
-                        echo "<a onclick='showDetailStudent(this.id)'id='".
-                        $row['Mssv'].",".$row['HoTen'].",".$row['NamSinh'].",".
-                        $row['SDT'].",".$row['DiaChi'].",".$row['Khoa'].",".
-                        $row['LOP']."'>".$row['Mssv']."</a>";
+                        echo $row['Mssv'];
                         echo "</li>";
                     }
                 

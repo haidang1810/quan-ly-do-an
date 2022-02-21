@@ -1,24 +1,4 @@
-function showDetailStudent(value) {
-    document.querySelector('.modal').style.visibility = 'visible';
-    document.querySelector('.modal').style.opacity = '1';
-    var data =value.split(",");
-    
-    if(data[0]!=null)
-        document.getElementById('Mssv').innerHTML = "<b>Mssv: </b>" + data[0];
-    if(data[1]!=null)    
-        document.getElementById('HoTen').innerHTML = "<b>Họ và tên: </b>" + data[1];
-    if(data[2]!=null)
-        document.getElementById('NgaySinh').innerHTML = "<b>Ngày sinh: </b>"+ data[2];
-    if(data[3]!=null)    
-        document.getElementById('SDT').innerHTML = "<b>SDT: </b>" + data[3];
-    if(data[4]!=null)
-        document.getElementById('DiaChi').innerHTML = "<b>Địa chỉ: </b>" + data[4];
-    if(data[5]!=null)    
-        document.getElementById('Khoa').innerHTML = "<b>Khoá: </b>" + data[5];
-    if(data[6]!=null)
-        document.getElementById('Lop').innerHTML = "<b>Lớp: </b>" + data[6]; 
-    
-}
+
 document.querySelector('.close').addEventListener('click',
 function() {
     document.querySelector('.modal').style.visibility = 'hidden';

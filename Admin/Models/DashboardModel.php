@@ -50,7 +50,7 @@
     }
     function totalAccTea($conn){
         $total = 0;
-        $sql = "SELECT * FROM nguoidung WHERE Loai=2";
+        $sql = "SELECT * FROM nguoidung WHERE Loai=2 OR Loai=4";
         $result = $conn->query($sql);
         if ($result->num_rows > 0){
             $total += $result->num_rows;

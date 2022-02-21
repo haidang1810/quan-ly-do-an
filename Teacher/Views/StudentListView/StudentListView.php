@@ -15,27 +15,7 @@
                 include("../shared/nav.php");
             ?>
             <div class="content">
-                <?php include("../../Controllers/StudentListController.php"); ?>
-                <div class="modal">
-                    <div class="modal_overlay"></div>
-                    <div class="modal_body">
-                        <div class="modal_inner">
-                            <div class="modal_title">
-                                <h2>Thông tin chi tiết sinh viên</h2>
-                                <div class="close">+</div>
-                            </div>
-                            <ul>
-                                <li id="Mssv"></li>
-                                <li id="HoTen"></li>
-                                <li id="NgaySinh"></li>
-                                <li id="SDT"></li>
-                                <li id="DiaChi"></li>
-                                <li id="Khoa"></li>
-                                <li id="Lop"></li>
-                            </ul>                            
-                        </div>
-                    </div>
-                </div>
+                <?php include("../../Controllers/StudentListController.php"); ?>                
                 <div class="modal modal_editLV">
                     <div class="modal_overlay"></div>
                     <div class="modal_body">

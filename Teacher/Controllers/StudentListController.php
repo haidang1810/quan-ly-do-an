@@ -64,7 +64,6 @@
         echo "<thead>";
         echo "<tr>";
         echo "<th>Tên đề tài</th>";
-        echo "<th>Ghi chú</th>";
         echo "<th>Số thành viên</th>";
         echo "<th>sinh viên đăng ký</th>";
         echo "</tr>";

@@ -32,7 +32,6 @@
     echo "<tr>";
     echo "<th>Mã lớp</th>";
     echo "<th>Tên lớp</th>";
-    echo "<th>Thông tin</th>";
     echo "<th>Thao tác</th>";
     echo "</tr>";
     echo "</thead>";

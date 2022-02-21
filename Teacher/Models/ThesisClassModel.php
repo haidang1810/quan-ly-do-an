@@ -33,12 +33,6 @@
                     echo "<td>".$rowLop['MaLopLV']." </td>";
                     echo "<td>".$rowLop['TenLop']." </td>";
                     echo "<td>";
-                    echo "<ul>";
-                    echo "<li><b>Tuần bắt đầu:</b> ".$rowLop['TuanBD']."</li>";
-                    echo "<li><b>Tuần kết thúc:</b> ".$rowLop['TuanKT']."</li>";
-                    echo "</ul>";
-                    echo "</td>";
-                    echo "<td>";
                     echo "<form method='POST'>";
                     echo "<button class='btn_class btn_detail' type='submit' name='showStudentList'>";
                     echo "<i class='fas fa-info-circle'></i>";
