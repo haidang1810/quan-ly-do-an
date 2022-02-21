@@ -128,7 +128,7 @@
         <script src="SemesterView.js"></script>
         <script>
             $('#tableSemster').DataTable({
-                "lengthMenu": [ 2, 10, 15, 20, 25, 30, 40, 50 ]
+                "lengthMenu": [ 5, 10, 15, 20, 25, 30, 40, 50 ]
             });
         </script>
     </body>
