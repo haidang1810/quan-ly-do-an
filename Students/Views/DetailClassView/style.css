@@ -59,3 +59,42 @@ ul.list-process{
 .list-process li a{
     font-size: 20px;
 }
+.nut_dropdown {
+    background-color: transparent;
+    color: #c02424;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+.icon-hide{
+    pointer-events: none;
+}
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.noidung_dropdown {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    cursor: pointer;
+}
+
+.noidung_dropdown a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-size: 16px;
+}
+.noidung_dropdown a:hover{
+    background-color: #cecece;
+}
+.hienThi{
+    display:block;
+}

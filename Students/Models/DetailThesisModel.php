@@ -92,7 +92,14 @@
                         $final = "Đang trong thời gian nộp";
                 }else
                     $final = "Giảng viên chưa tạo thư mục nộp";
-                echo "<h3 class='content-title'>".$row['MaLopLV']." - ".$row['TenLop']."</h3>";
+                echo "<h3 class='content-title'>".$row['MaLopLV']." - ".$row['TenLop'];
+                echo "<div class='dropdown'>
+                        <button onclick='hamDropdown()' class='nut_dropdown'><i class='fa fa-cog icon-hide'></i></button>
+                        <div class='noidung_dropdown'>
+                            <a id='".$row['MaLopLV']."' class='cancel_class'>Huỷ ghi danh</a>
+                        </div>
+                    </div>";
+                echo "</h3>";
                 echo "
                 <div class='content-body'>
                     <a href='#' class='title-box link-topic'>1. Đề tài thực hiện</a>
@@ -158,6 +165,61 @@
                         return true;
                 }
             }
+        }
+    }
+    if(isset($_POST['id-cancel'])){
+        include("../../public/config.php");
+        global $conn;
+        $maLop=$_POST['id-cancel'];
+        if(isset($_SESSION['login'])){
+            $data = $_SESSION['login'];
+        }
+        $checkSV = "SELECT Mssv FROM sinhvien WHERE TaiKhoan='".$data."'";
+        $resultSV = $conn->query($checkSV);
+        $rowSV = $resultSV->fetch_assoc();
+        $mssv = $rowSV['Mssv'];
+        //check dang ky de tai
+        $checkToic="SELECT * FROM detailuanvan
+        WHERE MaLopLV='$maLop'
+        and Mssv='$mssv'";
+        $resultTopic = $conn->query($checkToic);
+        // check nop tien do
+        $checkPro = "SELECT * FROM nopbailuanvan,nopluanvanct 
+        WHERE nopbailuanvan.Id=nopluanvanct.Ma
+        And nopluanvanct.Mssv='$mssv'
+        AND nopbailuanvan.MaLopLV='$maLop'";
+        $resultPro = $conn->query($checkPro);
+        //check lich bc
+        $checkBC = "SELECT MaHD
+                FROM hoidong, sinhvien_luanvan, lopluanvan
+                WHERE sinhvien_luanvan.MaLopLV=lopluanvan.MaLopLV
+                AND hoidong.ThuKy=lopluanvan.MaGV
+                AND sinhvien_luanvan.MaLopLV='$maLop'
+                GROUP BY MaHD";
+                $resultBC = $conn->query($checkBC);
+                if ($resultBC->num_rows > 0){
+                    while($rowHD=$resultBC->fetch_assoc()){
+                        $findCalen = "SELECT * FROM lichbaove WHERE
+                        MaHD='".$rowHD['MaHD']."' AND Mssv='$mssv'";
+                        $resultCalen = $conn->query($findCalen);
+                        if($resultCalen->num_rows > 0){
+                            echo 2;
+                            exit;
+                        }
+                    }
+                }
+        if($resultTopic->num_rows>0||$resultPro->num_rows>0){
+            echo 2;
+            exit;
+        }
+        
+        $sql = "DELETE FROM sinhvien_luanvan WHERE MaLopLV='$maLop' AND Mssv='$mssv'";
+        if(mysqli_query($conn, $sql)){
+            $deleHis = "DELETE FROM lichsu_luanvan WHERE MaLopLV='$maLop' AND Mssv='$mssv'";
+            if(mysqli_query($conn, $deleHis))
+                echo 1;
+        }else{
+            echo 3;
         }
     }
     if(isset($_POST['id-title'])){

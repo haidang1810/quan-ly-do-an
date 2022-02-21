@@ -2,8 +2,7 @@
     <head>
         <title>Chi tiết lớp học phần</title>
         <link rel="stylesheet" href="style.css">
-        <script src="../../../public/jquery-ui/jquery-3.3.1.min.js"></script>
-        <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+        <script src="../../../public/jquery-ui/jquery-3.3.1.min.js"></script>        
         <script src="../../../public/sweetalert2/node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
         <link rel="stylesheet" href="../../../public/sweetalert2/node_modules/sweetalert2/dist/sweetalert2.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">

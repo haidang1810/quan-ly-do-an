@@ -48,7 +48,6 @@ function eventSubmitForm(){
                 cancelButtonText: 'Huỷ'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    console.log("submit");
                     actionRegister(childForm[0],childForm[1].value,Mssv); 
                 }
             })

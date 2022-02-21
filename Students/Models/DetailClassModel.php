@@ -85,7 +85,15 @@
                         $final = "Đang trong thời gian nộp";
                 }else
                     $final = "Giảng viên chưa tạo thư mục nộp";
-                echo "<h3 class='content-title'>".$row['MaLopHP']." - ".$row['TenLop']."</h3>";
+                echo "<h3 class='content-title'>".$row['MaLopHP']." - ".$row['TenLop'];
+                echo "<div class='dropdown'>
+                        <button onclick='hamDropdown()' class='nut_dropdown'><i class='fa fa-cog icon-hide'></i></button>
+                        <div class='noidung_dropdown'>
+                            <a id='".$row['MaLopHP']."' class='cancel_class'>Huỷ ghi danh</a>
+                        </div>
+                    </div>";
+                echo "</h3>";
+                    
                 echo "
                 <div class='content-body'>
                     <a href='#' class='title-box link-topic'>1. Đăng ký đề tài</a>
@@ -151,6 +159,47 @@
                         return true;
                 }
             }
+        }
+    }
+    //function cancelClass($conn, $maLop){
+    if(isset($_POST['id-cancel'])){
+        include("../../public/config.php");
+        global $conn;
+        $maLop=$_POST['id-cancel'];
+        if(isset($_SESSION['login'])){
+            $data = $_SESSION['login'];
+        }
+        $checkSV = "SELECT Mssv FROM sinhvien WHERE TaiKhoan='".$data."'";
+        $resultSV = $conn->query($checkSV);
+        $rowSV = $resultSV->fetch_assoc();
+        $mssv = $rowSV['Mssv'];
+        //check dang ky de tai
+        $checkToic="SELECT * FROM dangkydetai, detai
+        WHERE detai.MaLopHP='$maLop'
+        and detai.MaDeTai=dangkydetai.MaDeTai
+        AND dangkydetai.Mssv='$mssv'";
+        $resultTopic = $conn->query($checkToic);
+        // check nop tien do
+        $checkPro = "SELECT * FROM nopbai,nopbaichitiet 
+        WHERE nopbai.Id=nopbaichitiet.Ma
+        And nopbaichitiet.Mssv='$mssv'
+        AND nopbai.MaLopHP='$maLop'";
+        $resultPro = $conn->query($checkPro);
+        //check lich bc
+        $checkBC = "SELECT NgayBC FROM NgayBaoCao WHERE MaLopHP='$maLop'";
+        $resultBC = $conn->query($checkBC);
+        if($resultTopic->num_rows>0||$resultPro->num_rows>0||$resultBC->num_rows>0){
+            echo 2;
+            exit;
+        }
+        
+        $sql = "DELETE FROM sinhvien_hocphan WHERE MaLopHP='$maLop' AND Mssv='$mssv'";
+        if(mysqli_query($conn, $sql)){
+            $deleHis = "DELETE FROM lichsu_hocphan WHERE MaLopHP='$maLop' AND Mssv='$mssv'";
+            if(mysqli_query($conn, $deleHis))
+                echo 1;
+        }else{
+            echo 3;
         }
     }
     if(isset($_POST['id-title'])){
