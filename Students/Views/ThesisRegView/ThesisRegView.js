@@ -12,14 +12,18 @@ function loadData(id,mssv){
             });
             //event form submit
             eventSubmitForm();
-            $(".paginate_button").click(function(){
-                eventSubmitForm();
-            })
+            nextPage();
         }else{
             var content = "<h4>Không có lớp trong học kỳ này</h4>"
             $(".table-class").html(content);
         }
     },)
+}
+function nextPage(){
+    $(".paginate_button").click(function(){
+        eventSubmitForm();
+        nextPage();
+    })
 }
 $(document).ready(function(){
     $(".button_search").click(function(){

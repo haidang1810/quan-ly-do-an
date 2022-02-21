@@ -28,12 +28,15 @@ function() {
     document.querySelector('.modal_edit').style.visibility = 'hidden';
     document.querySelector('.modal_edit').style.opacity = '0';
 });
-
-$(window).on('load',function(){
-    submitDelete();
+function nextPage(){
     $(".paginate_button").click(function(){
         submitDelete();
+        nextPage();
     })
+}
+$(window).on('load',function(){
+    submitDelete();
+    nextPage();
 })
 function submitDelete(){
     var form = document.getElementsByClassName("form-delete");

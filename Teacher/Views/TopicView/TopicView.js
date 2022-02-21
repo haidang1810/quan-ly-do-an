@@ -107,6 +107,12 @@ $(window).on('load',function(){
     })
     
 })
+function nextPage(){
+    $(".paginate_button").click(function(){
+        submitDelete();
+        nextPage();
+    })
+}
 function search(maLop){
     $.post("../../Models/TopicModel.php",{
         'search': maLop
@@ -117,9 +123,7 @@ function search(maLop){
                 "lengthMenu": [ 5, 10, 15, 20, 25, 30, 40, 50 ],
                 
             });
-            $(".paginate_button").click(function(){
-                submitDelete();
-            })
+            nextPage();
             submitDelete();
         }else{
             Swal.fire({

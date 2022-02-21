@@ -44,22 +44,34 @@ function() {
     document.querySelector('.modal_edit').style.visibility = 'hidden';
     document.querySelector('.modal_edit').style.opacity = '0';
 });
-var form = document.getElementsByClassName("form-delete");
-for(i=0;i<form.length;i++){
-    form[i].addEventListener('submit', function(e){
-        e.preventDefault();    
-        Swal.fire({
-            title: 'Bạn có chắc muốn xoá?',
-            text: "Bạn sẽ không thể khôi phục dữ liệu đã xoá!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Vâng, hãy xoá!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                this.submit();            
-            }
-        })
+function nextPage(){
+    $(".paginate_button").click(function(){
+        submitDelete();
+        nextPage();
     })
+}
+$(window).on("load",function(){
+    submitDelete();
+    nextPage();
+})
+function submitDelete(){
+    var form = document.getElementsByClassName("form-delete");
+    for(i=0;i<form.length;i++){
+        form[i].addEventListener('submit', function(e){
+            e.preventDefault();    
+            Swal.fire({
+                title: 'Bạn có chắc muốn xoá?',
+                text: "Bạn sẽ không thể khôi phục dữ liệu đã xoá!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Vâng, hãy xoá!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.submit();            
+                }
+            })
+        })
+    }
 }

@@ -69,7 +69,7 @@
                                 $amount = $row[1];
                             } 
                             if(!empty($row[2])) 
-                                $note = $row[2];
+                                $note = $row[5];
                             
                             $sql = "INSERT INTO detai(TenDeTai,GhiChu,SoThanhVien,MaLopHP)
                             VALUES('".$name."','".$note."',".$amount.",'".$class."')";

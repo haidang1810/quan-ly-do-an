@@ -94,8 +94,15 @@ function onChecked(id){
 		changeCheckbox(false);
 	}
 }
-submitCancel();
-$(".paginate_button").click(function(){
+
+function nextPage(){
+    $(".paginate_button").click(function(){
+        submitCancel();
+        nextPage();
+    })
+}
+$(window).on("load",function(){
+    nextPage();
 	submitCancel();
 })
 function submitCancel(){

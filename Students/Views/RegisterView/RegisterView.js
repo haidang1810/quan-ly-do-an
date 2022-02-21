@@ -1,4 +1,10 @@
 var Mssv = document.getElementById('currentUser').value;
+function nextPage(){
+    $(".paginate_button").click(function(){
+        eventSubmitForm();
+        nextPage();
+    })
+}
 function loadData(id,mssv){
     $.post('../../Models/RegisterModel.php',{
         'id': id,
@@ -11,9 +17,7 @@ function loadData(id,mssv){
                 "lengthMenu": [ 5, 10, 15, 20, 25, 30, 40, 50 ]
             });
             //event form submit
-            $(".paginate_button").click(function(){
-                eventSubmitForm();
-            })
+            nextPage();
             eventSubmitForm();
         }else{
             var content = "<h4>Không có lớp trong học kỳ này</h4>"

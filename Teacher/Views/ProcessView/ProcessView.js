@@ -81,6 +81,12 @@ $(window).on('load',function(){
     })
     
 })
+function nextPage(){
+    $(".paginate_button").click(function(){
+        submitDelete();
+        nextPage();
+    })
+}
 function search(maLop){
     $.post("../../Models/ProcessModel.php",{
         'search': maLop
@@ -91,9 +97,7 @@ function search(maLop){
                 "lengthMenu": [ 5, 10, 15, 20, 25, 30, 40, 50 ]
             });
             submitDelete();
-            $(".paginate_button").click(function(){
-                submitDelete();
-            })
+            nextPage();
         }else{
             Swal.fire({
                 position: 'top-end',

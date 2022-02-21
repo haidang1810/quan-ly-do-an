@@ -87,16 +87,20 @@ function enableAcc(){
 }
 
 
+function nextPage(){
+    $(".paginate_button").click(function(){
+        resetPass();
+        enableAcc();
+        disableAcc();
+        nextPage();
+    })
+}
 
 $(window).on('load',function(){
     resetPass();
     enableAcc();
-    disableAcc()
-    $(".paginate_button").click(function(){
-        resetPass();
-        enableAcc();
-        disableAcc()
-    })
+    disableAcc();
+    nextPage();
 })
 
 function resetPass(){

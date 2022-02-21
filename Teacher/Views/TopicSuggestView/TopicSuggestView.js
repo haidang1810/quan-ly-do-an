@@ -109,6 +109,13 @@ $(window).on('load',function(){
     })
     
 })
+function nextPage(){
+    $(".paginate_button").click(function(){
+        suggest();
+        refuse()
+        nextPage();
+    })
+}
 function search(maLop){
     $.post("../../Models/TopicSuggestModel.php",{
         'search': maLop
@@ -119,11 +126,8 @@ function search(maLop){
                 "lengthMenu": [ 5, 10, 15, 20, 25, 30, 40, 50 ],
             });
             suggest();
-            refuse()
-            $(".paginate_button").click(function(){
-                suggest();
-                refuse()
-            })
+            refuse();
+            nextPage();
         }else{
             Swal.fire({
                 position: 'top-end',
