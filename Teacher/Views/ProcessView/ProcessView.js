@@ -27,37 +27,8 @@ function() {
     document.querySelector('.modal_edit').style.opacity = '0';
 });
 
-function showDetail(value){
-    var data = value.split(",");
-    var myhref="?process="+data[0];
-    location.href=myhref;
-}
-document.querySelector('.close_SV').addEventListener('click',
-function() {
-    document.querySelector('.modal_SV').style.visibility = 'hidden';
-    document.querySelector('.modal_SV').style.opacity = '0';
-});
-function showDetailStudent(value) {
-    document.querySelector('.modal_SV').style.visibility = 'visible';
-    document.querySelector('.modal_SV').style.opacity = '1';
-    var data =value.split(",");
-    
-    if(data[0]!=null)
-        document.getElementById('Mssv').innerHTML = "<b>Mssv: </b>" + data[0];
-    if(data[1]!=null)    
-        document.getElementById('HoTen').innerHTML = "<b>Họ và tên: </b>" + data[1];
-    if(data[2]!=null)
-        document.getElementById('NgaySinh').innerHTML = "<b>Ngày sinh: </b>"+ data[2];
-    if(data[3]!=null)    
-        document.getElementById('SDT').innerHTML = "<b>SDT: </b>" + data[3];
-    if(data[4]!=null)
-        document.getElementById('DiaChi').innerHTML = "<b>Địa chỉ: </b>" + data[4];
-    if(data[5]!=null)    
-        document.getElementById('Khoa').innerHTML = "<b>Khoá: </b>" + data[5];
-    if(data[6]!=null)
-        document.getElementById('Lop').innerHTML = "<b>Lớp: </b>" + data[6];
-    
-}
+
+
 $(document).ready(function(){
     $(".dsHKNH").change(function(){
         var id = $(".dsHKNH").val();
@@ -303,6 +274,24 @@ function submitDelete(){
                             })
                         }
                     })
+                }
+            })
+        })
+    }
+}
+function submitDelete(){
+    var form = document.getElementsByClassName("btn_detail");
+    for(i=0;i<form.length;i++){
+        form[i].addEventListener('click', function(){
+            let id = this.id;
+            $.post("../../Models/ProcessModel.php",{
+                'id-detail': this.id
+            },function(data){
+                if(data!=""){
+                    $(".table-detail").html(data);
+                    $('#tableDetail').DataTable({
+                        "lengthMenu": [ 5, 10, 15, 20]
+                    });
                 }
             })
         })

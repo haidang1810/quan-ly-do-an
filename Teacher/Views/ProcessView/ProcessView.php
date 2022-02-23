@@ -76,26 +76,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal modal_SV">
-                    <div class="modal_overlay"></div>
-                    <div class="modal_body">
-                        <div class="modal_inner">
-                            <div class="modal_title">
-                                <h2>Thông tin chi tiết sinh viên</h2>
-                                <div class="close close_SV">+</div>
-                            </div>
-                            <ul>
-                                <li id="Mssv"></li>
-                                <li id="HoTen"></li>
-                                <li id="NgaySinh"></li>
-                                <li id="SDT"></li>
-                                <li id="DiaChi"></li>
-                                <li id="Khoa"></li>
-                                <li id="Lop"></li>
-                            </ul>                            
-                        </div>
-                    </div>
-                </div>
             </div>
             <?php
                 include("../shared/footer.php");
@@ -105,12 +85,6 @@
         <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
         <script src="../../../public/chosen/chosen.jquery.js"></script>
         <script src="../../../public/chosen/chosen.jquery.min.js"></script>
-        
-        <script>
-            $('#tableDetail').DataTable({
-                "lengthMenu": [ 5, 10, 15, 20]
-            });
-        </script>
         <script>
             $(".dsHKNH").chosen({
                 allow_single_deselect: true,

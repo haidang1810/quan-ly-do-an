@@ -35,8 +35,10 @@ ob_start();
                 echo "<tr>";
                 echo "<td>".$row['TieuDe']."</td>";
                 echo "<td>".$row['GhiChu']."</td>";
-                echo "<td>".$row['ThoiGianBatDau']."</td>";
-                echo "<td>".$row['ThoiGianKetThuc']."</td>";
+                $timeStart = date("d-m-Y , H:i:s",strtotime($row['ThoiGianBatDau']));
+                $timeEnd = date("d-m-Y, H:i:s",strtotime($row['ThoiGianKetThuc']));
+                echo "<td>$timeStart</td>";
+                echo "<td>$timeEnd</td>";
                 $countSV = "SELECT * FROM nopbaichitiet WHERE Ma='".$row['Id']."' group by Mssv";
                 $resultSV = $conn->query($countSV);
                 $count = $resultSV->num_rows;
@@ -73,7 +75,7 @@ ob_start();
                         echo "<i class='fas fa-trash-alt'></i>";
                         echo "</button>";
                         echo "<button class='btn_process btn_detail'  name='detailProcess' id='".
-                        $row['Id'].",".$row['TieuDe']."' type='button' onclick='showDetail(this.id)'>";
+                        $row['Id']."' type='button' >";
                         echo "<i class='fas fa-info-circle'></i>";
                         echo "</button>";
                         echo "</form>";
@@ -183,14 +185,17 @@ ob_start();
         }
     }
 
-    function loadDetailProcess($conn,$id){
+    //function loadDetailProcess($conn,$id){
+    if(isset($_POST['id-detail'])){
+        include("../../public/config.php");
+        global $conn;
+        $id = $_POST['id-detail'];
         //tìm lớp của tiến độ
         $findLop = "SELECT * FROM nopbai WHERE id='".$id."'";
         $resultLop = $conn->query($findLop);
         if($resultLop->num_rows > 0){
             $rowLop = $resultLop->fetch_assoc();
             echo "<h2>Chi tiết tiến độ ".$rowLop['TieuDe']."</h2>";
-            echo "<div class='table'>";
             echo "<table id='tableDetail'>";
             echo "<thead>";
             echo "<tr>";
@@ -221,10 +226,7 @@ ob_start();
                             if($result->num_rows > 0){
                                 $row = $result->fetch_assoc();
                                 echo "<li class='student'>";
-                                echo "<a onclick='showDetailStudent(this.id)'id='".
-                                $row['Mssv'].",".$row['HoTen'].",".$row['NamSinh'].",".
-                                $row['SDT'].",".$row['DiaChi'].",".$row['Khoa'].",".
-                                $row['LOP']."'>".$row['Mssv']."</a>";
+                                echo $row['Mssv'];
                                 echo "</li>";
                             }
                         }
@@ -233,7 +235,8 @@ ob_start();
                         $resultSV = $conn->query($findSV);
                         $flag=0;
                         while($rowSV = $resultSV->fetch_assoc()){
-                            $findDetail = "SELECT * FROM nopbaichitiet WHERE Ma='".$id."' AND Mssv='".$rowSV['Mssv']."'";
+                            $findDetail = "SELECT * FROM nopbaichitiet, nopbai WHERE Ma='".$id."' AND Mssv='".$rowSV['Mssv']."'
+                            AND nopbai.Id=nopbaichitiet.Ma";
                             $resultDetail = $conn->query($findDetail);
                             if($resultDetail->num_rows > 0){                                
                                 echo "<td>";
@@ -253,8 +256,12 @@ ob_start();
                                 echo "<i class='fas fa-download'></i> Tải tất cả";
                                 echo "</button>";
                                 echo "</form>";
-                                echo "</td>";                                
-                                echo "<td>".$rowDetail['ThoiGianNop']."</td>";
+                                echo "</td>";    
+                                $time = date("d-m-Y, H:i:s",strtotime($rowDetail['ThoiGianNop'])); 
+                                if(date("d-m-Y, H:i:s",strtotime($rowDetail['ThoiGianKetThuc']))<$time)                           
+                                    echo "<td><p style='color:red;'>$time</p></td>";
+                                else
+                                    echo "<td>$time</td>";
                                 $flag=1;
                             }
                         }
@@ -267,7 +274,6 @@ ob_start();
             }
             echo "</tbody>";
             echo "</table>";
-            echo "</div>";
         }     
     }
     

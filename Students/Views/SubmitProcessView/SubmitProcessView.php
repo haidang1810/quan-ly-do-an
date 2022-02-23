@@ -34,7 +34,8 @@
                 Dropzone.autoDiscover = false;
                 var myDropzone = new Dropzone(".dropzone", { 
                     autoProcessQueue: false,
-                    parallelUploads: 20,
+                    maxFiles: 5,
+                    maxFilesize: 256, // MB
                     success : function(file, response){
                     $(".dropzone").html(response)
                 }

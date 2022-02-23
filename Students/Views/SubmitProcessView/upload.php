@@ -12,13 +12,14 @@
   if(file_exists($target_dir))
     {
         $target_dir = "../../../public/item/$malhp/$tdn/$msv/";
+
     }
     else 
     {
         mkdir("../../../public/item/$malhp/$tdn/$msv", 7);
         $target_dir = "../../../public/item/$malhp/$tdn/$msv/";
     }
-    // Upload file
+    //Upload file
     $target_file = $target_dir . basename($_FILES["file"]["name"]);
     $tgd="$malhp/$tdn/$msv/";
     
@@ -33,13 +34,12 @@
             $sql = "INSERT INTO nopbaichitiet (Ma, Mssv, File, ThoiGianNop) VALUES ('".$mtd."','".$msv."','".$dd."','".$time."')";
             if (mysqli_query($conn, $sql)){
                 $msg = "<script>
-                        Swal.fire(
-                            'Đã thêm!',
-                            'Bạn đã upload thành công.',
-                            'success'
-                        ).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.reload()        
+                        Swal.fire({
+                            title: 'Đã lưu!',
+                            text: 'Bạn đã upload thành công.',
+                            icon: 'success',
+                            didClose: ()=>{
+                                window.location.href = window.location.href;
                             }
                         })
                     </script>";
@@ -48,10 +48,9 @@
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Lỗi...',
-                                text: 'Lỗi khi lưu vào cơ sở dữ liệu!'
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    window.location.reload()        
+                                text: 'Lỗi khi lưu vào cơ sở dữ liệu!',
+                                didClose: ()=>{
+                                    window.location.href = window.location.href;
                                 }
                             })
                         </script>";
@@ -59,44 +58,41 @@
             $sql = "INSERT INTO nopluanvanct (Ma, Mssv, File, ThoiGianNop) VALUES ('".$mtd."','".$msv."','".$dd."','".$time."')";
             if (mysqli_query($conn, $sql)){
                 $msg = "<script>
-                        Swal.fire(
-                            'Đã thêm!',
-                            'Bạn đã upload thành công.',
-                            'success'
-                        ).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.reload()        
-                            }
-                        })
-                    </script>";
+                Swal.fire({
+                    title: 'Đã lưu!',
+                    text: 'Bạn đã upload thành công.',
+                    icon: 'success',
+                    didClose: ()=>{
+                        window.location.href = window.location.href;
+                    }
+                })
+            </script>";
             }else
-                $msg = "<script>
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Lỗi...',
-                                text: 'Lỗi khi lưu vào cơ sở dữ liệu!'
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    window.location.reload()        
-                                }
-                            })
-                        </script>";
+            $msg = "<script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi...',
+                text: 'Lỗi khi lưu vào cơ sở dữ liệu!',
+                didClose: ()=>{
+                    window.location.href = window.location.href;
+                }
+            })
+        </script>";
         }
         
     }
     else
     { 
-    $msg = "<script>
-                Swal.fire({
+        $msg = "<script>
+            Swal.fire({
                 icon: 'error',
                 title: 'Lỗi...',
-                text: 'Lỗi khi upload file!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.reload()        
-                    }
-                })
-            </script>";
+                text: 'Lỗi khi upload file!',
+                didClose: ()=>{
+                    window.location.href = window.location.href;
+                }
+            })
+        </script>"; 
     }
     echo $msg;
 ?>
