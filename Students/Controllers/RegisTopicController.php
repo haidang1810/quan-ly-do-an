@@ -32,7 +32,23 @@
         echo "</table>";
         echo "</div>";
         if($offer!='null' && $offer!='exit'){
-            echo "<p class='offer-text'>Đề tài đã đề xuất $offer</p>";
+            echo "<h2>Đề tài đã đề xuất</h2>";
+            echo "<table>";
+            echo "<thead>";
+            echo "<tr>";
+            echo "<th>Tên đề tài</th>";
+            echo "<th>Ghi chú</th>";
+            echo "<th>Số thành viên</th>";
+            echo "</tr>";
+            echo "</thead>";
+            echo "<tbody>";
+            echo "<tr>";
+            echo "<td>".$offer['Ten']."</td>";
+            echo "<td>".$offer['GhiChu']."</td>";
+            echo "<td>".$offer['SoTV']."</td>";
+            echo "</tr>";
+            echo "</tbody>";
+            echo "</table>";
         }
         //modal
         echo "

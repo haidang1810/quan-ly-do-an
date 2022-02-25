@@ -127,6 +127,7 @@
         $findSV = "SELECT Mssv FROM sinhvien WHERE TaiKhoan='$data'";
         $resultSV = $conn->query($findSV);
         $rowSV = $resultSV->fetch_assoc();
+        //check tien do
         $checkPro = "SELECT * FROM nopbai,nopbaichitiet 
         WHERE nopbai.Id=nopbaichitiet.Ma
         And nopbaichitiet.Mssv='$data'
@@ -163,9 +164,6 @@
                     ";
             }
         }
-
-
-        
     }
     if(isset($_POST['listSV']) && isset($_POST['MaDT'])){
         include("../../public/config.php");
@@ -223,7 +221,7 @@
         $resultOffer = $conn->query($findOffer);
         if($resultOffer->num_rows > 0){
             $rowOffer = $resultOffer->fetch_assoc();
-            return $rowOffer['Ten'];
+            return $rowOffer;
         }else {
             $findDK = "SELECT Mssv, dangkydetai.MaDeTai
             FROM detai, dangkydetai 
