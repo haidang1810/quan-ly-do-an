@@ -297,3 +297,16 @@ function submitDelete(){
         })
     }
 }
+// $(".btn_download_class").click(function(){
+//     let maLop = $(".dsLop").val();
+//     console.log("click");
+//     if(maLop!=-1){
+//         console.log("gửi");
+//         $.post("../../Models/ProcessModel.php",{
+//             'downloadClass': maLop
+//         },function(data){
+//             if(data==1)
+//                 console.log("thành công");
+//         })
+//     }
+// })

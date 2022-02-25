@@ -5,7 +5,7 @@
     if (session_id() === '')
         session_start();
     echo "<div>
-    <for method='POST'>";
+    <form method='POST'>";
     echo "<select name='HKNH' class='select_process dsHKNH'>";
     echo "<option value='-1'>Chọn lớp học kỳ năm học</option>";
     loadHKNH($conn);        
@@ -43,6 +43,7 @@
         $MaHP = $_POST['lopHP'];
         $source = "../../../public/item/".$MaHP."/";
         $destination = $MaHP.".zip";
-        Zip($source,$destination,true);       
+        Zip($source,$destination,true);
     }
+
 ?>
