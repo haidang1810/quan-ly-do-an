@@ -26,7 +26,7 @@
             loadTopic($conn,$_SESSION['DetailClass']);
         if(isset($_POST['Id-cancel'])){
             $maDT = $_POST['Id-cancel'];
-            cancelTopic($conn,$maDT);
+            cancelTopic($conn,$maDT,$_SESSION['DetailClass']);
         }
         echo "</tbody>";
         echo "</table>";

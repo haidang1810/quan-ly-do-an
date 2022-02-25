@@ -120,29 +120,52 @@
         }
     }
 
-    function cancelTopic($conn,$id){
+    function cancelTopic($conn,$id,$maLop){
         if(isset($_SESSION['login'])){
             $data = $_SESSION['login'];
         }
         $findSV = "SELECT Mssv FROM sinhvien WHERE TaiKhoan='$data'";
         $resultSV = $conn->query($findSV);
         $rowSV = $resultSV->fetch_assoc();
-
-        $sql = "DELETE FROM dangkydetai WHERE MaDeTai='$id' AND Mssv='".$rowSV['Mssv']."'";
-        if(mysqli_query($conn,$sql)){
+        $checkPro = "SELECT * FROM nopbai,nopbaichitiet 
+        WHERE nopbai.Id=nopbaichitiet.Ma
+        And nopbaichitiet.Mssv='$data'
+        AND nopbai.MaLopHP='$maLop'";
+        $resultPro = $conn->query($checkPro);
+        //check lich bc
+        $checkBC = "SELECT NgayBC FROM NgayBaoCao WHERE MaLopHP='$maLop'";
+        $resultBC = $conn->query($checkBC);
+        if($resultPro->num_rows>0||$resultBC->num_rows>0){
             echo"
-                <script>
-                    Swal.fire({
-                        title: 'Đã huỷ!',
-                        text: 'Bạn đã huỷ đăng ký đề tài thành công.',
-                        icon: 'success',
-                        didClose: ()=>{
-                            window.location.href = window.location.href;
-                        }
-                    })
-                </script>
-                ";
+            <script>
+                Swal.fire({
+                    title: 'Lỗi!',
+                    text: 'Học kỳ đã bắt đầu không thể huỷ.',
+                    icon: 'error'
+                })
+            </script>
+            ";
+            exit;
+        }else{
+            $sql = "DELETE FROM dangkydetai WHERE MaDeTai='$id' AND Mssv='".$rowSV['Mssv']."'";
+            if(mysqli_query($conn,$sql)){
+                echo"
+                    <script>
+                        Swal.fire({
+                            title: 'Đã huỷ!',
+                            text: 'Bạn đã huỷ đăng ký đề tài thành công.',
+                            icon: 'success',
+                            didClose: ()=>{
+                                window.location.href = window.location.href;
+                            }
+                        })
+                    </script>
+                    ";
+            }
         }
+
+
+        
     }
     if(isset($_POST['listSV']) && isset($_POST['MaDT'])){
         include("../../public/config.php");
