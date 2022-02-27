@@ -83,9 +83,18 @@
         global $conn;
         $maLop = $_POST['maLopHP'];
         $mssv = $_POST['mssv'];
-        $sql = "INSERT INTO sinhvien_hocphan(Mssv,MaLopHP) VALUES('$mssv','$maLop')";
-        if(mysqli_query($conn, $sql))
-            echo 1;
-        else echo -1;
+        $pass = $_POST['pass'];
+        $checkPass = "SELECT MaVaoLop FROM lophocphan WHERE MaLopHP='$maLop'";
+        $resultPass = $conn->query($checkPass);
+        if ($resultPass->num_rows > 0){
+            $rowPass = $resultPass->fetch_assoc();
+            if($pass==$rowPass['MaVaoLop']){
+                $sql = "INSERT INTO sinhvien_hocphan(Mssv,MaLopHP) VALUES('$mssv','$maLop')";
+                if(mysqli_query($conn, $sql))
+                    echo 1;
+                else echo -1;
+            }else echo 2;
+        }else echo 3;
+        
     }
 ?>

@@ -37,6 +37,10 @@
                     echo "<button class='btn_class btn_detail' type='submit' name='showStudentList'>";
                     echo "<i class='fas fa-info-circle'></i>";
                     echo "</button>";
+                    echo "<button class='btn_class btn_setting' type='button' id='".$rowLop['MaVaoLop']
+                    .",".$rowLop['MaLopLV']."' >";
+                    echo "<i class='fas fa-key'></i>";
+                    echo "</button>";
                     echo " <input type='hidden' value='".$rowLop['MaLopLV']."' name='MaLopLV'>";
                     echo "</form>";
                     echo "</td>";
@@ -45,5 +49,15 @@
             }
         }
     }
-    
+    if(isset($_POST['pass'])){
+        include("../../public/config.php");
+        global $conn;
+        $maLop = $_POST['maLop'];
+        $pass = $_POST['pass'];
+        $sql = "UPDATE lopluanvan SET MaVaoLop='$pass' WHERE MaLopLV='$maLop'";
+        if(mysqli_query($conn,$sql)){
+            echo 1;
+        }else
+            echo 2;
+    }
 ?>

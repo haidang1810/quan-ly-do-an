@@ -18,7 +18,7 @@ $('.btn_setting').each(function(){
                 autocorrect: 'off'
             },
             preConfirm: (pass) => {
-                $.post("../../Models/ClassModel.php",{
+                $.post("../../Models/ThesisClassModel.php",{
                     'maLop': maLop,
                     'pass': pass
                 },function(data){

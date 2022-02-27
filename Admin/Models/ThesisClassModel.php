@@ -80,7 +80,7 @@
             $findLop = "SELECT * FROM lopluanvan WHERE MaLopLV='".$maLop."'";
             $resultLop = $conn->query($findLop);
             if($resultLop->num_rows <= 0){
-                $sql = "INSERT INTO lopluanvan VALUES('".$maLop."','".$tenLop."','".$maGV."',".$hknh.")";
+                $sql = "INSERT INTO lopluanvan(MaLopLV,TenLop,MaGV,Id_hknh)  VALUES('".$maLop."','".$tenLop."','".$maGV."',".$hknh.")";
                 if(mysqli_query($conn, $sql)){
                     echo"
                     <script>
@@ -210,7 +210,7 @@
                         $findLop = "SELECT * FROM lopluanvan WHERE MaLopLV='".$MaLopLV."'";
                         $resultLop = $conn->query($findLop);
                         if($resultLop->num_rows <= 0){
-                            $sql = "INSERT INTO lopluanvan(MaLopLV,TenLop,TuanBD,TuanKT,Id_hknh) VALUES('".
+                            $sql = "INSERT INTO lopluanvan(MaLopLV,TenLop,Id_hknh) VALUES('".
                             $MaLopLV."','".$tenLop."',".$hknh.")";
                             if(mysqli_query($conn, $sql)){
                                 $success++;

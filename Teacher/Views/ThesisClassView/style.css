@@ -41,10 +41,10 @@ table tbody tr td {
     border-radius: 5px;
 }
 .btn_setting {
-    background-color: #31A59C;
+    background-color: #00A65A;
 }
 .btn_detail {
-    background-color: #00A65A;
+    background-color: #007BFF;
 }
 .modal {
     position: fixed;

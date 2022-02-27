@@ -82,7 +82,7 @@
             $findLop = "SELECT * FROM lophocphan WHERE MaLopHP='".$maLop."'";
             $resultLop = $conn->query($findLop);
             if($resultLop->num_rows <= 0){
-                $sql = "INSERT INTO lophocphan VALUES('".$maLop."','".$tenLop."','".$maGV."',".$hknh.")";
+                $sql = "INSERT INTO lophocphan(MaLopHP,TenLop,MaGV,Id_hknh) VALUES('".$maLop."','".$tenLop."','".$maGV."',".$hknh.")";
                 if(mysqli_query($conn, $sql)){
                     echo"
                     <script>
@@ -181,7 +181,7 @@
                     $file_extension = end($file_array);
                     if(in_array($file_extension, $allowed_extension)){
                         $file_name = time() . '.' . $file_extension;
-                        move_uploaded_file($_FILES['file']['tmp_name'], $file_name);
+                        move_uploaded_file($file, $file_name);
                         $file_type = \PhpOffice\PhpSpreadsheet\IOFactory::identify($file_name);
                         $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader($file_type);
 

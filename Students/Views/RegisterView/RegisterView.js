@@ -48,17 +48,34 @@ function eventSubmitForm(){
                 cancelButtonText: 'Huỷ'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    actionRegister(childForm[0],childForm[1].value,Mssv); 
+                    Swal.fire({
+                        title: 'Nhập vào mật khẩu lớp học',
+                        input: 'text',
+                        confirmButtonText: "Xác nhận",
+                        showCancelButton: true,
+                        cancelButtonText: 'Huỷ',
+                        cancelButtonColor: '#d33',
+                        inputPlaceholder: 'Nhập vào mật khẩu lớp học',
+                        inputAttributes: {
+                            autocapitalize: 'off',
+                            autocorrect: 'off'
+                        },
+                        preConfirm: (pass) => {
+                            actionRegister(childForm[0],childForm[1].value,Mssv,pass); 
+                        }
+                    });
+                    
                 }
             })
         })
     }
 }
 
-function actionRegister(btn,maLop,mssv){
+function actionRegister(btn,maLop,mssv,pass){
     $.post("../../Models/RegisterModel.php",{
         "maLopHP": maLop,
-        "mssv": mssv
+        "mssv": mssv,
+        'pass': pass
         },function(data){
             if(data==1){
                 Swal.fire(
@@ -67,6 +84,24 @@ function actionRegister(btn,maLop,mssv){
                     'success'
                 )
                 btn.remove();
+            }else if(data==2){
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi...',
+                    text: 'Mật khẩu vào lớp không chính xác!'
+                })
+            }else if(data==3){
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi...',
+                    text: 'Lớp không tồn tại!'
+                })
+            }else{
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi...',
+                    text: 'Lỗi vui lòng thử lại!'
+                })
             }
         })
 }
