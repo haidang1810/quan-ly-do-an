@@ -35,7 +35,6 @@
                                     <th>TT</th>
                                     <th>MÃ SV</th>
                                     <th>HỌ VÀ TÊN</th>
-                                    <th>Mã lớp</th>
                                     <th>Điểm học phần</th>
                                     <th>Thang điểm chữ</th>
                                     <th>Ký tên</th>
@@ -52,7 +51,6 @@
                 <td>".$count."</td>
                 <td>".$rowSV['Mssv']."</td>
                 <td>".$rowSV['HoTen']."</td>
-                <td>".$rowSV['LOP']."</td>
                 <td>".$rowLop['DiemSo']."</td>
                 <td>".$rowLop['DiemChu']."</td>
                 <td></td>
@@ -104,7 +102,6 @@
                                     <th>TT</th>
                                     <th>MÃ SV</th>
                                     <th>HỌ VÀ TÊN</th>
-                                    <th>Mã lớp</th>
                                     <th>Điểm CTHD</th>
                                     <th>Điểm CBHD</th>
                                     <th>Điểm GVPB</th>
@@ -126,7 +123,6 @@
                     <td>".$count."</td>
                     <td>".$rowSV['Mssv']."</td>
                     <td>".$rowSV['HoTen']."</td>
-                    <td>".$rowSV['LOP']."</td>
                     <td>".$rowLop['DiemCTHD']."</td>
                     <td>".$rowLop['DiemCBHD']."</td>
                     <td>".$rowLop['DiemPB']."</td>

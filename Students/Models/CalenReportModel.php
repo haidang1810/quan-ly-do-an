@@ -10,7 +10,7 @@
                 $remining = "SELECT sinhvien_hocphan.Mssv, dangkydetai.MaDeTai 
                 FROM sinhvien_hocphan, dangkydetai 
                 WHERE sinhvien_hocphan.LichBaoCao=$id 
-                AND dangkydetai.Mssv=sinhvien_hocphan.Mssv GROUP BY dangkydetai.MaDeTai";
+                AND dangkydetai.Mssv=sinhvien_hocphan.Mssv GROUP BY sinhvien_hocphan.Mssv";
                 $resultRemi = $conn->query($remining);
                 $date = date("d-m-Y",strtotime($rowCalen['NgayBC']));
                 $time = $rowCalen['ThoiGianBatDau'];
@@ -25,7 +25,7 @@
                 WHERE lophocphan.Id_hknh=hocky_namhoc.Id AND lophocphan.MaLopHP='$maLop'";
                 $resultHK = $conn->query($checkHK);
                 $rowHK = $resultHK->fetch_assoc();
-                if($rowHK['TrangThai']==1 && $lost<$amount){
+                if($rowHK['TrangThai']==1){
                     if(isset($_SESSION['login'])){
                         $data = $_SESSION['login'];
                     }
@@ -47,7 +47,7 @@
                             echo "</form>";
                         }
                         
-                    }else{
+                    }else if($lost<$amount){
                         echo "<form method='POST'>";
                         echo "<button type='submit' name='RegCalen' class='btn_Calen btn_primary' value='$id' >";
                         echo "<i class='fas fa-edit'></i>";
@@ -156,6 +156,15 @@
                         })
                     </script>";
             }
+        }else{
+            echo "
+            <script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi...',
+                    text: 'Sinh viên chưa có đề tài!'
+                })
+            </script>";
         }
     }
 ?>
