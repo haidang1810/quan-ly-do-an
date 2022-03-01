@@ -84,9 +84,9 @@
                 if ($resultSP->num_rows > 0){
                     $rowSP = $resultSP->fetch_assoc();
                     $today = strtotime(date("Y-m-d H:i:s"));
-                    if($today<strtotime($rowSP['ThoiGianBatDau']))
+                    if($today<strtotime($rowSP['ThoiGianBD']))
                         $final = "Chưa đến thời gian nộp";
-                    else if($today>strtotime($rowSP['ThoiGianKetThuc']))
+                    else if($today>strtotime($rowSP['ThoiGianKT']))
                         $final = "Đã hết thời gian nộp";
                     else
                         $final = "Đang trong thời gian nộp";

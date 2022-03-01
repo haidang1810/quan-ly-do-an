@@ -58,7 +58,7 @@
                     $rowHK = $resultHK->fetch_assoc();
                     if($rowHK['TrangThai']!=1){
                         echo "<button class='btn_process btn_detail'  name='detailProcess' id='".
-                        $row['Id'].",".$row['TieuDe']."' type='button' onclick='showDetail(this.id)'>";
+                        $row['Id']."' type='button' >";
                         echo "<i class='fas fa-info-circle'></i>";
                         echo "</button>";
                     }else{
@@ -70,7 +70,7 @@
                         echo "<button class='btn_process btn_danger' id='".$row['Id']."' name='deleteProcess' type='button'>";
                         echo "<i class='fas fa-trash-alt'></i>";
                         echo "<button class='btn_process btn_detail'  name='detailProcess' id='".
-                        $row['Id'].",".$row['TieuDe']."' type='button' onclick='showDetail(this.id)'>";
+                        $row['Id']."' type='button' >";
                         echo "<i class='fas fa-info-circle'></i>";
                         echo "</button>";
                     }
@@ -178,7 +178,10 @@
         }
     }
 
-    function loadDetailProcess($conn,$id){
+    if(isset($_POST['id-detail'])){
+        include("../../public/config.php");
+        global $conn;
+        $id = $_POST['id-detail'];
         //tìm lớp của tiến độ
         $findLop = "SELECT * FROM nopbailuanvan WHERE Id='".$id."'";
         $resultLop = $conn->query($findLop);
@@ -210,10 +213,7 @@
                     if($result->num_rows > 0){
                         $row = $result->fetch_assoc();
                         echo "<li class='student'>";
-                        echo "<a onclick='showDetailStudent(this.id)'id='".
-                        $row['Mssv'].",".$row['HoTen'].",".$row['NamSinh'].",".
-                        $row['SDT'].",".$row['DiaChi'].",".$row['Khoa'].",".
-                        $row['LOP']."'>".$row['Mssv']."</a>";
+                        echo $row['Mssv'];
                         echo "</li>";
                     }
                     echo "</ul>";

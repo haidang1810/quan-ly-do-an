@@ -126,13 +126,13 @@
         <div class='form_field'>
             <input type='text' name='Hoten' class='form_input'>
             <label for='ten' class='form_label'>Họ và tên</label>
-        </div>
+        </div><br>
         <div class='form_field'>
             <input type='text' name='Gmail' class='form_input' placeholder='Nhập tên miền. Vd: @gmail.com'>
             <label for='mail' class='form_label'>Gmail</label>
         </div>
         <input type='checkbox' name='autoAcc' id='autoAcc_add' checked='checked'>
-        <label for='autoAcc_add'>Tự động tạo tài khoản cho sinh viên</label>
+        <label for='autoAcc_add'>Tự động tạo tài khoản</label><br>
         <input type='submit' name='addStudent' value='Lưu'> 
     </form>
 </div> ";

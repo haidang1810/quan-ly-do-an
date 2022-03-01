@@ -20,7 +20,6 @@
             echo "<table id='tableTopic'>";
             echo "<thead>";
             echo "<tr>";
-            echo "<th>id</th>";
             echo "<th style='min-width:100px'>Tên đề tài</th>";
             echo "<th>Ghi chú</th>";
             echo "<th>Sinh viên đề xuất</th>";
@@ -31,7 +30,6 @@
             echo "<tbody>";
             while($rowMa = $resultMa->fetch_assoc()){
                 echo "<tr>";
-                echo "<td>".$rowMa['Ma']."</td>";
                 echo "<td>".$rowMa['Ten']."</td>";
                 echo "<td>".$rowMa['GhiChu']."</td>";
                 echo "<td>".$rowMa['Mssv']."</td>";

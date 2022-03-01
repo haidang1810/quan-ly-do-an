@@ -61,7 +61,7 @@ ob_start();
                     $rowHK = $resultHK->fetch_assoc();
                     if($rowHK['TrangThai']!=1){
                         echo "<button class='btn_process btn_detail'  name='detailProcess' id='".
-                        $row['Id'].",".$row['TieuDe']."' type='button' onclick='showDetail(this.id)'>";
+                        $row['Id']."' type='button' >";
                         echo "<i class='fas fa-info-circle'></i>";
                         echo "</button>";
                     }else{

@@ -38,10 +38,7 @@
                 if($resultSV->num_rows > 0){
                     $rowSV = $resultSV->fetch_assoc();
                     echo "<li class='student'>";
-                    echo "<a onclick='showDetailStudent(this.id)'id='".
-                    $rowSV['Mssv'].",".$rowSV['HoTen'].",".$rowSV['NamSinh'].",".
-                    $rowSV['SDT'].",".$rowSV['DiaChi'].",".$rowSV['Khoa'].",".
-                    $rowSV['LOP']."'>".$rowSV['Mssv']."</a>";
+                    echo $rowSV['Mssv'];
                     echo "</li>";
                 }
                 echo "</ul>";

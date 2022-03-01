@@ -29,7 +29,8 @@
                     while($rowTopic = $resultTopic->fetch_assoc()){
                         $checkDK = "SELECT detai.TenDeTai FROM dangkydetai, detai
                         WHERE dangkydetai.MaDeTai='".$rowTopic['MaDeTai']."'
-                        AND dangkydetai.Mssv='".$row['Mssv']."'";
+                        AND dangkydetai.Mssv='".$row['Mssv']."'
+                        AND detai.MaDeTai=dangkydetai.MaDeTai";
                         $resultDK = $conn->query($checkDK);
                         if ($resultDK->num_rows > 0){
                             $rowDK = $resultDK->fetch_assoc();

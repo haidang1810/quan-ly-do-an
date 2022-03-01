@@ -107,16 +107,27 @@
         $result = $conn->query($listSV);
         if($result->num_rows > 0){
             while($row = $result->fetch_assoc()){
-                $findTopic = "SELECT Mssv FROM dangkydetai WHERE Mssv='".$row['Mssv']."'";
-                $resultTopic = $conn->query($findTopic);
-                if($resultTopic->num_rows <=0 && $row['Mssv']!=$rowSV['Mssv']){
+                $flat = true;
+                $selectTopic = "SELECT MaDeTai FROM detai WHERE MaLopHP='$maLop'";
+                $resultTopic = $conn->query($selectTopic);
+                if ($resultTopic->num_rows > 0){
+                    while($rowTopic = $resultTopic->fetch_assoc()){
+                        $checkDK = "SELECT detai.TenDeTai FROM dangkydetai, detai
+                        WHERE dangkydetai.MaDeTai='".$rowTopic['MaDeTai']."'
+                        AND dangkydetai.Mssv='".$row['Mssv']."'
+                        AND detai.MaDeTai=dangkydetai.MaDeTai";
+                        $resultDK = $conn->query($checkDK);
+                        if ($resultDK->num_rows <= 0 && $row['Mssv']!=$rowSV['Mssv']){
+                            continue;
+                        }else $flat = false;
+                    }
+                }
+                if($flat)
                     echo "
                     <label for='".$row['Mssv']."'>".$row['Mssv']." - ".$row['HoTen']."</label>
                     <input type='checkbox' class='enable' id='".$row['Mssv']."' onclick='onChecked(this.id)'><br>
                     ";
-                }
             }
-            
         }
     }
 

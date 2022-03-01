@@ -90,6 +90,7 @@ $(window).on('load',function(){
 function nextPage(){
     $(".paginate_button").click(function(){
         submitDelete();
+        submitDetail();
         nextPage();
     })
 }
@@ -103,6 +104,7 @@ function search(maLop){
                 "lengthMenu": [ 5, 10, 15, 20, 25, 30, 40, 50 ]
             });
             submitDelete();
+            submitDetail();
             nextPage();
         }else{
             Swal.fire({
@@ -308,6 +310,24 @@ function submitDelete(){
                             })
                         }
                     })
+                }
+            })
+        })
+    }
+}
+function submitDetail(){
+    var form = document.getElementsByClassName("btn_detail");
+    for(i=0;i<form.length;i++){
+        form[i].addEventListener('click', function(){
+            let id = this.id;
+            $.post("../../Models/ThesisProModel.php",{
+                'id-detail': this.id
+            },function(data){
+                if(data!=""){
+                    $(".table-detail").html(data);
+                    $('#tableDetail').DataTable({
+                        "lengthMenu": [ 5, 10, 15, 20]
+                    });
                 }
             })
         })

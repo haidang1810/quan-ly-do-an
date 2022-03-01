@@ -4,15 +4,15 @@ function dongho(){
     
     if(timeEnd<date){
         var diff = new Date(date.getTime() - timeEnd.getTime());
-        let value = "Tháng: "+diff.getUTCMonth()+" Ngày: "+(diff.getUTCDate()-1)+
-        " Giờ: "+diff.getUTCHours()+ " Phút: "+diff.getUTCMinutes()
-        + " Giây: "+diff.getUTCSeconds();
+        let value = ""+diff.getUTCMonth()+" Tháng "+(diff.getUTCDate()-1)+
+        "  Ngày "+diff.getUTCHours()+ " Giờ "+diff.getUTCMinutes()+" Phút "
+        +diff.getUTCSeconds()+ " Giây";
         $('#timeRemaining').html("<p style='color:red;'>Đã quá hạn "+value+"</p>");
     }else{
         var diff = new Date(timeEnd.getTime() - date.getTime());
-        let value = "Tháng: "+diff.getUTCMonth()+" Ngày: "+(diff.getUTCDate()-1)+
-        " Giờ: "+diff.getUTCHours()+ " Phút: "+diff.getUTCMinutes()
-        + " Giây: "+diff.getUTCSeconds();
+        let value = ""+diff.getUTCMonth()+" Tháng "+(diff.getUTCDate()-1)+
+        " Ngày "+diff.getUTCHours()+ " Giờ "+diff.getUTCMinutes()
+        + " Phút "+diff.getUTCSeconds()+" Giây";
         $('#timeRemaining').html("<p>"+value+"</p>");
     }
     setTimeout(() => {

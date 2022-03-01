@@ -36,12 +36,7 @@
                 if($resultSV->num_rows > 0){
                     $rowSV = $resultSV->fetch_assoc();
                     echo "<td>";
-                    echo "<li>";
-                    echo "<a onclick='showDetailStudent(this.id)'id='".
-                    $rowSV['Mssv'].",".$rowSV['HoTen'].",".$rowSV['NamSinh'].",".
-                    $rowSV['SDT'].",".$rowSV['DiaChi'].",".$rowSV['Khoa'].",".
-                    $rowSV['LOP']."'>".$rowSV['Mssv']."</a>";
-                    echo "</li>";
+                    echo $rowSV['Mssv'];
                     echo "</td>";
                 }
                 $findClass = "SELECT Id_hknh FROM lopluanvan WHERE MaLopLV='".$MaLop."'";

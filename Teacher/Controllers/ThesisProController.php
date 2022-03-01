@@ -23,12 +23,11 @@
     echo "<div class='table'>";
     
     echo "</div>";
+    echo "<div class='table-detail'>";
 
+    echo "</div>";
     
-    if(isset($_GET['process'])){
-        $id=$_GET['process'];
-        loadDetailProcess($conn,$id);
-    }
+
     
     if(isset($_POST['download'])){
         $source = $_POST['source'];
