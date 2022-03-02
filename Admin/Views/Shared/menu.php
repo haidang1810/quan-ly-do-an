@@ -77,7 +77,7 @@
                         <i class="fas fa-users"></i><span class="showTitle">Lớp đồ án</span>
                     </button>
                     <button class="btn subitem" onclick="goThesis()">
-                        <i class="fas fa-graduation-cap"></i><span class="showTitle">Lớp luận văn</span>
+                        <i class="fas fa-graduation-cap"></i><span class="showTitle">Lớp khoá luận</span>
                     </button>
                 </div>
             </div>

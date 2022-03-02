@@ -76,7 +76,7 @@ $(document).ready(function(){
         var id = $(".dsHKNH").val();
         $.post("../../Models/ThesisTopicModel.php",{"id": id},function(data){
             if(data=="")
-                $(".dsLop").html("<option value='-1'>Chọn lớp luận văn</option>");
+                $(".dsLop").html("<option value='-1'>Chọn lớp khoá luận</option>");
             else
                 $(".dsLop").html(data);
             $('.dsLop').trigger("chosen:updated");

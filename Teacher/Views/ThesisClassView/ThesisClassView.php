@@ -16,7 +16,7 @@
                 include("../shared/nav.php");
             ?>
             <div class="content">
-                <h2>Danh sách lớp luận văn</h2>
+                <h2>Danh sách lớp khoá luận</h2>
                 <?php include("../../Controllers/ThesisClassController.php"); ?>
                 
                 </div>

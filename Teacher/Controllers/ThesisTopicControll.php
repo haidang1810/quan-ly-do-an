@@ -16,7 +16,7 @@
     loadHKNH($conn);        
     echo "</select>";
     echo "<select name='lopLV' class=' topic_select dsLop'>";
-    echo "<option value='-1'>Chọn lớp luận văn</option>";
+    echo "<option value='-1'>Chọn lớp khoá luận</option>";
     echo "</select>";
     echo "<button name='search' type='button' class='topic_button_search'>Tìm kiếm</button>";    echo "</form>
     </div>";

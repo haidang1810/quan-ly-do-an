@@ -16,7 +16,7 @@
                 include("../shared/nav.php");
             ?>
             <div class="content">
-                <h2>Danh sách lớp luận văn</h2>
+                <h2>Danh sách lớp khoá luận</h2>
                 <button class="btn_add" onclick="showAddClass()">
                     <i class="fas fa-plus"></i>&nbsp;Thêm
                 </button>
@@ -26,7 +26,7 @@
                     <div class="modal_body">
                         <div class="modal_inner">
                             <div class="modal_title">
-                                <h2>Thêm lớp học luận văn</h2>
+                                <h2>Thêm lớp học khoá luận</h2>
                                 <div class="close">+</div>
                             </div>
                             <form method="POST">
@@ -61,7 +61,7 @@
                     <div class="modal_body">
                         <div class="modal_inner">
                             <div class="modal_title">
-                                <h2>Cập nhật lớp luận văn</h2>
+                                <h2>Cập nhật lớp khoá luận</h2>
                                 <div class="close close_edit">+</div>
                             </div>
                             <form method="POST">

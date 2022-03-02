@@ -7,8 +7,12 @@
 
     if(isset($_SESSION['ShowStudent'])){
         $MaLop = $_SESSION['ShowStudent'];
+        $findClass = "SELECT TenLop FROM lophocphan WHERE MaLopHP='".$MaLop."'";
+        $resultClass = $conn->query($findClass);
+        $rowClass = $resultClass->fetch_assoc();
+        echo "<h3 class='title-class'>".$MaLop." - ".$rowClass['TenLop']."</h3>";
         echo "<div class='table'>";
-        echo "<h2>Danh sách sinh viên lớp ".$MaLop."</h2>";
+        echo "<h2>Danh sách sinh viên</h2>";
         echo "<form method='POST' action='../ExportView/ExportView.php'>";
         echo "<input type='hidden' name='MaLop' value='".$MaLop."'>";
         echo "<button class='btn_export' type='submit' name='export'>
@@ -75,8 +79,12 @@
         echo "</div>";
     }else if(isset($_SESSION['ShowStudentThesis'])){
         $MaLop = $_SESSION['ShowStudentThesis'];
+        $findClass = "SELECT TenLop FROM lopluanvan WHERE MaLopLV='".$MaLop."'";
+        $resultClass = $conn->query($findClass);
+        $rowClass = $resultClass->fetch_assoc();
+        echo "<h3 class='title-class'>".$MaLop." - ".$rowClass['TenLop']."</h3>";
         echo "<div class='table'>";
-        echo "<h2>Danh sách sinh viên lớp ".$MaLop."</h2>";
+        echo "<h2>Danh sách sinh viên</h2>";
         echo "<form method='POST' action='../ExportView/ExportView.php'>";
         echo "<input type='hidden' name='MaLop' value='".$MaLop."'>";
         echo "<button class='btn_export' type='submit' name='export'>

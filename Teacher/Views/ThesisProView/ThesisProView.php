@@ -16,7 +16,7 @@
                 include("../shared/nav.php");
             ?>
             <div class="content">
-                <h2>Tiến độ luận văn</h2>
+                <h2>Tiến độ khoá luận</h2>
                 <button class="btn_add" onclick="showAddProcess()">
                     <i class="fas fa-plus"></i>&nbsp;Thêm
                 </button>

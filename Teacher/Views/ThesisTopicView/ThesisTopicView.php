@@ -16,7 +16,7 @@
                 include("../shared/nav.php");
             ?>
             <div class="content">
-                <h2>Danh sách đề tài luận văn</h2>
+                <h2>Danh sách đề tài khoá luận</h2>
                 <button class="btn_add" onclick="showAddTopic()">
                     <i class="fas fa-plus"></i>&nbsp;Thêm
                 </button>

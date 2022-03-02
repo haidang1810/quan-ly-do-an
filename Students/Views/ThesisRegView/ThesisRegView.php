@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>Đăng ký lớp luận văn</title>
+        <title>Đăng ký lớp khoá luận</title>
         <link rel="stylesheet" href="style.css">
         <script src="../../../public/jquery-ui/jquery-3.3.1.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
@@ -17,7 +17,7 @@
                 include("../shared/nav.php");
             ?>
             <div class="content">
-                <h2>Danh sách lớp luận văn</h2>
+                <h2>Danh sách lớp khoá luận</h2>
                 <?php include("../../Controllers/ThesisRegController.php"); ?>
                 <div class='table table-class'></div>
             </div>

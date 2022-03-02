@@ -66,7 +66,7 @@
                         <i class="fas fa-users"></i><span class="showTitle">Lớp đồ án</span>
                     </button>
                     <button class="btn subitem" onclick="goThesisClass()">
-                        <i class="fas fa-graduation-cap"></i><span class="showTitle">Lớp luận văn</span>
+                        <i class="fas fa-graduation-cap"></i><span class="showTitle">Lớp khoá luận</span>
                     </button>
                 </div>
             </div>
@@ -86,7 +86,7 @@
             </div>
             <div>
                 <button class="btn item" onclick="goThesisTopic()">
-                <i class="far fa-comment"></i><span class="showTitle">Đề tài luận văn</span>
+                <i class="far fa-comment"></i><span class="showTitle">Đề tài khoá luận</span>
                 </button>
             </div>
             <div>
@@ -98,7 +98,7 @@
                         <i class="fas fa-users"></i><span class="showTitle">Lớp đồ án</span>
                     </button>
                     <button class="btn subitem" onclick="goThesisPro()">
-                        <i class="fas fa-graduation-cap"></i><span class="showTitle">Lớp luận văn</span>
+                        <i class="fas fa-graduation-cap"></i><span class="showTitle">Lớp khoá luận</span>
                     </button>
                 </div>
             </div>
@@ -114,7 +114,7 @@
                 if($row['Loai']==4){
                     echo "<div>
                             <button class='btn item' id='subItem4' onclick='showSubItem(this.id);'>
-                                <i class='fas fa-file-word'></i><span class='showTitle'>Bảo vệ luận văn<i id='angle_subItem4' class='fas fa-angle-right'></i></span>
+                                <i class='fas fa-file-word'></i><span class='showTitle'>Bảo vệ khoá luận<i id='angle_subItem4' class='fas fa-angle-right'></i></span>
                             </button>                
                             <div id='group_subItem4' class='hidden'>
                                 <button class='btn subitem' onclick='goCouncil()'>
