@@ -79,7 +79,7 @@
                             </div>
                             <form name="edit" method="POST">
                                 <input type="text" id="nameEdit" name="TenDeTai" placeholder="Tên đề tài">
-                                <input type="number" id="AmountEdit" name="SoThanVien" placeholder="Số thành viên">  
+                                <input type="number" id="AmountEdit" name="SoThanVien" placeholder="Số thành viên" readonly>  
                                 <input type="hidden" id="idEdit" name="MaDeTai">     
                                 <textarea name="GhiChu" id ="noteEdit" rows="9" cols="70" placeholder="Ghi Chú"></textarea>                        
                                 <button type='button' class="btn-edit-topic">Cập nhật đề tài</button>

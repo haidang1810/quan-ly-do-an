@@ -88,7 +88,7 @@
                                 <img src='../shared/img/vlute_icon96.png'>
                             </div>
                             <div class='block-title'>
-                                <h3>PHIẾU ĐIỂM LUẬN ÁN</h3>
+                                <h3>PHIẾU ĐIỂM KHOÁ LUẬN</h3>
                             </div>
                             <div class='block-right'></div>
                         </div>
