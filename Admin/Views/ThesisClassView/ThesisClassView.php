@@ -99,8 +99,6 @@
                             <ul>
                                 <li id="MaGV"></li>
                                 <li id="HoTen"></li>
-                                <li id="NgaySinh"></li>
-                                <li id="SDT"></li>
                                 <li id="Gmail"></li>
                             </ul>                            
                         </div>

@@ -27,8 +27,7 @@
                 echo "<td>".$rowLop['TenLop']." </td>";
                 if($resultGV->num_rows > 0){
                     $rowGV = $resultGV->fetch_assoc();
-                    echo "<td><a id='".$rowGV['MaGV'].",".$rowGV['HoTen'].",".$rowGV['NamSinh']
-                .",".$rowGV['SDT'].",".$rowGV['Gmail']."' onclick='showDetailTea(this.id)'>".$rowGV['HoTen']."</a></td>";
+                    echo "<td><a id='".$rowGV['MaGV'].",".$rowGV['HoTen'].",".$rowGV['Gmail']."' onclick='showDetailTea(this.id)'>".$rowGV['HoTen']."</a></td>";
                 }else echo "<td></td>";
                 
                 echo "<td>";

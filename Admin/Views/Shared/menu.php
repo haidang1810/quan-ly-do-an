@@ -5,14 +5,14 @@
         if (session_id() === '')
             session_start();
         if(!isset($_SESSION['login']))
-            header('location:http://localhost/qldoan/login/Views/LoginView.php');
+            header('location: ../../../login/Views/LoginView.php');
         $sql="SELECT * FROM nguoidung WHERE TaiKhoan='".$_SESSION['login']."'";
         $result = $conn->query($sql);
         $row = $result->fetch_assoc();
         if($row['Loai']==2 || $row['Loai']==4)
-            header('location: http://localhost/qldoan/Teacher/Views/DashboardView/DashboardView.php');  
+            header('location: ../../../Teacher/Views/DashboardView/DashboardView.php');  
         else if($row['Loai']==1)
-            header('location: http://localhost/qldoan/Students/View/php/dashboardViewSt.php');
+            header('location: ../../../Students/Views/DashboardView/DashboardView.php');
     }
     else if(!isset($_SESSION['login'])){
         if (session_id() === '')
@@ -22,17 +22,17 @@
         $result = $conn->query($sql);
         $row = $result->fetch_assoc();
         if($row['Loai']==2||$row['Loai']==4)
-            header('location: http://localhost/qldoan/Teacher/Views/DashboardView/DashboardView.php'); 
+            header('location: ../../../Teacher/Views/DashboardView/DashboardView.php'); 
         else if($row['Loai']==1)
-            header('location: http://localhost/qldoan/Students/View/php/dashboardViewSt.php');
+            header('location: ../../../Students/Views/DashboardView/DashboardView.php');
     }else{
         $sql="SELECT * FROM nguoidung WHERE TaiKhoan='".$_SESSION['login']."'";
         $result = $conn->query($sql);
         $row = $result->fetch_assoc();
         if($row['Loai']==2 || $row['Loai']==4)
-            header('location: http://localhost/qldoan/Teacher/Views/DashboardView/DashboardView.php');  
+            header('location: ../../../Teacher/Views/DashboardView/DashboardView.php');  
         else if($row['Loai']==1)
-            header('location: http://localhost/qldoan/Students/View/php/dashboardViewSt.php');
+            header('location: ../../../Students/Views/DashboardView/DashboardView.php');
     }
     
 ?>

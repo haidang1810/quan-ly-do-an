@@ -13,11 +13,7 @@ function showDetailTea(value) {
     if(data[1]!=null)    
         document.getElementById('HoTen').innerHTML = "<b>Họ và tên: </b>" + data[1];
     if(data[2]!=null)
-        document.getElementById('NgaySinh').innerHTML = "<b>Ngày sinh: </b>"+ data[2];
-    if(data[3]!=null)    
-        document.getElementById('SDT').innerHTML = "<b>SDT: </b>" + data[3];
-    if(data[4]!=null)
-        document.getElementById('Gmail').innerHTML = "<b>Địa chỉ: </b>" + data[4];
+        document.getElementById('Gmail').innerHTML = "<b>Địa chỉ: </b>" + data[2];
     
 }
 function showAddClass() {

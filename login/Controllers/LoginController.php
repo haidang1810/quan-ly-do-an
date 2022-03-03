@@ -22,11 +22,11 @@
                         setcookie('cookie_pass','',time()-86400,"/","",0);
                 }
                 if($row["Loai"]==2 || $row["Loai"]==4)
-                    header('location: http://localhost/qldoan/Teacher/Views/DashboardView/DashboardView.php');  
+                    header('location: ../../Teacher/Views/DashboardView/DashboardView.php');  
                 else if($row["Loai"]==3)    
-                    header('location: http://localhost/qldoan/admin/Views/DashboardView/DashboardView.php');  
+                    header('location: ../../admin/Views/DashboardView/DashboardView.php');  
                 else if($row["Loai"]==1)    
-                    header('location: http://localhost/qldoan/Students/Views/DashboardView/DashboardView.php');
+                    header('location: ../../Students/Views/DashboardView/DashboardView.php');
             }
             else
                 echo '<p>Sai tên đăng nhập hoặc mật khẩu</p>';
@@ -40,11 +40,11 @@
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
             if($row["Loai"]==2 || $row["Loai"]==4)
-                header('location: http://localhost/qldoan/Teacher/Views/DashboardView/DashboardView.php');  
+                header('location: ../../Teacher/Views/DashboardView/DashboardView.php');  
             else if($row["Loai"]==3)    
-                header('location: http://localhost/qldoan/admin/Views/DashboardView/DashboardView.php');  
+                header('location: ../../admin/Views/DashboardView/DashboardView.php');  
             else if($row["Loai"]==1)    
-                header('location: http://localhost/qldoan/Students/Views/DashboardView/DashboardView.php');
+                header('location: ../../Students/Views/DashboardView/DashboardView.php');
         }
     }
     
