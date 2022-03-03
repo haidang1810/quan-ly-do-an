@@ -22,14 +22,7 @@
                 $calen = "";
                 $poin = "";
                 $final = "";
-                //tìm đề tài của sv
-                $selectTopic = "SELECT Ten FROM detailuanvan WHERE MaLopLV='".$row['MaLopLV']."'
-                AND Mssv='".$rowSV['Mssv']."'";
-                $resultTopic = $conn->query($selectTopic);
-                if ($resultTopic->num_rows > 0){
-                    $rowTopic = $resultTopic->fetch_assoc();
-                    $topic = $rowTopic['Ten'];
-                }
+                
                 //Tìm tiến độ hiện tại
                 $findTD = "SELECT * FROM nopbailuanvan WHERE MaLopLV='".$row['MaLopLV']."' and Loai=0";
                 $resultTD = $conn->query($findTD);
@@ -69,11 +62,11 @@
                     $poin = "<ul><li>Chưa có kết quả</li></ul>";
                 }else{
                     $poin = "<ul>
-                    <li>Điểm tịch hội đồng: ".$row['DiemCTHD']."</li>
-                    <li>Điểm cán bộ hướng dẫn: ".$row['DiemCBHD']."</li>
-                    <li>Điểm giảng viên phản biện: ".$row['DiemPB']."</li>
-                    <li>Điểm trung bình: ".$row['DiemTB']."</li>
-                    <li>Điểm chữ: ".$row['DiemChu']."</li>
+                        <li>Điểm tịch hội đồng: ".$row['DiemCTHD']."</li>
+                        <li>Điểm cán bộ hướng dẫn: ".$row['DiemCBHD']."</li>
+                        <li>Điểm giảng viên phản biện: ".$row['DiemPB']."</li>
+                        <li>Điểm trung bình: ".$row['DiemTB']."</li>
+                        <li>Điểm chữ: ".$row['DiemChu']."</li>
                     </ul>";
                 }
                 
@@ -101,9 +94,18 @@
                     </div>";
                 echo "</h3>";
                 echo "
-                <div class='content-body'>
-                    <a href='#' class='title-box link-topic'>1. Đề tài thực hiện</a>
-                    <ul><li>Đề tài đã đăng ký: $topic</li></ul>
+                <div class='content-body'>";
+                //tìm đề tài của sv
+                $selectTopic = "SELECT Ten,GhiChu FROM detailuanvan WHERE MaLopLV='".$row['MaLopLV']."'
+                AND Mssv='".$rowSV['Mssv']."'";
+                $resultTopic = $conn->query($selectTopic);
+                if ($resultTopic->num_rows > 0){
+                    $rowTopic = $resultTopic->fetch_assoc();
+                    $topic = $rowTopic['Ten'];
+                    echo  "<a href='#' id='".$rowTopic['Ten'].",".$rowTopic['GhiChu']."' class='title-box link-topic'>1. Đề tài thực hiện</a>";
+                }else
+                echo  "<a href='#' class='title-box link-topic'>1. Đề tài thực hiện</a>";
+                echo "<ul><li>Đề tài đã đăng ký: $topic</li></ul>
                     <div class='dec-line'></div>
                     <a href='#' class='title-box link-proces'>2. Tiến độ thực hiện</a>
                     $process

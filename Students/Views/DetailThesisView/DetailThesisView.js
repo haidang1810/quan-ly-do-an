@@ -51,3 +51,36 @@ window.onclick = function(e) {
     }
     }
 }
+$(window).on('load', function(){
+	const modal = document.querySelector('.modal')
+	const iconCloseModal = document.querySelector('.modal__header i')
+	const btnClose = document.querySelector('.btn-close')
+
+	function toggleModal() {
+		modal.classList.toggle('hide')
+	}
+	btnClose.addEventListener('click', function(){
+		toggleModal();
+	})
+	iconCloseModal.addEventListener('click', function(){
+		toggleModal();
+	})
+	
+	modal.addEventListener('click', (e) => {
+		if (e.target == e.currentTarget){
+			toggleModal();
+		}
+	})
+    $(".link-topic").click(function(){
+        let data = this.id.split(",");
+        openModal(data);
+    })
+})
+
+function openModal(data){
+	var modal = document.querySelector('.modal')
+	modal.classList.toggle('hide')
+    
+    $("#tenDT").val(data[0]);
+    $("#GhiChu").val(data[1]);
+}

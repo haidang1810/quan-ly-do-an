@@ -7,7 +7,7 @@
     
     if(isset($_SESSION['DetailClass'])){
         $offer = checkOffer($conn,$_SESSION['DetailClass']);
-        if($offer=='null'&& $offer !="exit")
+        if(($offer=='null' ) && $offer !="exit" )
             echo "<button id='btn-offer' onclick=''><i class='fas fa-plus icon-add'></i>&nbsp;Đề xuất</button>";
         echo "<h2>Danh sách đề tài lớp ".$_SESSION['DetailClass']."</h2>";
         echo "<div class='table'>";
@@ -39,14 +39,26 @@
             echo "<th>Tên đề tài</th>";
             echo "<th>Ghi chú</th>";
             echo "<th>Số thành viên</th>";
+            echo "<th>Trạng thái</th>";
             echo "</tr>";
             echo "</thead>";
             echo "<tbody>";
-            echo "<tr>";
-            echo "<td>".$offer['Ten']."</td>";
-            echo "<td>".$offer['GhiChu']."</td>";
-            echo "<td>".$offer['SoTV']."</td>";
-            echo "</tr>";
+            foreach($offer as $item){
+                echo "<tr>";
+                echo "<td>".$item['Ten']."</td>";
+                echo "<td>".$item['GhiChu']."</td>";
+                echo "<td>".$item['SoTV']."</td>";
+                echo "<td>";
+                if($item['TrangThai']==2)
+                    echo "Đã từ chối";
+                else if($item['TrangThai']==1)
+                    echo "Được chấp nhận";
+                else
+                    echo "Đang chờ";
+                echo "</td>";
+                echo "</tr>";
+            }
+            
             echo "</tbody>";
             echo "</table>";
         }

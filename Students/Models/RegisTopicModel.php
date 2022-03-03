@@ -20,7 +20,7 @@
         AND Mssv='".$rowSV['Mssv']."' AND detai.MaLopHP='$maLop'";
         $resultDK = $conn->query($findDK);
         $findOffer = "SELECT * FROM detaidexuat WHERE Mssv='".$rowSV['Mssv']."'
-        AND MaLopHP='$maLop'";
+        AND MaLopHP='$maLop' AND TrangThai <> 1";
         $resultOffer = $conn->query($findOffer);
         if($resultOffer->num_rows <= 0 && $rowHK['TrangThai']!=0){
             if($resultDK->num_rows > 0){
@@ -91,7 +91,6 @@
                 }
             }
         }
-        
     }
 
     function LoadStudent($conn,$maLop){
@@ -231,8 +230,11 @@
         AND MaLopHP='$maLop'";
         $resultOffer = $conn->query($findOffer);
         if($resultOffer->num_rows > 0){
-            $rowOffer = $resultOffer->fetch_assoc();
-            return $rowOffer;
+            $data = [];
+            while($rowOffer = $resultOffer->fetch_assoc()){
+                $data[] = $rowOffer;
+            }
+            return $data;
         }else {
             $findDK = "SELECT Mssv, dangkydetai.MaDeTai
             FROM detai, dangkydetai 

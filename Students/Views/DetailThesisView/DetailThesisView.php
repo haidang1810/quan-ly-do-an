@@ -16,7 +16,29 @@
             ?>
             <div class="content">
                 <?php include("../../Controllers/DetailThesisController.php"); ?>
-                
+                <div class='modal hide'>
+                    <div class='modal__inner'>
+                        <div class='modal__header'>
+                            <p>Thông tin đề tài</p>
+                            <i class='fas fa-times'></i>
+                        </div>
+                        <form method='POST' class='modal-form'>
+                        <div class='modal__body'>
+                            <div class="form_field">
+                                <input readonly type="text" id="tenDT" class="form_input">
+                                <label for="ten" class="form_label">Tên đề tài</label>
+                            </div>
+                            <div class="form_field">
+                                <textarea readonly id="GhiChu" rows="7" cols="70" class="form_input"></textarea>
+                                <label for="ten" class="form_label">Ghi chú</label>
+                            </div>                            
+                        </div>
+                        <div class='modal__footer'>
+                            <button class='btn-close'>Đóng</button>
+                        </div>
+                        </form>
+                    </div>
+                </div>
             </div>
             <?php
                 include("../shared/footer.php");
